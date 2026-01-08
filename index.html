@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="description" content="Aplikasi Penghitung Delay Time Produksi">
+    
+    <!-- PWA Settings -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    
+    <title>Alat Hitung Delay Time</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        neon: '#00f3ff',
+                        neonh: '#00c2cc',
+                        classic: '#8d6e63',
+                        classicbg: '#f5f5dc',
+                        paper: '#fff8e1'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Futuristic Theme Defaults */
+        body {
+            transition: background-color 0.5s, color 0.5s;
+        }
+        
+        .theme-futuristic {
+            background-color: #0f172a;
+            color: #e2e8f0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .theme-futuristic .card {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);
+        }
+        
+        .theme-futuristic .input-field {
+            background-color: #0f172a;
+            border-color: #475569;
+            color: white;
+        }
+
+        .theme-futuristic .btn-primary {
+            background: linear-gradient(90deg, #06b6d4, #3b82f6);
+            color: white;
+        }
+
+        /* Classic Theme Override */
+        .theme-classic {
+            background-color: #f0f4f8; /* Soft blue-grey */
+            color: #374151;
+            font-family: 'Georgia', serif;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .theme-classic .card {
+            background-color: #ffffff;
+            border: 1px solid #d1d5db;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .theme-classic .input-field {
+            background-color: #f9fafb;
+            border-color: #d1d5db;
+            color: #1f2937;
+        }
+
+        .theme-classic .btn-primary {
+            background: #4b5563;
+            color: white;
+        }
+        
+        .theme-classic .text-accent {
+            color: #1f2937;
+        }
+
+        /* Utilities */
+        .glass-panel {
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body class="theme-futuristic min-h-screen p-4 pb-20">
+
+    <!-- Navbar / Header -->
+    <div class="max-w-2xl mx-auto mb-6 flex justify-between items-center">
+        <h1 class="text-2xl font-bold flex items-center gap-2">
+            <i class="fa-solid fa-clock-rotate-left text-blue-400"></i> Delay Time Calc
+        </h1>
+        <button onclick="toggleTheme()" id="themeBtn" class="px-4 py-2 rounded-full text-sm font-semibold border transition-all duration-300">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Ganti Tema
+        </button>
+    </div>
+
+    <!-- Main Container -->
+    <div class="max-w-2xl mx-auto space-y-4">
+
+        <!-- Product & Batch Info -->
+        <div class="card p-5 rounded-xl">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1 opacity-70">Nama Produk</label>
+                    <input type="text" id="productName" placeholder="Contoh: VTTSA" class="input-field w-full p-2 rounded border focus:outline-none focus:ring-2 focus:ring-blue-400">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1 opacity-70">Nomor Batch</label>
+                    <input type="text" id="batchNo" placeholder="Contoh: A123" class="input-field w-full p-2 rounded border focus:outline-none focus:ring-2 focus:ring-blue-400">
+                </div>
+            </div>
+            
+            <button onclick="openProductModal()" class="w-full py-3 border-2 border-dashed border-gray-500 rounded-lg hover:bg-gray-700/10 transition flex items-center justify-center gap-2 font-medium text-blue-400">
+                <i class="fa-solid fa-list-check"></i> Pilih dari Database Produk
+            </button>
+        </div>
+
+        <!-- Inputs Calculation -->
+        <div class="card p-5 rounded-xl space-y-6">
+            
+            <!-- Waktu Mulai -->
+            <div>
+                <label class="block text-lg font-bold mb-2 text-blue-400">
+                    <i class="fa-regular fa-calendar-check"></i> Waktu Mulai FV
+                </label>
+                <div class="grid grid-cols-2 gap-2">
+                    <input type="date" id="dateStart" class="input-field w-full p-3 rounded border">
+                    <input type="time" id="timeStart" class="input-field w-full p-3 rounded border">
+                </div>
+            </div>
+
+            <hr class="border-gray-600 opacity-30">
+
+            <!-- Delay Inputs -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Mixing -->
+                <div class="bg-blue-500/5 p-4 rounded-lg border border-blue-500/20">
+                    <h3 class="font-bold text-center mb-3">Delay Time Mixing</h3>
+                    <div class="flex gap-2 items-center">
+                        <div class="flex-1">
+                            <input type="number" id="mixJam" min="0" placeholder="0" class="input-field w-full p-2 text-center text-lg font-mono rounded border">
+                            <div class="text-xs text-center mt-1 opacity-60">Jam</div>
+                        </div>
+                        <span class="font-bold">:</span>
+                        <div class="flex-1">
+                            <input type="number" id="mixMenit" min="0" max="59" placeholder="0" class="input-field w-full p-2 text-center text-lg font-mono rounded border">
+                            <div class="text-xs text-center mt-1 opacity-60">Menit</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Steril -->
+                <div class="bg-green-500/5 p-4 rounded-lg border border-green-500/20">
+                    <h3 class="font-bold text-center mb-3">Delay Time Steril</h3>
+                    <div class="flex gap-2 items-center">
+                        <div class="flex-1">
+                            <input type="number" id="sterJam" min="0" placeholder="0" class="input-field w-full p-2 text-center text-lg font-mono rounded border">
+                            <div class="text-xs text-center mt-1 opacity-60">Jam</div>
+                        </div>
+                        <span class="font-bold">:</span>
+                        <div class="flex-1">
+                            <input type="number" id="sterMenit" min="0" max="59" placeholder="0" class="input-field w-full p-2 text-center text-lg font-mono rounded border">
+                            <div class="text-xs text-center mt-1 opacity-60">Menit</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col gap-3">
+                <button onclick="calculate()" class="btn-primary w-full py-4 rounded-lg font-bold text-lg shadow-lg transform active:scale-95 transition">
+                    HITUNG HASIL
+                </button>
+                <button onclick="resetForm()" class="w-full py-2 text-sm opacity-70 hover:opacity-100 underline">
+                    Reset Form
+                </button>
+            </div>
+        </div>
+
+        <!-- Results Section (Hidden by default) -->
+        <div id="resultSection" class="hidden card p-0 rounded-xl overflow-hidden shadow-2xl animate-fade-in-up">
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-600 p-4 text-white text-center">
+                <h2 class="text-xl font-bold">HASIL PERHITUNGAN</h2>
+            </div>
+            
+            <div class="p-6 space-y-6">
+                <!-- Result Mixing -->
+                <div class="flex items-start gap-4">
+                    <div class="bg-blue-100 text-blue-800 p-3 rounded-full">
+                        <i class="fa-solid fa-vial"></i>
+                    </div>
+                    <div>
+                        <div class="text-sm opacity-60 font-semibold uppercase tracking-wide">Batas Waktu Mixing</div>
+                        <div id="resMixing" class="text-xl md:text-2xl font-bold mt-1">--</div>
+                    </div>
+                </div>
+
+                <div class="border-t border-gray-200/20"></div>
+
+                <!-- Result Steril -->
+                <div class="flex items-start gap-4">
+                    <div class="bg-green-100 text-green-800 p-3 rounded-full">
+                        <i class="fa-solid fa-temperature-arrow-up"></i>
+                    </div>
+                    <div>
+                        <div class="text-sm opacity-60 font-semibold uppercase tracking-wide">Batas Waktu Steril</div>
+                        <div id="resSteril" class="text-xl md:text-2xl font-bold mt-1">--</div>
+                    </div>
+                </div>
+
+                <!-- Save & Share -->
+                <div class="grid grid-cols-2 gap-3 mt-4 pt-4 border-t border-gray-200/20">
+                    <button onclick="saveToHistory()" class="bg-gray-600 hover:bg-gray-700 text-white py-2 rounded-lg flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-floppy-disk"></i> Simpan
+                    </button>
+                    <button onclick="shareWA()" class="bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg flex items-center justify-center gap-2">
+                        <i class="fa-brands fa-whatsapp"></i> Share WA
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Section -->
+        <div class="card p-5 rounded-xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-lg">Riwayat Penyimpanan</h3>
+                <button onclick="clearHistory()" class="text-xs text-red-400 hover:text-red-500">Hapus Semua</button>
+            </div>
+            <div id="historyList" class="space-y-3 max-h-64 overflow-y-auto">
+                <div class="text-center opacity-50 text-sm py-4">Belum ada data tersimpan</div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Product Modal -->
+    <div id="productModal" class="fixed inset-0 bg-black/80 hidden z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="card w-full max-w-lg max-h-[80vh] rounded-xl flex flex-col shadow-2xl">
+            <div class="p-4 border-b border-gray-700 flex justify-between items-center bg-gray-800/50 rounded-t-xl">
+                <h3 class="font-bold text-lg text-white">Pilih Produk</h3>
+                <button onclick="closeProductModal()" class="text-gray-400 hover:text-white">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            <div class="p-2 overflow-y-auto flex-1 bg-gray-900 text-gray-200">
+                <input type="text" id="searchProduct" placeholder="Cari nama produk..." onkeyup="filterProducts()" class="w-full p-3 mb-2 rounded bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-1 focus:ring-blue-500">
+                <div id="productList" class="space-y-1">
+                    <!-- Javascript will populate this -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- PWA Service Worker Registration ---
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then(reg => console.log('SW terdaftar!', reg.scope))
+                    .catch(err => console.log('SW gagal:', err));
+            });
+        }
+
+        // --- DATA ---
+        const products = [
+            // LINE 1
+            { line: "Line 1", name: "VTTSA", mixH: 22, mixM: 40, sterH: 39, sterM: 14 },
+            // LINE 2
+            { line: "Line 2", name: "VRAMA", mixH: 68, mixM: 0, sterH: 81, sterM: 0 },
+            { line: "Line 2", name: "VKAMA", mixH: 22, mixM: 0, sterH: 45, sterM: 0 },
+            { line: "Line 2", name: "VAMPA", mixH: 22, mixM: 0, sterH: 29, sterM: 0 },
+            { line: "Line 2", name: "VTTSA", mixH: 23, mixM: 0, sterH: 44, sterM: 0 },
+            { line: "Line 2", name: "VTRME", mixH: 19, mixM: 0, sterH: 28, sterM: 0 },
+            { line: "Line 2", name: "VMNTA", mixH: 17, mixM: 0, sterH: 27, sterM: 0 },
+            { line: "Line 2", name: "VCLNB", mixH: 49, mixM: 0, sterH: 53, sterM: 0 },
+            { line: "Line 2", name: "VCRVF", mixH: 29, mixM: 0, sterH: 35, sterM: 0 },
+            { line: "Line 2", name: "VCRVG", mixH: 27, mixM: 0, sterH: 35, sterM: 0 },
+            { line: "Line 2", name: "VMONA", mixH: 51, mixM: 0, sterH: 54, sterM: 0 },
+            { line: "Line 2", name: "VLONB", mixH: 19, mixM: 0, sterH: 30, sterM: 0 },
+            { line: "Line 2", name: "VLONA", mixH: 19, mixM: 0, sterH: 30, sterM: 0 },
+            { line: "Line 2", name: "VMEZA", mixH: 51, mixM: 0, sterH: 54, sterM: 0 },
+            { line: "Line 2", name: "VPELA", mixH: 40, mixM: 0, sterH: 46, sterM: 0 },
+            { line: "Line 2", name: "VTTCA", mixH: 12, mixM: 0, sterH: 37, sterM: 0 },
+            { line: "Line 2", name: "VKILA", mixH: 11, mixM: 0, sterH: 15, sterM: 0 },
+            // LINE 4
+            { line: "Line 4", name: "VAHEB", mixH: 22, mixM: 0, sterH: 53, sterM: 0 },
+            { line: "Line 4", name: "VTTSA", mixH: 14, mixM: 0, sterH: 31, sterM: 0 },
+            { line: "Line 4", name: "VTRAB", mixH: 25, mixM: 0, sterH: 38, sterM: 0 },
+            { line: "Line 4", name: "VTRME", mixH: 12, mixM: 0, sterH: 49, sterM: 0 },
+            { line: "Line 4", name: "VTRMF", mixH: 24, mixM: 0, sterH: 35, sterM: 0 },
+            { line: "Line 4", name: "VTRMG", mixH: 38, mixM: 0, sterH: 41, sterM: 0 },
+            { line: "Line 4", name: "VMONA", mixH: 20, mixM: 0, sterH: 71, sterM: 0 },
+            { line: "Line 4", name: "VLONA", mixH: 30, mixM: 0, sterH: 56, sterM: 0 },
+            { line: "Line 4", name: "VLONB", mixH: 79, mixM: 0, sterH: 90, sterM: 0 },
+            { line: "Line 4", name: "VMEZA", mixH: 47, mixM: 0, sterH: 72, sterM: 0 },
+            { line: "Line 4", name: "VPELA", mixH: 37, mixM: 0, sterH: 40, sterM: 0 },
+            { line: "Line 4", name: "ITTCB", mixH: 23, mixM: 0, sterH: 39, sterM: 0 },
+            { line: "Line 4", name: "VINIA", mixH: 103, mixM: 0, sterH: 106, sterM: 0 },
+            { line: "Line 4", name: "VINIB", mixH: 67, mixM: 0, sterH: 72, sterM: 0 },
+        ];
+
+        // --- INIT ---
+        window.onload = function() {
+            setNow();
+            loadHistory();
+            renderProductList();
+        };
+
+        function setNow() {
+            const now = new Date();
+            const dateStr = now.toISOString().split('T')[0];
+            const timeStr = now.toTimeString().split(' ')[0].substring(0, 5);
+            
+            document.getElementById('dateStart').value = dateStr;
+            document.getElementById('timeStart').value = timeStr;
+        }
+
+        // --- PRODUCT PICKER ---
+        function renderProductList() {
+            const list = document.getElementById('productList');
+            list.innerHTML = '';
+            
+            products.forEach((p, index) => {
+                const el = document.createElement('div');
+                el.className = 'p-3 hover:bg-blue-600/30 border-b border-gray-700 cursor-pointer flex justify-between items-center transition';
+                el.onclick = () => selectProduct(index);
+                el.innerHTML = `
+                    <div>
+                        <span class="font-bold text-blue-300">${p.name}</span> 
+                        <span class="text-xs bg-gray-700 px-2 py-1 rounded ml-2">${p.line}</span>
+                    </div>
+                    <div class="text-xs text-right opacity-70">
+                        <div>Mix: ${p.mixH}j ${p.mixM}m</div>
+                        <div>Steril: ${p.sterH}j ${p.sterM}m</div>
+                    </div>
+                `;
+                list.appendChild(el);
+            });
+        }
+
+        function filterProducts() {
+            const input = document.getElementById('searchProduct').value.toUpperCase();
+            const list = document.getElementById('productList');
+            const items = list.getElementsByTagName('div');
+
+            for (let i = 0; i < items.length; i++) {
+                const txtValue = items[i].textContent || items[i].innerText;
+                if (txtValue.toUpperCase().indexOf(input) > -1) {
+                    items[i].style.display = "";
+                } else {
+                    items[i].style.display = "none";
+                }
+            }
+        }
+
+        function openProductModal() {
+            document.getElementById('productModal').classList.remove('hidden');
+        }
+
+        function closeProductModal() {
+            document.getElementById('productModal').classList.add('hidden');
+        }
+
+        function selectProduct(index) {
+            const p = products[index];
+            document.getElementById('productName').value = p.name;
+            document.getElementById('mixJam').value = p.mixH;
+            document.getElementById('mixMenit').value = p.mixM;
+            document.getElementById('sterJam').value = p.sterH;
+            document.getElementById('sterMenit').value = p.sterM;
+            closeProductModal();
+        }
+
+        // --- CALCULATION ---
+        function calculate() {
+            const dateVal = document.getElementById('dateStart').value;
+            const timeVal = document.getElementById('timeStart').value;
+            
+            if (!dateVal || !timeVal) {
+                alert("Harap isi Waktu Mulai FV");
+                return;
+            }
+
+            // Create Date Object for Start Time
+            const startDateTime = new Date(`${dateVal}T${timeVal}`);
+
+            // Get Delays
+            const mixH = parseInt(document.getElementById('mixJam').value) || 0;
+            const mixM = parseInt(document.getElementById('mixMenit').value) || 0;
+            const sterH = parseInt(document.getElementById('sterJam').value) || 0;
+            const sterM = parseInt(document.getElementById('sterMenit').value) || 0;
+
+            // Calculate Results
+            const resMixDate = addTime(startDateTime, mixH, mixM);
+            const resSterDate = addTime(startDateTime, sterH, sterM);
+
+            // Format Output (e.g., Kamis, 08 Jan 2026 14:30)
+            const fmt = { weekday: 'long', day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+            const idLocale = 'id-ID';
+
+            const strMix = resMixDate.toLocaleDateString(idLocale, fmt).replace('.', ':');
+            const strSter = resSterDate.toLocaleDateString(idLocale, fmt).replace('.', ':');
+
+            // Display
+            document.getElementById('resMixing').innerText = strMix;
+            document.getElementById('resSteril').innerText = strSter;
+            
+            document.getElementById('resultSection').classList.remove('hidden');
+            
+            // Scroll to result
+            document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function addTime(dateObj, hours, minutes) {
+            return new Date(dateObj.getTime() + (hours * 60 * 60 * 1000) + (minutes * 60 * 1000));
+        }
+
+        function resetForm() {
+            document.getElementById('productName').value = '';
+            document.getElementById('batchNo').value = '';
+            setNow();
+            document.getElementById('mixJam').value = '';
+            document.getElementById('mixMenit').value = '';
+            document.getElementById('sterJam').value = '';
+            document.getElementById('sterMenit').value = '';
+            document.getElementById('resultSection').classList.add('hidden');
+        }
+
+        // --- THEME ---
+        function toggleTheme() {
+            const body = document.body;
+            const btn = document.getElementById('themeBtn');
+            const isFuturistic = body.classList.contains('theme-futuristic');
+
+            if (isFuturistic) {
+                // Switch to Classic
+                body.classList.remove('theme-futuristic');
+                body.classList.add('theme-classic');
+                btn.innerHTML = '<i class="fa-solid fa-rocket"></i> Tema Futuristik';
+                btn.classList.add('bg-gray-800', 'text-white');
+                btn.classList.remove('bg-white', 'text-black');
+            } else {
+                // Switch to Futuristic
+                body.classList.remove('theme-classic');
+                body.classList.add('theme-futuristic');
+                btn.innerHTML = '<i class="fa-solid fa-leaf"></i> Tema Classic';
+                btn.classList.remove('bg-gray-800', 'text-white');
+                btn.classList.add('bg-white', 'text-black');
+            }
+        }
+
+        // --- HISTORY & STORAGE ---
+        function saveToHistory() {
+            const product = document.getElementById('productName').value || "Tanpa Nama";
+            const batch = document.getElementById('batchNo').value || "-";
+            const mixResult = document.getElementById('resMixing').innerText;
+            const sterResult = document.getElementById('resSteril').innerText;
+
+            const entry = {
+                id: Date.now(),
+                product,
+                batch,
+                mixResult,
+                sterResult,
+                timestamp: new Date().toLocaleDateString('id-ID')
+            };
+
+            let history = JSON.parse(localStorage.getItem('calcHistory')) || [];
+            history.unshift(entry); // Add to top
+            if(history.length > 20) history.pop(); // Limit to 20
+
+            localStorage.setItem('calcHistory', JSON.stringify(history));
+            loadHistory();
+            
+            // Visual feedback
+            const saveBtn = document.querySelector('button[onclick="saveToHistory()"]');
+            const oldText = saveBtn.innerHTML;
+            saveBtn.innerHTML = '<i class="fa-solid fa-check"></i> Tersimpan!';
+            setTimeout(() => saveBtn.innerHTML = oldText, 2000);
+        }
+
+        function loadHistory() {
+            const history = JSON.parse(localStorage.getItem('calcHistory')) || [];
+            const container = document.getElementById('historyList');
+            container.innerHTML = '';
+
+            if (history.length === 0) {
+                container.innerHTML = '<div class="text-center opacity-50 text-sm py-4">Belum ada data tersimpan</div>';
+                return;
+            }
+
+            history.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'bg-gray-500/10 p-3 rounded border border-gray-500/20 text-sm';
+                card.innerHTML = `
+                    <div class="flex justify-between font-bold mb-1">
+                        <span>${item.product} <span class="text-xs font-normal opacity-70">(Batch: ${item.batch})</span></span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-xs opacity-80">
+                        <div>
+                            <span class="block opacity-50">Mixing:</span> ${item.mixResult}
+                        </div>
+                        <div>
+                            <span class="block opacity-50">Steril:</span> ${item.sterResult}
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function clearHistory() {
+            if(confirm("Hapus semua riwayat?")) {
+                localStorage.removeItem('calcHistory');
+                loadHistory();
+            }
+        }
+
+        // --- SHARE ---
+        function shareWA() {
+            const product = document.getElementById('productName').value || "-";
+            const batch = document.getElementById('batchNo').value || "-";
+            const startFv = document.getElementById('dateStart').value + ' ' + document.getElementById('timeStart').value;
+            const mixRes = document.getElementById('resMixing').innerText;
+            const sterRes = document.getElementById('resSteril').innerText;
+
+            const text = `*HASIL PERHITUNGAN DELAY TIME*%0A%0A` +
+                         `📦 Produk: ${product}%0A` +
+                         `🔖 Batch: ${batch}%0A` +
+                         `⏰ Mulai FV: ${startFv}%0A%0A` +
+                         `🧪 *Batas Mixing*: ${mixRes}%0A` +
+                         `🌡️ *Batas Steril*: ${sterRes}`;
+
+            window.open(`https://wa.me/?text=${text}`, '_blank');
+        }
+    </script>
+</body>
+</html>
