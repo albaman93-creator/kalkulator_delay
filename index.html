@@ -1,550 +1,1308 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#0f172a">
-    <meta name="description" content="Aplikasi Penghitung Delay Time Produksi">
-    
-    <!-- PWA Settings -->
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="icon-192.png">
-    
-    <title>Alat Hitung Delay Time</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        neon: '#00f3ff',
-                        neonh: '#00c2cc',
-                        classic: '#8d6e63',
-                        classicbg: '#f5f5dc',
-                        paper: '#fff8e1'
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        /* Futuristic Theme Defaults */
-        body {
-            transition: background-color 0.5s, color 0.5s;
-        }
-        
-        .theme-futuristic {
-            background-color: #0f172a;
-            color: #e2e8f0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        .theme-futuristic .card {
-            background-color: #1e293b;
-            border: 1px solid #334155;
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);
-        }
-        
-        .theme-futuristic .input-field {
-            background-color: #0f172a;
-            border-color: #475569;
-            color: white;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Delay Time Calc</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Nunito:wght@300;400;600;700;800&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#060b18; --surface:rgba(16,26,52,0.42); --surface2:rgba(22,36,68,0.38); --border:rgba(0,200,255,0.16);
+  --accent:#00d4ff; --accent2:#ff6b35; --success:#00e5a0;
+  --text:#eef6ff; --text-muted:#7ba8cc; --glow:0 0 20px rgba(0,212,255,0.3);
+  --glass-blur:18px; --glass-border:rgba(0,200,255,0.13);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:'Nunito',sans-serif;font-weight:400;
+  min-height:100vh;overflow-x:hidden;
+  background-image:
+    radial-gradient(ellipse at 15% 15%,rgba(0,180,255,0.18) 0%,transparent 55%),
+    radial-gradient(ellipse at 85% 80%,rgba(255,80,53,0.12) 0%,transparent 50%),
+    radial-gradient(ellipse at 50% 50%,rgba(0,50,100,0.4) 0%,transparent 70%);
+  background-attachment:fixed;
+}
+body::before{content:'';position:fixed;inset:0;
+  background-image:linear-gradient(rgba(0,212,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.04) 1px,transparent 1px);
+  background-size:40px 40px;pointer-events:none;z-index:0;}
+.container{max-width:680px;margin:0 auto;padding:32px 20px 60px;position:relative;z-index:1;}
 
-        .theme-futuristic .btn-primary {
-            background: linear-gradient(90deg, #06b6d4, #3b82f6);
-            color: white;
-        }
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:40px;animation:fadeDown 0.6s ease;}
+.logo{display:flex;align-items:center;gap:12px;}
+.logo-icon{width:44px;height:44px;background:linear-gradient(135deg,var(--accent),#0077ff);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:var(--glow);}
+.logo-text{font-family:'Nunito',sans-serif;font-size:20px;font-weight:800;letter-spacing:-0.5px;}
+.logo-text span{color:var(--accent);}
+.header-btns{display:flex;gap:8px;}
+.hbtn{background:rgba(255,255,255,0.06);border:1px solid var(--glass-border);color:var(--text-muted);padding:8px 14px;border-radius:20px;cursor:pointer;font-size:12px;font-family:'Nunito',sans-serif;font-weight:700;transition:all 0.2s;white-space:nowrap;backdrop-filter:blur(8px);}
+.hbtn:hover{border-color:var(--accent);color:var(--accent);}
 
-        /* Classic Theme Override */
-        .theme-classic {
-            background-color: #f0f4f8; /* Soft blue-grey */
-            color: #374151;
-            font-family: 'Georgia', serif;
-            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-        }
+.card{
+  background:var(--surface);
+  border:1px solid var(--glass-border);
+  border-radius:20px;padding:28px;margin-bottom:16px;
+  animation:fadeUp 0.5s ease both;
+  position:relative;overflow:hidden;
+  backdrop-filter:blur(var(--glass-blur));
+  -webkit-backdrop-filter:blur(var(--glass-blur));
+  box-shadow:0 8px 32px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.06);
+}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:0.4;}
+.card:nth-child(2){animation-delay:0.1s}.card:nth-child(3){animation-delay:0.2s}.card:nth-child(4){animation-delay:0.3s}
+.card-title{font-size:11px;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:2px;color:var(--accent);margin-bottom:20px;display:flex;align-items:center;gap:8px;}
+.card-title::after{content:'';flex:1;height:1px;background:var(--border);}
 
-        .theme-classic .card {
-            background-color: #ffffff;
-            border: 1px solid #d1d5db;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
+.field{margin-bottom:18px;}
+label{display:block;font-size:12px;color:var(--text-muted);margin-bottom:8px;font-family:'Space Mono',monospace;letter-spacing:0.5px;}
+input[type=text],input[type=number],textarea{
+  width:100%;background:rgba(255,255,255,0.05);
+  border:1px solid var(--glass-border);border-radius:12px;
+  padding:13px 16px;color:var(--text);
+  font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;
+  outline:none;transition:all 0.2s;
+  backdrop-filter:blur(8px);
+}
+input:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,212,255,0.12);}
+input::placeholder,textarea::placeholder{color:var(--text-muted);opacity:0.5;}
+textarea{resize:vertical;min-height:80px;}
 
-        .theme-classic .input-field {
-            background-color: #f9fafb;
-            border-color: #d1d5db;
-            color: #1f2937;
-        }
+.btn-pilih-produk{
+  width:100%;background:rgba(255,255,255,0.05);
+  border:1px solid var(--glass-border);border-radius:12px;
+  padding:13px 16px;color:var(--text);
+  font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;
+  cursor:pointer;display:flex;align-items:center;justify-content:space-between;
+  transition:all 0.2s;backdrop-filter:blur(8px);
+}
+.btn-pilih-produk:hover{border-color:var(--accent);}
+.btn-pilih-produk .placeholder{color:var(--text-muted);opacity:0.6;}
 
-        .theme-classic .btn-primary {
-            background: #4b5563;
-            color: white;
-        }
-        
-        .theme-classic .text-accent {
-            color: #1f2937;
-        }
+/* ── Tanda penunjuk pilih produk ── */
+.pilih-pointer{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  margin-bottom:6px;
+}
+.pilih-pointer .ptr-arrow{
+  font-size:20px;
+  color:var(--accent);
+  animation:ptrBounce 0.9s ease-in-out infinite;
+  display:inline-block;
+  line-height:1;
+}
+.pilih-pointer .ptr-text{
+  font-size:10px;
+  font-family:'Space Mono',monospace;
+  color:var(--accent);
+  letter-spacing:1.5px;
+  font-weight:700;
+  opacity:0.85;
+  animation:tapBlink 1.1s ease-in-out infinite;
+}
+@keyframes ptrBounce{
+  0%,100%{ transform:translateY(0);   }
+  50%     { transform:translateY(5px); }
+}
+@keyframes tapBlink{
+  0%,100%{ opacity:0.9; text-shadow:0 0 8px rgba(0,212,255,0.8); }
+  50%     { opacity:0.25; text-shadow:none; }
+}
+.pilih-pointer.hidden{ display:none; }
 
-        /* Utilities */
-        .glass-panel {
-            backdrop-filter: blur(10px);
-        }
-    </style>
+/* arrow inside button — static once selected */
+.arrow-hint{ color:var(--accent); font-size:18px; transition:color 0.2s; }
+.btn-pilih-produk.selected .arrow-hint{ color:var(--success); }
+
+.waktu-display{
+  background:rgba(255,255,255,0.05);border:1px solid var(--glass-border);
+  border-radius:12px;padding:13px 16px;display:flex;align-items:center;gap:12px;
+  cursor:pointer;transition:all 0.2s;backdrop-filter:blur(8px);
+}
+.waktu-display:hover{border-color:var(--accent);}
+.wval{font-family:'Space Mono',monospace;font-size:22px;font-weight:700;color:var(--accent);}
+.wlabel{font-size:12px;color:var(--text-muted);font-family:'Nunito',sans-serif;}
+.edit-hint{margin-left:auto;font-size:11px;color:var(--text-muted);opacity:0.6;}
+
+.delay-display-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.delay-box{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:center;}
+.delay-box-label{font-size:10px;font-family:'Space Mono',monospace;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.delay-box-val{font-family:'Space Mono',monospace;font-size:28px;font-weight:700;color:var(--accent);}
+.delay-box.steril .delay-box-val{color:var(--accent2);}
+.delay-box-unit{font-size:10px;color:var(--text-muted);margin-top:4px;font-family:'Space Mono',monospace;}
+
+.btn-row{display:grid;grid-template-columns:1fr auto;gap:12px;margin-top:20px;}
+.btn{padding:14px 24px;border-radius:12px;border:none;cursor:pointer;font-family:'Space Mono',monospace;font-size:13px;font-weight:700;letter-spacing:0.5px;transition:all 0.2s;position:relative;overflow:hidden;}
+.btn::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.22),transparent);transform:skewX(-20deg);animation:shimmer 2.8s infinite;}
+.btn-primary{background:linear-gradient(135deg,var(--accent),#0077ff);color:#000;box-shadow:0 4px 16px rgba(0,212,255,0.4),0 2px 0 rgba(0,0,0,0.2);transform:translateY(0);}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,212,255,0.55),0 2px 0 rgba(0,0,0,0.2);}
+.btn-primary:active{transform:translateY(1px);box-shadow:0 2px 8px rgba(0,212,255,0.3);}
+.btn-ghost{background:rgba(220,50,50,0.12);border:1px solid rgba(220,50,50,0.35);color:rgba(255,100,100,0.85);box-shadow:0 3px 8px rgba(0,0,0,0.15),0 1px 0 rgba(0,0,0,0.1);transform:translateY(0);}
+.btn-ghost:hover{background:rgba(220,50,50,0.22);border-color:rgba(255,80,80,0.6);color:#ff6464;transform:translateY(-1px);box-shadow:0 5px 14px rgba(200,40,40,0.25);}
+.btn-ghost:active{transform:translateY(1px);}
+
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+.result-item{background:var(--surface2);border-radius:14px;padding:20px;border:1px solid var(--border);}
+.result-item.mixing{border-color:rgba(0,212,255,0.4);box-shadow:inset 0 0 20px rgba(0,212,255,0.04);}
+.result-item.steril{border-color:rgba(255,107,53,0.4);box-shadow:inset 0 0 20px rgba(255,107,53,0.04);}
+.result-item-label{font-size:10px;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;}
+.result-item.mixing .result-item-label{color:var(--accent);}
+.result-item.steril .result-item-label{color:var(--accent2);}
+/* Date/day line */
+.result-day{font-size:15px;font-weight:800;margin-bottom:2px;letter-spacing:0.3px;}
+.result-item.mixing .result-day{color:var(--text);}
+.result-item.steril .result-day{color:var(--text);}
+.result-date{font-size:13px;font-weight:700;color:var(--text-muted);margin-bottom:8px;font-family:'Space Mono',monospace;}
+/* Big time */
+.result-value{font-family:'Space Mono',monospace;font-size:30px;font-weight:700;letter-spacing:-1px;}
+.result-item.mixing .result-value{color:var(--accent);}
+.result-item.steril .result-value{color:var(--accent2);}
+
+/* Action buttons — solid, readable */
+.action-row{display:flex;gap:10px;}
+
+/* Shimmer mixin via pseudo */
+.shimmer-btn{position:relative;overflow:hidden;}
+.shimmer-btn::after{
+  content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent);
+  transform:skewX(-20deg);
+  animation:shimmer 2.8s infinite;
+}
+@keyframes shimmer{0%{left:-100%}60%,100%{left:160%}}
+
+.btn-save{
+  flex:1;
+  background:linear-gradient(135deg,#00b87a,#00e5a0);
+  border:none;
+  color:#003d28;
+  padding:14px;border-radius:12px;cursor:pointer;
+  font-family:'Space Mono',monospace;font-size:12px;font-weight:700;
+  box-shadow:0 4px 14px rgba(0,229,160,0.35),0 2px 0 rgba(0,0,0,0.15);
+  transition:all 0.2s;transform:translateY(0);
+}
+.btn-save:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,229,160,0.5),0 2px 0 rgba(0,0,0,0.15);}
+.btn-save:active{transform:translateY(1px);box-shadow:0 2px 8px rgba(0,229,160,0.3);}
+
+.btn-wa{
+  flex:1;
+  background:linear-gradient(135deg,#1a9e4a,#25d366);
+  border:none;
+  color:#fff;
+  padding:14px;border-radius:12px;cursor:pointer;
+  font-family:'Space Mono',monospace;font-size:12px;font-weight:700;
+  box-shadow:0 4px 14px rgba(37,211,102,0.35),0 2px 0 rgba(0,0,0,0.15);
+  transition:all 0.2s;transform:translateY(0);
+}
+.btn-save:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,229,160,0.5),0 2px 0 rgba(0,0,0,0.15);}
+.btn-save:active{transform:translateY(1px);box-shadow:0 2px 8px rgba(0,229,160,0.3);}
+
+.btn-wa{
+  flex:1;
+  background:linear-gradient(135deg,#1a9e4a,#25d366);
+  border:none;
+  color:#fff;
+  padding:14px;border-radius:12px;cursor:pointer;
+  font-family:'Space Mono',monospace;font-size:12px;font-weight:700;
+  box-shadow:0 4px 14px rgba(37,211,102,0.35),0 2px 0 rgba(0,0,0,0.15);
+  transition:all 0.2s;transform:translateY(0);
+}
+.btn-wa:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(37,211,102,0.5),0 2px 0 rgba(0,0,0,0.15);}
+.btn-wa:active{transform:translateY(1px);box-shadow:0 2px 8px rgba(37,211,102,0.3);}
+
+/* Shimmer for action btns */
+.btn-save,.btn-wa{position:relative;overflow:hidden;}
+.btn-save::after,.btn-wa::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.28),transparent);transform:skewX(-20deg);animation:shimmer 2.8s infinite;}
+.btn-wa::after{animation-delay:0.9s;}
+
+/* Header buttons shimmer */
+.hbtn{position:relative;overflow:hidden;}
+.hbtn::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.12),transparent);transform:skewX(-20deg);animation:shimmer 3.5s infinite;}
+
+@keyframes shimmer{0%{left:-100%}60%,100%{left:160%}}
+
+.history-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.btn-clear{background:none;border:1px solid rgba(255,80,80,0.3);color:rgba(255,80,80,0.7);padding:6px 12px;border-radius:8px;cursor:pointer;font-size:11px;font-family:'Space Mono',monospace;transition:all 0.2s;}
+.btn-clear:hover{background:rgba(255,80,80,0.1);color:#ff5050;}
+.history-empty{text-align:center;padding:32px;color:var(--text-muted);font-size:13px;}
+.history-item{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:10px;display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;}
+.history-name{font-weight:600;font-size:14px;margin-bottom:2px;}
+.history-batch{font-size:11px;color:var(--text-muted);font-family:'Space Mono',monospace;}
+.history-time{font-family:'Space Mono',monospace;font-size:12px;color:var(--accent);}
+.history-time.steril{color:var(--accent2);}
+.history-del{background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:16px;padding:4px;opacity:0.5;}
+.history-del:hover{opacity:1;color:#ff5050;}
+
+/* OVERLAYS */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(10px);z-index:100;align-items:center;justify-content:center;}
+.overlay.open{display:flex;animation:fadeIn 0.2s ease;}
+
+/* Product Modal - glass */
+.modal-panel{
+  background:rgba(10,18,40,0.65);border:1px solid rgba(0,200,255,0.2);
+  border-radius:24px;padding:28px;width:92%;max-width:460px;max-height:82vh;overflow-y:auto;
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  box-shadow:0 16px 48px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.07);
+}
+.modal-title{font-family:'Space Mono',monospace;font-size:13px;color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;}
+.line-group-title{font-size:10px;font-family:'Space Mono',monospace;color:var(--accent2);letter-spacing:2px;text-transform:uppercase;padding:10px 0 6px;border-bottom:1px solid var(--border);margin-bottom:6px;}
+.prod-item{padding:12px 14px;border-radius:10px;cursor:pointer;border:1px solid transparent;transition:all 0.15s;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between;}
+.prod-item:hover{background:var(--surface2);border-color:var(--border);}
+.prod-item-name{font-weight:600;font-size:14px;}
+.prod-item-detail{font-size:11px;color:var(--text-muted);font-family:'Space Mono',monospace;margin-top:2px;}
+.prod-item-actions{display:flex;gap:6px;flex-shrink:0;}
+.prod-edit-btn,.prod-del-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:4px 8px;cursor:pointer;font-size:11px;font-family:'Space Mono',monospace;transition:all 0.15s;}
+.prod-edit-btn{color:var(--accent);}
+.prod-edit-btn:hover{background:rgba(0,212,255,0.1);}
+.prod-del-btn{color:#ff5050;}
+.prod-del-btn:hover{background:rgba(255,80,80,0.1);}
+.modal-close{width:100%;margin-top:16px;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:12px;border-radius:12px;cursor:pointer;font-family:'Space Mono',monospace;font-size:12px;}
+
+/* Product Form Modal */
+.form-panel{background:rgba(10,18,40,0.65);border:1px solid rgba(0,200,255,0.2);border-radius:24px;padding:28px;width:92%;max-width:420px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 16px 48px rgba(0,0,0,0.4);}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.form-btns{display:flex;gap:10px;margin-top:20px;}
+.form-save{flex:1;background:linear-gradient(135deg,var(--accent),#0077ff);color:#000;padding:13px;border-radius:12px;border:none;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;}
+.form-cancel{background:rgba(255,255,255,0.06);border:1px solid var(--glass-border);color:var(--text-muted);padding:13px 20px;border-radius:12px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:12px;}
+
+/* Datepicker */
+.datepicker-panel{background:rgba(10,18,40,0.65);border:1px solid rgba(0,200,255,0.2);border-radius:24px;padding:28px;width:92%;max-width:360px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 16px 48px rgba(0,0,0,0.4);}
+.dp-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.dp-title{font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;}
+.dp-nav{background:rgba(255,255,255,0.06);border:1px solid var(--glass-border);color:var(--text);width:34px;height:34px;border-radius:8px;cursor:pointer;font-size:16px;transition:all 0.2s;}
+.dp-nav:hover{border-color:var(--accent);color:var(--accent);}
+.dp-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
+.dp-day-label{text-align:center;font-size:10px;font-family:'Space Mono',monospace;color:var(--text-muted);padding:4px 0 10px;}
+.dp-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:50%;cursor:pointer;font-size:12px;font-family:'Space Mono',monospace;transition:all 0.15s;border:1px solid transparent;}
+.dp-day:hover:not(.empty):not(.selected){background:rgba(255,255,255,0.08);border-color:var(--glass-border);}
+.dp-day.empty{cursor:default;}
+.dp-day.today{border-color:rgba(0,212,255,0.5);color:var(--accent);}
+.dp-day.selected{background:var(--accent);color:#000;font-weight:700;}
+
+/* Clock */
+.clock-panel{background:rgba(10,18,40,0.65);border:1px solid rgba(0,200,255,0.2);border-radius:24px;padding:24px 28px;width:92%;max-width:340px;text-align:center;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 16px 48px rgba(0,0,0,0.4);}
+.clock-step-indicator{display:flex;gap:8px;justify-content:center;margin-bottom:14px;}
+.step-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.15);transition:all 0.2s;}
+.step-dot.active{background:var(--accent);box-shadow:0 0 8px var(--accent);}
+.clock-subtitle{font-size:11px;color:var(--text-muted);font-family:'Space Mono',monospace;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
+.clock-display{font-family:'Space Mono',monospace;font-size:52px;font-weight:700;color:var(--accent);margin-bottom:16px;text-shadow:0 0 30px rgba(0,212,255,0.4);cursor:default;}
+.clock-display .selected-part{color:var(--accent);text-decoration:underline;text-underline-offset:6px;}
+.clock-display .dim-part{color:var(--text-muted);}
+.clock-face{width:220px;height:220px;border-radius:50%;border:2px solid rgba(0,200,255,0.2);margin:0 auto 16px;position:relative;cursor:pointer;background:radial-gradient(circle at center,rgba(10,30,60,0.9) 0%,rgba(6,11,24,0.95) 100%);box-shadow:0 0 40px rgba(0,212,255,0.1),inset 0 0 30px rgba(0,0,0,0.5);user-select:none;}
+.clock-center{width:10px;height:10px;background:var(--accent);border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 12px var(--accent);z-index:3;}
+.clock-hand{position:absolute;bottom:50%;left:50%;width:2px;transform-origin:bottom center;border-radius:2px 2px 0 0;margin-left:-1px;z-index:2;transition:transform 0.12s ease,height 0.12s ease;}
+.clock-num{position:absolute;width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:50%;font-family:'Space Mono',monospace;font-size:10px;cursor:pointer;transition:all 0.15s;transform:translate(-50%,-50%);color:var(--text-muted);}
+.clock-num:hover,.clock-num.active{background:var(--accent);color:#000;font-weight:700;box-shadow:0 0 12px rgba(0,212,255,0.6);}
+.clock-num.inner{font-size:9px;color:rgba(107,140,173,0.65);}
+.clock-num.inner.active{background:var(--accent2);color:#000;box-shadow:0 0 12px rgba(255,107,53,0.6);}
+.clock-num.min-num{font-size:11px;}
+.clock-num.min-num.active{background:var(--success);color:#000;box-shadow:0 0 12px rgba(0,229,160,0.6);}
+.clock-legend{display:flex;gap:14px;justify-content:center;margin-bottom:14px;font-size:10px;font-family:'Space Mono',monospace;color:var(--text-muted);}
+.clock-legend span{display:flex;align-items:center;gap:4px;}
+.dot{width:7px;height:7px;border-radius:50%;}
+.clock-btn-row{display:flex;gap:10px;}
+.clock-ok{flex:1;background:linear-gradient(135deg,var(--accent),#0077ff);color:#000;padding:13px;border-radius:12px;border:none;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;box-shadow:var(--glow);}
+.clock-cancel{background:rgba(255,255,255,0.06);border:1px solid var(--glass-border);color:var(--text-muted);padding:13px 18px;border-radius:12px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:12px;}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(10,18,40,0.8);border:1px solid var(--success);color:var(--success);padding:12px 24px;border-radius:40px;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;transition:transform 0.3s ease;z-index:200;white-space:nowrap;backdrop-filter:blur(16px);}
+.toast.show{transform:translateX(-50%) translateY(0);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+@media(max-width:480px){.result-grid,.delay-display-grid{grid-template-columns:1fr}.clock-face{width:190px;height:190px}.form-grid{grid-template-columns:1fr}}
+</style>
 </head>
-<body class="theme-futuristic min-h-screen p-4 pb-20">
-
-    <!-- Navbar / Header -->
-    <div class="max-w-2xl mx-auto mb-6 flex justify-between items-center">
-        <h1 class="text-2xl font-bold flex items-center gap-2">
-            <i class="fa-solid fa-clock-rotate-left text-blue-400"></i> Delay Time Calc
-        </h1>
-        <button onclick="toggleTheme()" id="themeBtn" class="px-4 py-2 rounded-full text-sm font-semibold border transition-all duration-300">
-            <i class="fa-solid fa-wand-magic-sparkles"></i> Ganti Tema
-        </button>
+<body>
+<div class="container">
+  <header>
+    <div class="logo">
+      <div class="logo-icon">⏱</div>
+      <div class="logo-text">DELAY<span>CALC</span></div>
     </div>
-
-    <!-- Main Container -->
-    <div class="max-w-2xl mx-auto space-y-4">
-
-        <!-- Product & Batch Info -->
-        <div class="card p-5 rounded-xl">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <div>
-                    <label class="block text-sm font-medium mb-1 opacity-70">Nama Produk</label>
-                    <input type="text" id="productName" placeholder="Pilih dari data base produk" class="input-field w-full p-2 rounded border focus:outline-none focus:ring-2 focus:ring-blue-400">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium mb-1 opacity-70">Nomor Batch</label>
-                    <input type="text" id="batchNo" placeholder="Contoh: A123" class="input-field w-full p-2 rounded border focus:outline-none focus:ring-2 focus:ring-blue-400">
-                </div>
-            </div>
-            
-            <button onclick="openProductModal()" class="w-full py-3 border-2 border-dashed border-gray-500 rounded-lg hover:bg-gray-700/10 transition flex items-center justify-center gap-2 font-medium text-blue-400">
-                <i class="fa-solid fa-list-check"></i> Pilih dari Database Produk
-            </button>
-        </div>
-
-        <!-- Inputs Calculation -->
-        <div class="card p-5 rounded-xl space-y-6">
-            
-            <!-- Waktu Mulai -->
-            <div>
-                <label class="block text-lg font-bold mb-2 text-blue-400">
-                    <i class="fa-regular fa-calendar-check"></i> Waktu Mulai FV
-                </label>
-                <div class="grid grid-cols-2 gap-2">
-                    <input type="date" id="dateStart" class="input-field w-full p-3 rounded border">
-                    <input type="time" id="timeStart" class="input-field w-full p-3 rounded border">
-                </div>
-            </div>
-
-            <hr class="border-gray-600 opacity-30">
-
-            <!-- Delay Inputs -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Mixing -->
-                <div class="bg-blue-500/5 p-4 rounded-lg border border-blue-500/20">
-                    <h3 class="font-bold text-center mb-3">Delay Time Mixing</h3>
-                    <div class="flex gap-2 items-center">
-                        <div class="flex-1">
-                            <input type="number" id="mixJam" min="0" placeholder="0" class="input-field w-full p-2 text-center text-lg font-mono rounded border">
-                            <div class="text-xs text-center mt-1 opacity-60">Jam</div>
-                        </div>
-                        <span class="font-bold">:</span>
-                        <div class="flex-1">
-                            <input type="number" id="mixMenit" min="0" max="59" placeholder="0" class="input-field w-full p-2 text-center text-lg font-mono rounded border">
-                            <div class="text-xs text-center mt-1 opacity-60">Menit</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Steril -->
-                <div class="bg-green-500/5 p-4 rounded-lg border border-green-500/20">
-                    <h3 class="font-bold text-center mb-3">Delay Time Steril</h3>
-                    <div class="flex gap-2 items-center">
-                        <div class="flex-1">
-                            <input type="number" id="sterJam" min="0" placeholder="0" class="input-field w-full p-2 text-center text-lg font-mono rounded border">
-                            <div class="text-xs text-center mt-1 opacity-60">Jam</div>
-                        </div>
-                        <span class="font-bold">:</span>
-                        <div class="flex-1">
-                            <input type="number" id="sterMenit" min="0" max="59" placeholder="0" class="input-field w-full p-2 text-center text-lg font-mono rounded border">
-                            <div class="text-xs text-center mt-1 opacity-60">Menit</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="flex flex-col gap-3">
-                <button onclick="calculate()" class="btn-primary w-full py-4 rounded-lg font-bold text-lg shadow-lg transform active:scale-95 transition">
-                    HITUNG HASIL
-                </button>
-                <button onclick="resetForm()" class="w-full py-2 text-sm opacity-70 hover:opacity-100 underline">
-                    Reset Form
-                </button>
-            </div>
-        </div>
-
-        <!-- Results Section (Hidden by default) -->
-        <div id="resultSection" class="hidden card p-0 rounded-xl overflow-hidden shadow-2xl animate-fade-in-up">
-            <div class="bg-gradient-to-r from-blue-600 to-indigo-600 p-4 text-white text-center">
-                <h2 class="text-xl font-bold">HASIL PERHITUNGAN</h2>
-            </div>
-            
-            <div class="p-6 space-y-6">
-                <!-- Result Mixing -->
-                <div class="flex items-start gap-4">
-                    <div class="bg-blue-100 text-blue-800 p-3 rounded-full">
-                        <i class="fa-solid fa-vial"></i>
-                    </div>
-                    <div>
-                        <div class="text-sm opacity-60 font-semibold uppercase tracking-wide">Batas Waktu Mixing</div>
-                        <div id="resMixing" class="text-xl md:text-2xl font-bold mt-1">--</div>
-                    </div>
-                </div>
-
-                <div class="border-t border-gray-200/20"></div>
-
-                <!-- Result Steril -->
-                <div class="flex items-start gap-4">
-                    <div class="bg-green-100 text-green-800 p-3 rounded-full">
-                        <i class="fa-solid fa-temperature-arrow-up"></i>
-                    </div>
-                    <div>
-                        <div class="text-sm opacity-60 font-semibold uppercase tracking-wide">Batas Waktu Steril</div>
-                        <div id="resSteril" class="text-xl md:text-2xl font-bold mt-1">--</div>
-                    </div>
-                </div>
-
-                <!-- Save & Share -->
-                <div class="grid grid-cols-2 gap-3 mt-4 pt-4 border-t border-gray-200/20">
-                    <button onclick="saveToHistory()" class="bg-gray-600 hover:bg-gray-700 text-white py-2 rounded-lg flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-floppy-disk"></i> Simpan
-                    </button>
-                    <button onclick="shareWA()" class="bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg flex items-center justify-center gap-2">
-                        <i class="fa-brands fa-whatsapp"></i> Share WA
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- History Section -->
-        <div class="card p-5 rounded-xl">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="font-bold text-lg">Riwayat Penyimpanan</h3>
-                <button onclick="clearHistory()" class="text-xs text-red-400 hover:text-red-500">Hapus Semua</button>
-            </div>
-            <div id="historyList" class="space-y-3 max-h-64 overflow-y-auto">
-                <div class="text-center opacity-50 text-sm py-4">Belum ada data tersimpan</div>
-            </div>
-        </div>
-
+    <div class="header-btns">
+      <button class="hbtn" onclick="bukaDataProduk()">🗃 Data Produk</button>
+      <button class="hbtn" onclick="bukaTemaPicker()">🎨 Tema</button>
     </div>
+  </header>
 
-    <!-- Product Modal -->
-    <div id="productModal" class="fixed inset-0 bg-black/80 hidden z-50 flex items-center justify-center p-4 backdrop-blur-sm">
-        <div class="card w-full max-w-lg max-h-[80vh] rounded-xl flex flex-col shadow-2xl">
-            <div class="p-4 border-b border-gray-700 flex justify-between items-center bg-gray-800/50 rounded-t-xl">
-                <h3 class="font-bold text-lg text-white">Pilih Produk</h3>
-                <button onclick="closeProductModal()" class="text-gray-400 hover:text-white">
-                    <i class="fa-solid fa-xmark text-xl"></i>
-                </button>
-            </div>
-            <div class="p-2 overflow-y-auto flex-1 bg-gray-900 text-gray-200">
-                <input type="text" id="searchProduct" placeholder="Cari nama produk..." onkeyup="filterProducts()" class="w-full p-3 mb-2 rounded bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-1 focus:ring-blue-500">
-                <div id="productList" class="space-y-1">
-                    <!-- Javascript will populate this -->
-                </div>
-            </div>
-        </div>
+  <!-- 01 -->
+  <div class="card">
+    <div class="card-title">01 — Info Produk</div>
+    <div class="field">
+      <label>NAMA PRODUK</label>
+      <input type="text" id="namaProduk" placeholder="Akan terisi otomatis...">
     </div>
+    <div class="field">
+      <label>NOMOR BATCH</label>
+      <input type="text" id="nomorBatch" placeholder="Isi manual nomor batch...">
+    </div>
+    <div class="field">
+      <label>PILIH PRODUK</label>
+      <div class="pilih-pointer" id="pilihPointer">
+        <span class="ptr-arrow">👇</span>
+        <span class="ptr-text">Ketuk di sini</span>
+      </div>
+      <button class="btn-pilih-produk" id="btnPilihProduk" onclick="bukaModalProduk()">
+        <span id="produkLabel" class="placeholder">— Ketuk untuk memilih produk —</span>
+        <span class="arrow-hint" style="color:var(--accent);font-size:18px;transition:color 0.2s;">▾</span>
+      </button>
+    </div>
+  </div>
 
-    <script>
-        // --- PWA Service Worker Registration ---
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('./service-worker.js')
-                    .then(reg => console.log('SW terdaftar!', reg.scope))
-                    .catch(err => console.log('SW gagal:', err));
-            });
-        }
+  <!-- 02 -->
+  <div class="card">
+    <div class="card-title">02 — Tanggal & Jam Mulai</div>
+    <div class="field">
+      <label>TANGGAL PRODUKSI</label>
+      <div class="waktu-display" onclick="bukaDatepicker()">
+        <span style="font-size:20px">📅</span>
+        <div>
+          <div class="wval" id="tanggalDisplay" style="font-size:15px;color:var(--text-muted)">Pilih tanggal</div>
+          <div class="wlabel">Tanggal mulai produksi</div>
+        </div>
+        <span class="edit-hint">ketuk →</span>
+      </div>
+    </div>
+    <div class="field">
+      <label>JAM & MENIT MULAI</label>
+      <div class="waktu-display" onclick="bukaClock()">
+        <span style="font-size:20px">🕐</span>
+        <div>
+          <div class="wval" id="jamMulaiDisplay" style="color:var(--text-muted)">--:--</div>
+          <div class="wlabel">Jam mulai (format 24 jam)</div>
+        </div>
+        <span class="edit-hint">ketuk →</span>
+      </div>
+    </div>
+  </div>
 
-        // --- DATA ---
-        const products = [
-            // LINE 1
-            { line: "Line 1", name: "VTTSA", mixH: 22, mixM: 40, sterH: 39, sterM: 14 },
-            // LINE 2
-            { line: "Line 2", name: "VRAMA", mixH: 68, mixM: 0, sterH: 81, sterM: 0 },
-            { line: "Line 2", name: "VKAMA", mixH: 22, mixM: 0, sterH: 45, sterM: 0 },
-            { line: "Line 2", name: "VAMPA", mixH: 22, mixM: 0, sterH: 29, sterM: 0 },
-            { line: "Line 2", name: "VTTSA", mixH: 23, mixM: 0, sterH: 44, sterM: 0 },
-            { line: "Line 2", name: "VTRME", mixH: 19, mixM: 0, sterH: 28, sterM: 0 },
-            { line: "Line 2", name: "VMNTA", mixH: 17, mixM: 0, sterH: 27, sterM: 0 },
-            { line: "Line 2", name: "VCLNB", mixH: 49, mixM: 0, sterH: 53, sterM: 0 },
-            { line: "Line 2", name: "VCRVF", mixH: 29, mixM: 0, sterH: 35, sterM: 0 },
-            { line: "Line 2", name: "VCRVG", mixH: 27, mixM: 0, sterH: 35, sterM: 0 },
-            { line: "Line 2", name: "VMONA", mixH: 51, mixM: 0, sterH: 54, sterM: 0 },
-            { line: "Line 2", name: "VLONB", mixH: 19, mixM: 0, sterH: 30, sterM: 0 },
-            { line: "Line 2", name: "VLONA", mixH: 19, mixM: 0, sterH: 30, sterM: 0 },
-            { line: "Line 2", name: "VMEZA", mixH: 51, mixM: 0, sterH: 54, sterM: 0 },
-            { line: "Line 2", name: "VPELA", mixH: 40, mixM: 0, sterH: 46, sterM: 0 },
-            { line: "Line 2", name: "VTTCA", mixH: 12, mixM: 0, sterH: 37, sterM: 0 },
-            { line: "Line 2", name: "VKILA", mixH: 11, mixM: 0, sterH: 15, sterM: 0 },
-            // LINE 4
-            { line: "Line 4", name: "VAHEB", mixH: 22, mixM: 0, sterH: 53, sterM: 0 },
-            { line: "Line 4", name: "VTTSA", mixH: 14, mixM: 0, sterH: 31, sterM: 0 },
-            { line: "Line 4", name: "VTRAB", mixH: 25, mixM: 0, sterH: 38, sterM: 0 },
-            { line: "Line 4", name: "VTRME", mixH: 12, mixM: 0, sterH: 49, sterM: 0 },
-            { line: "Line 4", name: "VTRMF", mixH: 24, mixM: 0, sterH: 35, sterM: 0 },
-            { line: "Line 4", name: "VTRMG", mixH: 38, mixM: 0, sterH: 41, sterM: 0 },
-            { line: "Line 4", name: "VMONA", mixH: 20, mixM: 0, sterH: 71, sterM: 0 },
-            { line: "Line 4", name: "VLONA", mixH: 30, mixM: 0, sterH: 56, sterM: 0 },
-            { line: "Line 4", name: "VLONB", mixH: 79, mixM: 0, sterH: 90, sterM: 0 },
-            { line: "Line 4", name: "VMEZA", mixH: 47, mixM: 0, sterH: 72, sterM: 0 },
-            { line: "Line 4", name: "VPELA", mixH: 37, mixM: 0, sterH: 40, sterM: 0 },
-            { line: "Line 4", name: "ITTCB", mixH: 23, mixM: 0, sterH: 39, sterM: 0 },
-            { line: "Line 4", name: "VINIA", mixH: 103, mixM: 0, sterH: 106, sterM: 0 },
-            { line: "Line 4", name: "VINIB", mixH: 67, mixM: 0, sterH: 72, sterM: 0 },
-        ];
+  <!-- 03 -->
+  <div class="card" id="card-delay">
+    <div class="card-title">03 — Delay Time</div>
+    <div class="delay-display-grid">
+      <div class="delay-box">
+        <div class="delay-box-label">🔵 Mix-Fill</div>
+        <div class="delay-box-val" id="mixingDisplay">--</div>
+        <div class="delay-box-unit">JAM</div>
+      </div>
+      <div class="delay-box steril">
+        <div class="delay-box-label">🟠 Steril</div>
+        <div class="delay-box-val" id="sterilDisplay">--</div>
+        <div class="delay-box-unit">JAM</div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="hitung()">▶ HITUNG HASIL</button>
+      <button class="btn btn-ghost" onclick="resetAll()">↺</button>
+    </div>
+  </div>
 
-        // --- INIT ---
-        window.onload = function() {
-            setNow();
-            loadHistory();
-            renderProductList();
-        };
+  <!-- 04 -->
+  <div class="card" id="hasilCard">
+    <div class="card-title">04 — Hasil Perhitungan</div>
+    <div class="result-grid">
+      <div class="result-item mixing">
+        <div class="result-item-label">Batas Mix-Fill</div>
+        <div class="result-day" id="hasilMixingHari">—</div>
+        <div class="result-date" id="hasilMixingTgl">—</div>
+        <div class="result-value" id="hasilMixing">--:--</div>
+      </div>
+      <div class="result-item steril">
+        <div class="result-item-label">Batas Steril</div>
+        <div class="result-day" id="hasilSterilHari">—</div>
+        <div class="result-date" id="hasilSterilTgl">—</div>
+        <div class="result-value" id="hasilSteril">--:--</div>
+      </div>
+    </div>
+    <div class="action-row">
+      <button class="btn-save shimmer-btn" onclick="simpan()">💾 SIMPAN</button>
+      <button class="btn-wa shimmer-btn" onclick="shareWA()">📲 SHARE WA</button>
+    </div>
+  </div>
 
-        function setNow() {
-            const now = new Date();
-            const dateStr = now.toISOString().split('T')[0];
-            const timeStr = now.toTimeString().split(' ')[0].substring(0, 5);
-            
-            document.getElementById('dateStart').value = dateStr;
-            document.getElementById('timeStart').value = timeStr;
-        }
+  <!-- 05 -->
+  <div class="card">
+    <div class="history-header">
+      <div class="card-title" style="margin:0;flex:1;">05 — Riwayat</div>
+      <button class="btn-clear" onclick="hapusSemua()">🗑 HAPUS SEMUA</button>
+    </div>
+    <div id="historyList"><div class="history-empty">📋 Belum ada data tersimpan</div></div>
+  </div>
+</div>
 
-        // --- PRODUCT PICKER ---
-        function renderProductList() {
-            const list = document.getElementById('productList');
-            list.innerHTML = '';
-            
-            products.forEach((p, index) => {
-                const el = document.createElement('div');
-                el.className = 'p-3 hover:bg-blue-600/30 border-b border-gray-700 cursor-pointer flex justify-between items-center transition';
-                el.onclick = () => selectProduct(index);
-                el.innerHTML = `
-                    <div>
-                        <span class="font-bold text-blue-300">${p.name}</span> 
-                        <span class="text-xs bg-gray-700 px-2 py-1 rounded ml-2">${p.line}</span>
-                    </div>
-                    <div class="text-xs text-right opacity-70">
-                        <div>Mix: ${p.mixH}j ${p.mixM}m</div>
-                        <div>Steril: ${p.sterH}j ${p.sterM}m</div>
-                    </div>
-                `;
-                list.appendChild(el);
-            });
-        }
+<!-- PRODUCT LIST OVERLAY -->
+<div class="overlay" id="overlayProduk">
+  <div class="modal-panel">
+    <div class="modal-title">📦 Pilih Produk</div>
+    <div id="produkList"></div>
+    <button class="modal-close" onclick="tutupOverlay('overlayProduk')">✕ Tutup</button>
+  </div>
+</div>
 
-        function filterProducts() {
-            const input = document.getElementById('searchProduct').value.toUpperCase();
-            const list = document.getElementById('productList');
-            const items = list.getElementsByTagName('div');
+<!-- DATA PRODUK MANAGER OVERLAY -->
+<div class="overlay" id="overlayDataProduk">
+  <div class="modal-panel">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <div class="modal-title" style="margin:0">🗃 Kelola Data Produk</div>
+      <button onclick="bukaFormProduk(null)" style="background:linear-gradient(135deg,var(--accent),#0077ff);border:none;color:#000;padding:8px 14px;border-radius:10px;cursor:pointer;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;">+ TAMBAH</button>
+    </div>
+    <div id="dataProdukList"></div>
+    <button class="modal-close" onclick="tutupOverlay('overlayDataProduk')">✕ Tutup</button>
+  </div>
+</div>
 
-            for (let i = 0; i < items.length; i++) {
-                const txtValue = items[i].textContent || items[i].innerText;
-                if (txtValue.toUpperCase().indexOf(input) > -1) {
-                    items[i].style.display = "";
-                } else {
-                    items[i].style.display = "none";
-                }
-            }
-        }
+<!-- FORM PRODUK OVERLAY -->
+<div class="overlay" id="overlayFormProduk">
+  <div class="form-panel">
+    <div class="modal-title" id="formProdukTitle">➕ Tambah Produk</div>
+    <div class="field">
+      <label>LINE</label>
+      <input type="text" id="fpLine" placeholder="Contoh: Line_2">
+    </div>
+    <div class="field">
+      <label>KODE PRODUK</label>
+      <input type="text" id="fpKode" placeholder="Contoh: VTTSA">
+    </div>
+    <div class="form-grid">
+      <div class="field" style="margin-bottom:0">
+        <label>MIX-FILL (JAM)</label>
+        <input type="number" id="fpMixing" placeholder="0" min="0">
+      </div>
+      <div class="field" style="margin-bottom:0">
+        <label>STERIL (JAM)</label>
+        <input type="number" id="fpSteril" placeholder="0" min="0">
+      </div>
+    </div>
+    <div class="form-btns">
+      <button class="form-cancel" onclick="tutupOverlay('overlayFormProduk')">Batal</button>
+      <button class="form-save" onclick="simpanProduk()">💾 Simpan</button>
+    </div>
+  </div>
+</div>
 
-        function openProductModal() {
-            document.getElementById('productModal').classList.remove('hidden');
-        }
+<!-- DATE PICKER OVERLAY -->
+<div class="overlay" id="overlayDate">
+  <div class="datepicker-panel">
+    <div class="dp-header">
+      <button class="dp-nav" onclick="dpNav(-1)">‹</button>
+      <div class="dp-title" id="dpTitle"></div>
+      <button class="dp-nav" onclick="dpNav(1)">›</button>
+    </div>
+    <div class="dp-grid" id="dpGrid"></div>
+    <button class="modal-close" style="margin-top:16px" onclick="tutupOverlay('overlayDate')">✕ Batal</button>
+  </div>
+</div>
 
-        function closeProductModal() {
-            document.getElementById('productModal').classList.add('hidden');
-        }
+<!-- CLOCK OVERLAY -->
+<div class="overlay" id="overlayClock">
+  <div class="clock-panel">
+    <div class="clock-step-indicator">
+      <div class="step-dot active" id="stepDot1"></div>
+      <div class="step-dot" id="stepDot2"></div>
+    </div>
+    <div class="clock-subtitle" id="clockSubtitle">Pilih Jam</div>
+    <div class="clock-display" id="clockDisplay">
+      <span id="displayJam">00</span><span style="color:var(--text-muted)">:</span><span id="displayMenit" style="color:var(--text-muted)">00</span>
+    </div>
+    <div class="clock-face" id="clockFace">
+      <div class="clock-hand" id="clockHand"></div>
+      <div class="clock-center"></div>
+    </div>
+    <div class="clock-legend" id="clockLegend">
+      <span><span class="dot" style="background:var(--accent)"></span> 0–11 luar</span>
+      <span><span class="dot" style="background:var(--accent2)"></span> 12–23 dalam</span>
+    </div>
+    <div class="clock-btn-row">
+      <button class="clock-cancel" onclick="tutupOverlay('overlayClock')">Batal</button>
+      <button class="clock-ok" id="clockOkBtn" onclick="clockNextStep()">Pilih Jam →</button>
+    </div>
+  </div>
+</div>
 
-        function selectProduct(index) {
-            const p = products[index];
-            document.getElementById('productName').value = p.name;
-            document.getElementById('mixJam').value = p.mixH;
-            document.getElementById('mixMenit').value = p.mixM;
-            document.getElementById('sterJam').value = p.sterH;
-            document.getElementById('sterMenit').value = p.sterM;
-            closeProductModal();
-        }
+<!-- BATCH DIALOG (Simpan) -->
+<div class="overlay" id="overlayBatchDialog">
+  <div class="dialog-panel">
+    <div class="dialog-icon">🏷</div>
+    <div class="dialog-title">Nomor Batch Kosong</div>
+    <div class="dialog-msg">Nomor batch belum diisi. Sebaiknya isi nomor batch sebelum menyimpan untuk memudahkan pencarian data.</div>
+    <div class="dialog-btns">
+      <button class="dialog-btn-ok" onclick="dialogBatchOk()">✏ Isi Batch Dulu</button>
+      <button class="dialog-btn-skip" onclick="dialogBatchLewati()">Simpan Tanpa Batch</button>
+    </div>
+  </div>
+</div>
 
-        // --- CALCULATION ---
-        function calculate() {
-            const dateVal = document.getElementById('dateStart').value;
-            const timeVal = document.getElementById('timeStart').value;
-            
-            if (!dateVal || !timeVal) {
-                alert("Harap isi Waktu Mulai FV");
-                return;
-            }
+<!-- BATCH DIALOG (Share WA) -->
+<div class="overlay" id="overlayBatchDialogWA">
+  <div class="dialog-panel">
+    <div class="dialog-icon">📲</div>
+    <div class="dialog-title">Nomor Batch Kosong</div>
+    <div class="dialog-msg">Nomor batch belum diisi. Pesan WhatsApp akan dikirim tanpa nomor batch.</div>
+    <div class="dialog-btns">
+      <button class="dialog-btn-ok" onclick="dialogBatchWAOk()">✏ Isi Batch Dulu</button>
+      <button class="dialog-btn-skip" onclick="dialogBatchWALewati()">Kirim Tanpa Batch</button>
+    </div>
+  </div>
+</div>
 
-            // Create Date Object for Start Time
-            const startDateTime = new Date(`${dateVal}T${timeVal}`);
+<!-- TEMA PICKER -->
+<div class="overlay" id="overlayTema">
+  <div class="tema-panel">
+    <div class="modal-title">🎨 Pilih Tema</div>
+    <div class="tema-grid">
+      <div class="tema-card" onclick="setTema('dark')" id="tema-dark">
+        <div class="tema-preview dark-prev"></div>
+        <div class="tema-name">Dark Glass</div>
+        <div class="tema-desc">Default · Kaca gelap</div>
+      </div>
+      <div class="tema-card" onclick="setTema('apple')" id="tema-apple">
+        <div class="tema-preview apple-prev"></div>
+        <div class="tema-name">Apple Style</div>
+        <div class="tema-desc">Minimal · Elegan</div>
+      </div>
+      <div class="tema-card" onclick="setTema('purple')" id="tema-purple">
+        <div class="tema-preview purple-prev"></div>
+        <div class="tema-name">Purple Night</div>
+        <div class="tema-desc">Vivid · Galaxy vibe</div>
+      </div>
+    </div>
+    <button class="modal-close" onclick="tutupOverlay('overlayTema')">✕ Tutup</button>
+  </div>
+</div>
 
-            // Get Delays
-            const mixH = parseInt(document.getElementById('mixJam').value) || 0;
-            const mixM = parseInt(document.getElementById('mixMenit').value) || 0;
-            const sterH = parseInt(document.getElementById('sterJam').value) || 0;
-            const sterM = parseInt(document.getElementById('sterMenit').value) || 0;
+<div class="toast" id="toast"></div>
 
-            // Calculate Results
-            const resMixDate = addTime(startDateTime, mixH, mixM);
-            const resSterDate = addTime(startDateTime, sterH, sterM);
+<style>
+/* ===== BATCH DIALOG ===== */
+.dialog-panel{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:32px 28px;width:90%;max-width:360px;text-align:center;}
+.dialog-icon{font-size:36px;margin-bottom:12px;}
+.dialog-title{font-family:'Space Mono',monospace;font-size:15px;font-weight:700;margin-bottom:10px;color:var(--text);}
+.dialog-msg{font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:24px;}
+.dialog-btns{display:flex;flex-direction:column;gap:10px;}
+.dialog-btn-ok{background:linear-gradient(135deg,var(--accent),#0077ff);color:#000;padding:14px;border-radius:12px;border:none;cursor:pointer;font-family:'Space Mono',monospace;font-weight:700;font-size:13px;box-shadow:0 4px 14px rgba(0,212,255,0.35),0 2px 0 rgba(0,0,0,0.1);transition:all 0.2s;position:relative;overflow:hidden;}
+.dialog-btn-ok::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent);transform:skewX(-20deg);animation:shimmer 2.5s infinite;}
+.dialog-btn-ok:hover{transform:translateY(-1px);}
+.dialog-btn-skip{background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:12px;border-radius:12px;cursor:pointer;font-family:'Space Mono',monospace;font-size:12px;transition:all 0.2s;}
+.dialog-btn-skip:hover{border-color:var(--accent2);color:var(--accent2);}
 
-            // Format Output (e.g., Kamis, 08 Jan 2026 14:30)
-            const fmt = { weekday: 'long', day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' };
-            const idLocale = 'id-ID';
+/* ===== TEMA PICKER ===== */
+.tema-panel{background:rgba(8,15,35,0.75);border:1px solid rgba(0,200,255,0.2);border-radius:24px;padding:28px;width:92%;max-width:380px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);}
+.tema-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
+.tema-card{border:2px solid rgba(0,200,255,0.15);border-radius:16px;padding:10px 8px;cursor:pointer;transition:all 0.2s;text-align:center;}
+.tema-card:hover{border-color:var(--accent);transform:translateY(-2px);}
+.tema-card.active{border-color:var(--accent);box-shadow:0 0 16px rgba(0,212,255,0.25);}
+.tema-preview{height:52px;border-radius:10px;margin-bottom:8px;}
+.dark-prev{background:linear-gradient(135deg,#060b18 0%,rgba(16,26,52,0.9) 50%,rgba(0,212,255,0.15) 100%);border:1px solid rgba(0,200,255,0.2);}
+.apple-prev{background:linear-gradient(135deg,#f5f5f7 0%,#ffffff 60%,#e8e8ed 100%);border:1px solid #d1d1d6;}
+.purple-prev{background:linear-gradient(135deg,#0d0d1a 0%,#16213e 50%,rgba(108,99,255,0.3) 100%);border:1px solid #3a3a6e;}
+.tema-name{font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;margin-bottom:2px;}
+.tema-desc{font-size:9px;color:var(--text-muted);}
 
-            const strMix = resMixDate.toLocaleDateString(idLocale, fmt).replace('.', ':');
-            const strSter = resSterDate.toLocaleDateString(idLocale, fmt).replace('.', ':');
+/* ===== DIALOG & MODAL GLASS ===== */
+.dialog-panel{
+  background:rgba(8,15,35,0.75);border:1px solid rgba(0,200,255,0.2);
+  border-radius:24px;padding:32px 28px;width:90%;max-width:360px;text-align:center;
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  box-shadow:0 16px 48px rgba(0,0,0,0.5);
+}
+.dialog-icon{font-size:36px;margin-bottom:12px;}
+.dialog-title{font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;margin-bottom:10px;color:var(--text);}
+.dialog-msg{font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:24px;font-family:'Nunito',sans-serif;}
+.dialog-btns{display:flex;flex-direction:column;gap:10px;}
+.dialog-btn-ok{background:linear-gradient(135deg,var(--accent),#0077ff);color:#000;padding:14px;border-radius:12px;border:none;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;box-shadow:0 4px 14px rgba(0,212,255,0.35);transition:all 0.2s;position:relative;overflow:hidden;}
+.dialog-btn-ok::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent);transform:skewX(-20deg);animation:shimmer 2.5s infinite;}
+.dialog-btn-ok:hover{transform:translateY(-1px);}
+.dialog-btn-skip{background:rgba(255,255,255,0.06);border:1px solid rgba(0,200,255,0.15);color:var(--text-muted);padding:12px;border-radius:12px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:12px;transition:all 0.2s;}
+.dialog-btn-skip:hover{border-color:var(--accent2);color:var(--accent2);}
 
-            // Display
-            document.getElementById('resMixing').innerText = strMix;
-            document.getElementById('resSteril').innerText = strSter;
-            
-            document.getElementById('resultSection').classList.remove('hidden');
-            
-            // Scroll to result
-            document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
-        }
+/* ===== APPLE THEME ===== */
+body.apple{
+  --bg:#f0f0f5;--surface:rgba(255,255,255,0.72);--surface2:rgba(242,242,247,0.75);--border:#d1d1d6;
+  --accent:#007aff;--accent2:#ff6b00;--success:#34c759;
+  --text:#000000;--text-muted:#3c3c43;--glow:0 0 20px rgba(0,122,255,0.2);
+  --glass-blur:12px;--glass-border:#d8d8dd;
+  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Nunito',sans-serif;
+  background-image:radial-gradient(ellipse at 30% 20%,rgba(0,122,255,0.06) 0%,transparent 60%),
+    radial-gradient(ellipse at 80% 80%,rgba(255,107,0,0.04) 0%,transparent 50%);
+}
+body.apple .card{border-radius:22px;border-color:#d8d8dd;box-shadow:0 4px 20px rgba(0,0,0,0.09);background:rgba(255,255,255,0.72);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
+body.apple .card::before{display:none;}
+body.apple .card-title{color:#007aff;letter-spacing:0.5px;font-weight:800;}
+body.apple label{color:#3c3c43;font-weight:700;}
+body.apple .logo-text{color:#000;font-weight:900;}
+body.apple .logo-text span{color:#007aff;}
+body.apple input,body.apple .btn-pilih-produk,body.apple .waktu-display{border-radius:14px;border-color:#d8d8dd;background:rgba(255,255,255,0.8);color:#000;}
+body.apple input::placeholder{color:#8e8e93;}
+body.apple .btn-pilih-produk .placeholder{color:#8e8e93;}
+body.apple .btn-primary{background:linear-gradient(180deg,#3d9fff,#007aff);border-radius:14px;color:#fff;}
+body.apple .delay-box-val{color:#007aff;font-weight:800;}
+body.apple .delay-box.steril .delay-box-val{color:#ff6b00;}
+body.apple .delay-box-label{color:#3c3c43;font-weight:700;}
+body.apple .delay-box-unit{color:#3c3c43;}
+body.apple .result-item{background:rgba(255,255,255,0.8);}
+body.apple .result-item.mixing{border-color:rgba(0,122,255,0.3);}
+body.apple .result-item.steril{border-color:rgba(255,107,0,0.3);}
+body.apple .result-item-label{font-weight:700;}
+body.apple .result-item.mixing .result-value{color:#007aff;}
+body.apple .result-item.steril .result-value{color:#ff6b00;}
+body.apple .result-item.mixing .result-item-label{color:#007aff;}
+body.apple .result-item.steril .result-item-label{color:#ff6b00;}
+body.apple .result-day{color:#000!important;font-weight:800;}
+body.apple .result-date{color:#3c3c43;font-weight:700;}
+body.apple .wval{color:#007aff;font-weight:800;}
+body.apple .wlabel{color:#3c3c43;}
+body.apple .history-time{color:#007aff;font-weight:700;}
+body.apple .history-name{color:#000;font-weight:700;}
+body.apple .history-batch{color:#3c3c43;}
+body.apple .hbtn{color:#3c3c43;font-weight:700;}
+body.apple .btn-save{background:linear-gradient(180deg,#4cd964,#34c759);box-shadow:0 4px 14px rgba(52,199,89,0.35);color:#003d1a;font-weight:800;}
+body.apple .btn-wa{color:#fff;font-weight:800;}
+body.apple .btn-ghost{color:#3c3c43;}
+body.apple .card-title::after{background:#d1d1d6;}
+body.apple .modal-panel,body.apple .form-panel,body.apple .datepicker-panel,body.apple .clock-panel,body.apple .dialog-panel,body.apple .tema-panel{
+  background:rgba(255,255,255,0.85);border-color:#d8d8dd;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+}
+body.apple .modal-title{color:#007aff;}
+body.apple .dp-title{color:#000;font-weight:800;}
+body.apple .dp-day{color:#000;}
+body.apple .dp-day.today{border-color:rgba(0,122,255,0.5);color:#007aff;}
+body.apple .dp-day.selected{background:#007aff;color:#fff;}
+body.apple .prod-item-name{color:#000;font-weight:700;}
+body.apple .prod-item-detail{color:#3c3c43;}
+body.apple .line-group-title{color:#ff6b00;}
+body.apple .btn-pilih-produk.hint-pulse{animation:hintPulseApple 1.8s ease-in-out 3;border-color:#007aff;}
+@keyframes hintPulseApple{0%,100%{box-shadow:0 0 0 0 rgba(0,122,255,0)}40%{box-shadow:0 0 0 6px rgba(0,122,255,0.22)}60%{box-shadow:0 0 0 10px rgba(0,122,255,0.08)}}
 
-        function addTime(dateObj, hours, minutes) {
-            return new Date(dateObj.getTime() + (hours * 60 * 60 * 1000) + (minutes * 60 * 1000));
-        }
+/* ===== PURPLE NIGHT THEME ===== */
+body.purple{
+  --bg:#0d0d1a;--surface:rgba(20,18,48,0.42);--surface2:rgba(28,24,62,0.38);--border:rgba(108,99,255,0.18);
+  --accent:#6c63ff;--accent2:#ff4da6;--success:#00d9a3;
+  --text:#e8e8ff;--text-muted:#8888bb;--glow:0 0 24px rgba(108,99,255,0.4);
+  --glass-blur:18px;--glass-border:rgba(108,99,255,0.18);
+  background-image:
+    radial-gradient(ellipse at 15% 15%,rgba(108,99,255,0.2) 0%,transparent 55%),
+    radial-gradient(ellipse at 85% 80%,rgba(255,77,166,0.12) 0%,transparent 50%),
+    radial-gradient(ellipse at 50% 50%,rgba(20,10,50,0.5) 0%,transparent 70%);
+}
+body.purple::before{background-image:linear-gradient(rgba(108,99,255,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(108,99,255,0.05) 1px,transparent 1px);}
+body.purple .card{border-radius:28px;border-color:rgba(108,99,255,0.25);background:rgba(20,18,48,0.6);}
+body.purple .card::before{background:linear-gradient(90deg,transparent,#6c63ff,transparent);}
+body.purple .logo-icon{background:linear-gradient(135deg,#6c63ff,#ff4da6);}
+body.purple .logo-text span{color:#6c63ff;}
+body.purple .card-title{color:#6c63ff;}
+body.purple .wval{color:#6c63ff;}
+body.purple .delay-box-val{color:#6c63ff;}
+body.purple .delay-box.steril .delay-box-val{color:#ff4da6;}
+body.purple .result-item.mixing .result-value{color:#6c63ff;}
+body.purple .result-item.steril .result-value{color:#ff4da6;}
+body.purple .result-item.mixing .result-item-label{color:#6c63ff;}
+body.purple .result-item.steril .result-item-label{color:#ff4da6;}
+body.purple .result-item.mixing{border-color:rgba(108,99,255,0.4);}
+body.purple .result-item.steril{border-color:rgba(255,77,166,0.4);}
+body.purple .btn-primary{background:linear-gradient(135deg,#6c63ff,#9d5cff);box-shadow:0 4px 16px rgba(108,99,255,0.45);}
+body.purple .btn-save{background:linear-gradient(135deg,#00a87f,#00d9a3);color:#003d2e;}
+body.purple .history-time{color:#6c63ff;}
+body.purple .history-time.steril{color:#ff4da6;}
+body.purple .step-dot.active{background:#6c63ff;box-shadow:0 0 8px #6c63ff;}
+body.purple .clock-num.active{background:#6c63ff;box-shadow:0 0 12px rgba(108,99,255,0.6);}
+body.purple .clock-num.inner.active{background:#ff4da6;box-shadow:0 0 12px rgba(255,77,166,0.6);}
+body.purple .clock-center{background:#6c63ff;box-shadow:0 0 12px #6c63ff;}
+body.purple .dp-day.selected{background:#6c63ff;}
+body.purple .dp-day.today{border-color:rgba(108,99,255,0.5);color:#6c63ff;}
+body.purple .btn-wa{background:linear-gradient(135deg,#1a9e4a,#25d366);}
+body.purple .tema-card.active{border-color:#6c63ff;box-shadow:0 0 16px rgba(108,99,255,0.3);}
+body.purple .modal-panel,body.purple .form-panel,body.purple .datepicker-panel,body.purple .clock-panel,body.purple .dialog-panel,body.purple .tema-panel{border-color:rgba(108,99,255,0.25);background:rgba(16,14,40,0.7);}
+body.purple input:focus,body.purple textarea:focus{border-color:#6c63ff;box-shadow:0 0 0 3px rgba(108,99,255,0.15);}
+</style>
 
-        function resetForm() {
-            document.getElementById('productName').value = '';
-            document.getElementById('batchNo').value = '';
-            setNow();
-            document.getElementById('mixJam').value = '';
-            document.getElementById('mixMenit').value = '';
-            document.getElementById('sterJam').value = '';
-            document.getElementById('sterMenit').value = '';
-            document.getElementById('resultSection').classList.add('hidden');
-        }
+<script>
+// ============ DEFAULT PRODUCTS ============
+const defaultProduk = [
+  {line:"Line_1",kode:"VTTSA",mixing:22,steril:39},
+  {line:"Line_2",kode:"VRAMA",mixing:68,steril:81},
+  {line:"Line_2",kode:"VKAMA",mixing:22,steril:45},
+  {line:"Line_2",kode:"VAMPA",mixing:22,steril:29},
+  {line:"Line_2",kode:"VTTSA",mixing:23,steril:44},
+  {line:"Line_2",kode:"VTRME",mixing:19,steril:28},
+  {line:"Line_2",kode:"VMNTA",mixing:17,steril:27},
+  {line:"Line_2",kode:"VCLNB",mixing:49,steril:53},
+  {line:"Line_2",kode:"VCRVF",mixing:29,steril:35},
+  {line:"Line_2",kode:"VCRVG",mixing:27,steril:35},
+  {line:"Line_2",kode:"VMONA",mixing:51,steril:54},
+  {line:"Line_2",kode:"VLONB",mixing:19,steril:30},
+  {line:"Line_2",kode:"VLONA",mixing:19,steril:30},
+  {line:"Line_2",kode:"VMEZA",mixing:51,steril:54},
+  {line:"Line_2",kode:"VPELA",mixing:40,steril:46},
+  {line:"Line_2",kode:"VTTCA",mixing:13,steril:37},
+  {line:"Line_2",kode:"VKILA",mixing:11,steril:15},
+  {line:"Line_4",kode:"VAHEB",mixing:22,steril:53},
+  {line:"Line_4",kode:"VTTSA",mixing:14,steril:31},
+  {line:"Line_4",kode:"VTRAB",mixing:25,steril:38},
+  {line:"Line_4",kode:"VTRME",mixing:12,steril:49},
+  {line:"Line_4",kode:"VTRMF",mixing:24,steril:35},
+  {line:"Line_4",kode:"VTRMG",mixing:38,steril:41},
+  {line:"Line_4",kode:"VMONA",mixing:20,steril:71},
+  {line:"Line_4",kode:"VLONA",mixing:30,steril:56},
+  {line:"Line_4",kode:"VLONB",mixing:79,steril:90},
+  {line:"Line_4",kode:"VMEZA",mixing:47,steril:71},
+  {line:"Line_4",kode:"VPELA",mixing:37,steril:96},
+  {line:"Line_4",kode:"ITTCB",mixing:23,steril:39},
+  {line:"Line_4",kode:"VINIA",mixing:103,steril:106},
+  {line:"Line_4",kode:"VINIB",mixing:67,steril:72},
+];
 
-        // --- THEME ---
-        function toggleTheme() {
-            const body = document.body;
-            const btn = document.getElementById('themeBtn');
-            const isFuturistic = body.classList.contains('theme-futuristic');
+// Load from localStorage or use defaults
+function loadProduk(){
+  const saved = localStorage.getItem('dbProduk');
+  return saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(defaultProduk));
+}
+function saveProduk(arr){ localStorage.setItem('dbProduk',JSON.stringify(arr)); }
 
-            if (isFuturistic) {
-                // Switch to Classic
-                body.classList.remove('theme-futuristic');
-                body.classList.add('theme-classic');
-                btn.innerHTML = '<i class="fa-solid fa-rocket"></i> Tema Futuristik';
-                btn.classList.add('bg-gray-800', 'text-white');
-                btn.classList.remove('bg-white', 'text-black');
-            } else {
-                // Switch to Futuristic
-                body.classList.remove('theme-classic');
-                body.classList.add('theme-futuristic');
-                btn.innerHTML = '<i class="fa-solid fa-leaf"></i> Tema Classic';
-                btn.classList.remove('bg-gray-800', 'text-white');
-                btn.classList.add('bg-white', 'text-black');
-            }
-        }
+let dbProduk = loadProduk();
+let state = {produk:null, tanggal:null, jamMulai:null, menitMulai:null, clockStep:'hour', clockJam:0, clockMenit:0};
+let editingIdx = null;
 
-        // --- HISTORY & STORAGE ---
-        function saveToHistory() {
-            const product = document.getElementById('productName').value || "Tanpa Nama";
-            const batch = document.getElementById('batchNo').value || "-";
-            const mixResult = document.getElementById('resMixing').innerText;
-            const sterResult = document.getElementById('resSteril').innerText;
+// ============ OVERLAY ============
+function bukaOverlay(id){ document.getElementById(id).classList.add('open'); }
+function tutupOverlay(id){ document.getElementById(id).classList.remove('open'); }
 
-            const entry = {
-                id: Date.now(),
-                product,
-                batch,
-                mixResult,
-                sterResult,
-                timestamp: new Date().toLocaleDateString('id-ID')
-            };
+// ============ PRODUCT PICKER ============
+function bukaModalProduk(){
+  renderProdukList('produkList', true);
+  bukaOverlay('overlayProduk');
+}
 
-            let history = JSON.parse(localStorage.getItem('calcHistory')) || [];
-            history.unshift(entry); // Add to top
-            if(history.length > 20) history.pop(); // Limit to 20
+function renderProdukList(containerId, selectable){
+  const lines = [...new Set(dbProduk.map(p=>p.line))];
+  let html = '';
+  lines.forEach(line => {
+    html += `<div class="line-group-title">📍 ${line}</div>`;
+    dbProduk.forEach((p,i) => {
+      if(p.line !== line) return;
+      const name = `${p.line} – ${p.kode}`;
+      if(selectable){
+        html += `<div class="prod-item" onclick="pilihProduk(${i})">
+          <div>
+            <div class="prod-item-name">${name}</div>
+            <div class="prod-item-detail">Mix-Fill: ${p.mixing}j &nbsp;|&nbsp; Steril: ${p.steril}j</div>
+          </div>
+        </div>`;
+      } else {
+        html += `<div class="prod-item">
+          <div>
+            <div class="prod-item-name">${name}</div>
+            <div class="prod-item-detail">Mix-Fill: ${p.mixing}j &nbsp;|&nbsp; Steril: ${p.steril}j</div>
+          </div>
+          <div class="prod-item-actions">
+            <button class="prod-edit-btn" onclick="bukaFormProduk(${i})">✏ Edit</button>
+            <button class="prod-del-btn" onclick="hapusProduk(${i})">✕</button>
+          </div>
+        </div>`;
+      }
+    });
+  });
+  document.getElementById(containerId).innerHTML = html || '<div class="history-empty">Belum ada produk</div>';
+}
 
-            localStorage.setItem('calcHistory', JSON.stringify(history));
-            loadHistory();
-            
-            // Visual feedback
-            const saveBtn = document.querySelector('button[onclick="saveToHistory()"]');
-            const oldText = saveBtn.innerHTML;
-            saveBtn.innerHTML = '<i class="fa-solid fa-check"></i> Tersimpan!';
-            setTimeout(() => saveBtn.innerHTML = oldText, 2000);
-        }
+function pilihProduk(idx){
+  state.produk = dbProduk[idx];
+  const p = state.produk;
+  const name = `${p.line} – ${p.kode}`;
+  document.getElementById('namaProduk').value = name;
+  const lbl = document.getElementById('produkLabel');
+  lbl.textContent = name; lbl.classList.remove('placeholder');
+  document.getElementById('mixingDisplay').textContent = p.mixing;
+  document.getElementById('sterilDisplay').textContent = p.steril;
+  // sembunyikan tanda penunjuk setelah dipilih
+  const ptr = document.getElementById('pilihPointer');
+  if(ptr) ptr.classList.add('hidden');
+  document.getElementById('btnPilihProduk').classList.add('selected');
+  tutupOverlay('overlayProduk');
+  showToast('✓ Produk dipilih');
+  setTimeout(()=>bukaDatepicker(), 350);
+}
 
-        function loadHistory() {
-            const history = JSON.parse(localStorage.getItem('calcHistory')) || [];
-            const container = document.getElementById('historyList');
-            container.innerHTML = '';
+// ============ DATA PRODUK MANAGER ============
+function bukaDataProduk(){
+  renderProdukList('dataProdukList', false);
+  bukaOverlay('overlayDataProduk');
+}
 
-            if (history.length === 0) {
-                container.innerHTML = '<div class="text-center opacity-50 text-sm py-4">Belum ada data tersimpan</div>';
-                return;
-            }
+function bukaFormProduk(idx){
+  editingIdx = idx;
+  if(idx !== null){
+    const p = dbProduk[idx];
+    document.getElementById('formProdukTitle').textContent = '✏ Edit Produk';
+    document.getElementById('fpLine').value = p.line;
+    document.getElementById('fpKode').value = p.kode;
+    document.getElementById('fpMixing').value = p.mixing;
+    document.getElementById('fpSteril').value = p.steril;
+  } else {
+    document.getElementById('formProdukTitle').textContent = '➕ Tambah Produk';
+    document.getElementById('fpLine').value = '';
+    document.getElementById('fpKode').value = '';
+    document.getElementById('fpMixing').value = '';
+    document.getElementById('fpSteril').value = '';
+  }
+  bukaOverlay('overlayFormProduk');
+}
 
-            history.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'bg-gray-500/10 p-3 rounded border border-gray-500/20 text-sm';
-                card.innerHTML = `
-                    <div class="flex justify-between font-bold mb-1">
-                        <span>${item.product} <span class="text-xs font-normal opacity-70">(Batch: ${item.batch})</span></span>
-                    </div>
-                    <div class="grid grid-cols-2 gap-2 text-xs opacity-80">
-                        <div>
-                            <span class="block opacity-50">Mixing:</span> ${item.mixResult}
-                        </div>
-                        <div>
-                            <span class="block opacity-50">Steril:</span> ${item.sterResult}
-                        </div>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
+function simpanProduk(){
+  const line = document.getElementById('fpLine').value.trim();
+  const kode = document.getElementById('fpKode').value.trim();
+  const mixing = parseInt(document.getElementById('fpMixing').value)||0;
+  const steril = parseInt(document.getElementById('fpSteril').value)||0;
+  if(!line||!kode){ showToast('⚠ Line dan kode wajib diisi',true); return; }
+  const obj = {line,kode,mixing,steril};
+  if(editingIdx !== null){
+    dbProduk[editingIdx] = obj;
+    showToast('✓ Produk diperbarui');
+  } else {
+    dbProduk.push(obj);
+    showToast('✓ Produk ditambahkan');
+  }
+  saveProduk(dbProduk);
+  tutupOverlay('overlayFormProduk');
+  renderProdukList('dataProdukList', false);
+}
 
-        function clearHistory() {
-            if(confirm("Hapus semua riwayat?")) {
-                localStorage.removeItem('calcHistory');
-                loadHistory();
-            }
-        }
+function hapusProduk(idx){
+  dbProduk.splice(idx,1);
+  saveProduk(dbProduk);
+  renderProdukList('dataProdukList', false);
+  showToast('🗑 Produk dihapus');
+}
 
-        // --- SHARE ---
-        function shareWA() {
-            const product = document.getElementById('productName').value || "-";
-            const batch = document.getElementById('batchNo').value || "-";
-            const startFv = document.getElementById('dateStart').value + ' ' + document.getElementById('timeStart').value;
-            const mixRes = document.getElementById('resMixing').innerText;
-            const sterRes = document.getElementById('resSteril').innerText;
+// ============ DATEPICKER ============
+let dpCursor = new Date();
+function bukaDatepicker(){
+  dpCursor = state.tanggal ? new Date(state.tanggal) : new Date();
+  renderDp(); bukaOverlay('overlayDate');
+}
+function dpNav(d){ dpCursor = new Date(dpCursor.getFullYear(), dpCursor.getMonth()+d, 1); renderDp(); }
+function renderDp(){
+  const BULAN=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  document.getElementById('dpTitle').textContent=`${BULAN[dpCursor.getMonth()]} ${dpCursor.getFullYear()}`;
+  const total=new Date(dpCursor.getFullYear(),dpCursor.getMonth()+1,0).getDate();
+  const firstDay=new Date(dpCursor.getFullYear(),dpCursor.getMonth(),1).getDay();
+  const today=new Date();
+  let html=['Min','Sen','Sel','Rab','Kam','Jum','Sab'].map(h=>`<div class="dp-day-label">${h}</div>`).join('');
+  for(let i=0;i<firstDay;i++) html+=`<div class="dp-day empty"></div>`;
+  for(let d=1;d<=total;d++){
+    const isT=d===today.getDate()&&dpCursor.getMonth()===today.getMonth()&&dpCursor.getFullYear()===today.getFullYear();
+    const isS=state.tanggal&&d===state.tanggal.getDate()&&dpCursor.getMonth()===state.tanggal.getMonth()&&dpCursor.getFullYear()===state.tanggal.getFullYear();
+    html+=`<div class="dp-day ${isT?'today':''} ${isS?'selected':''}" onclick="pilihTanggal(${d})">${d}</div>`;
+  }
+  document.getElementById('dpGrid').innerHTML=html;
+}
+function pilihTanggal(d){
+  state.tanggal=new Date(dpCursor.getFullYear(),dpCursor.getMonth(),d);
+  document.getElementById('tanggalDisplay').textContent=state.tanggal.toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('tanggalDisplay').style.color='var(--text)';
+  tutupOverlay('overlayDate');
+  setTimeout(()=>bukaClock(), 350);
+}
 
-            const text = `*HASIL PERHITUNGAN DELAY TIME*%0A%0A` +
-                         `📦 Produk: ${product}%0A` +
-                         `🔖 Batch: ${batch}%0A` +
-                         `⏰ Mulai FV: ${startFv}%0A%0A` +
-                         `🧪 *Batas Mixing*: ${mixRes}%0A` +
-                         `🌡️ *Batas Steril*: ${sterRes}`;
+// ============ CLOCK PICKER (2 step: JAM → MENIT) ============
+function bukaClock(){
+  state.clockStep = 'hour';
+  state.clockJam = state.jamMulai||0;
+  state.clockMenit = state.menitMulai||0;
+  showClockStep('hour');
+  bukaOverlay('overlayClock');
+}
 
-            window.open(`https://wa.me/?text=${text}`, '_blank');
-        }
-    </script>
+function showClockStep(step){
+  state.clockStep = step;
+  const isHour = step==='hour';
+  document.getElementById('stepDot1').classList.toggle('active', isHour);
+  document.getElementById('stepDot2').classList.toggle('active', !isHour);
+  document.getElementById('clockSubtitle').textContent = isHour ? 'PILIH JAM' : 'PILIH MENIT';
+  document.getElementById('clockOkBtn').textContent = isHour ? 'Pilih Jam →' : '✓ Selesai';
+  document.getElementById('clockLegend').style.display = isHour ? 'flex' : 'none';
+
+  if(isHour){
+    document.getElementById('displayJam').style.color='var(--accent)';
+    document.getElementById('displayMenit').style.color='var(--text-muted)';
+    renderHourNums();
+  } else {
+    document.getElementById('displayJam').style.color='var(--text-muted)';
+    document.getElementById('displayMenit').style.color='var(--success)';
+    renderMinuteNums();
+  }
+  updateDisplayClock();
+}
+
+function updateDisplayClock(){
+  document.getElementById('displayJam').textContent = String(state.clockJam).padStart(2,'0');
+  document.getElementById('displayMenit').textContent = String(state.clockMenit).padStart(2,'0');
+}
+
+function renderHourNums(){
+  const face = document.getElementById('clockFace');
+  face.querySelectorAll('.clock-num').forEach(n=>n.remove());
+  const CX=110, CY=110;
+  for(let h=0;h<24;h++){
+    const isInner = h>=12;
+    const R = isInner ? 55 : 82;
+    const angle = ((h%12)*30-90)*Math.PI/180;
+    const x = CX+R*Math.cos(angle), y = CY+R*Math.sin(angle);
+    const el = document.createElement('div');
+    el.className='clock-num'+(isInner?' inner':'')+(h===state.clockJam?' active':'');
+    el.style.left=x+'px'; el.style.top=y+'px';
+    el.textContent=String(h).padStart(2,'0');
+    el.onclick=()=>selectHour(h);
+    face.appendChild(el);
+  }
+  updateHandHour(state.clockJam);
+}
+
+function renderMinuteNums(){
+  const face = document.getElementById('clockFace');
+  face.querySelectorAll('.clock-num').forEach(n=>n.remove());
+  const CX=110, CY=110;
+  const minutes = [0,5,10,15,20,25,30,35,40,45,50,55];
+  minutes.forEach(m => {
+    const R = 82;
+    const angle = (m*6-90)*Math.PI/180;
+    const x = CX+R*Math.cos(angle), y = CY+R*Math.sin(angle);
+    const el = document.createElement('div');
+    el.className='clock-num min-num'+(m===state.clockMenit?' active':'');
+    el.style.left=x+'px'; el.style.top=y+'px';
+    el.textContent=String(m).padStart(2,'0');
+    el.onclick=()=>selectMinute(m);
+    face.appendChild(el);
+  });
+  updateHandMinute(state.clockMenit);
+}
+
+function selectHour(h){
+  state.clockJam=h;
+  document.querySelectorAll('.clock-num').forEach(n=>{
+    n.classList.remove('active');
+    if(!n.classList.contains('min-num') && parseInt(n.textContent)===h) n.classList.add('active');
+  });
+  updateHandHour(h);
+  updateDisplayClock();
+}
+
+function selectMinute(m){
+  state.clockMenit=m;
+  document.querySelectorAll('.clock-num.min-num').forEach(n=>{
+    n.classList.remove('active');
+    if(parseInt(n.textContent)===m) n.classList.add('active');
+  });
+  updateHandMinute(m);
+  updateDisplayClock();
+}
+
+function updateHandHour(h){
+  const hand = document.getElementById('clockHand');
+  const isInner = h>=12;
+  hand.style.height = (isInner?50:70)+'px';
+  hand.style.background = isInner
+    ? 'linear-gradient(to top,var(--accent2),rgba(255,107,53,0.1))'
+    : 'linear-gradient(to top,var(--accent),rgba(0,212,255,0.1))';
+  hand.style.transform = `rotate(${(h%12)*30}deg)`;
+}
+
+function updateHandMinute(m){
+  const hand = document.getElementById('clockHand');
+  hand.style.height = '72px';
+  hand.style.background = 'linear-gradient(to top,var(--success),rgba(0,229,160,0.1))';
+  hand.style.transform = `rotate(${m*6}deg)`;
+}
+
+function clockNextStep(){
+  if(state.clockStep==='hour'){
+    showClockStep('minute');
+  } else {
+    // Confirm time
+    state.jamMulai = state.clockJam;
+    state.menitMulai = state.clockMenit;
+    const el = document.getElementById('jamMulaiDisplay');
+    el.textContent = String(state.clockJam).padStart(2,'0')+':'+String(state.clockMenit).padStart(2,'0');
+    el.style.color='var(--accent)';
+    tutupOverlay('overlayClock');
+    showToast(`✓ Waktu dipilih: ${String(state.clockJam).padStart(2,'0')}:${String(state.clockMenit).padStart(2,'0')}`);
+    // Auto-scroll to card 3 (delay time)
+    setTimeout(()=>{
+      document.getElementById('card-delay').scrollIntoView({behavior:'smooth',block:'center'});
+    }, 400);
+  }
+}
+
+// Clock drag
+let dragging=false;
+const clockFace = document.getElementById('clockFace');
+clockFace.addEventListener('mousedown',e=>{dragging=true;handleDrag(e);});
+clockFace.addEventListener('touchstart',e=>{dragging=true;handleDrag(e);},{passive:true});
+document.addEventListener('mousemove',e=>{if(dragging)handleDrag(e);});
+document.addEventListener('touchmove',e=>{if(dragging)handleDrag(e);},{passive:true});
+document.addEventListener('mouseup',()=>dragging=false);
+document.addEventListener('touchend',()=>dragging=false);
+function handleDrag(e){
+  const rect=clockFace.getBoundingClientRect();
+  const cx=rect.left+rect.width/2, cy=rect.top+rect.height/2;
+  const px=e.touches?e.touches[0].clientX:e.clientX;
+  const py=e.touches?e.touches[0].clientY:e.clientY;
+  const dist=Math.sqrt((px-cx)**2+(py-cy)**2);
+  let ang=Math.atan2(py-cy,px-cx)*180/Math.PI+90;
+  if(ang<0)ang+=360;
+  if(state.clockStep==='hour'){
+    let h=Math.round(ang/30)%12;
+    if(dist<rect.width*0.28)h+=12;
+    if(h!==state.clockJam)selectHour(h);
+  } else {
+    const mins=[0,5,10,15,20,25,30,35,40,45,50,55];
+    let m=Math.round(ang/6)%60;
+    const nearest=mins.reduce((a,b)=>Math.abs(b-m)<Math.abs(a-m)?b:a);
+    if(nearest!==state.clockMenit)selectMinute(nearest);
+  }
+}
+
+// ============ HITUNG ============
+function hitung(){
+  if(!state.produk){showToast('⚠ Pilih produk dulu',true);return;}
+  if(state.jamMulai===null){showToast('⚠ Pilih jam mulai dulu',true);return;}
+  const base = state.tanggal ? new Date(state.tanggal) : new Date();
+  const totalMenitMulai = state.jamMulai*60 + (state.menitMulai||0);
+  const totalMenitMix = totalMenitMulai + state.produk.mixing*60;
+  const totalMenitSteril = totalMenitMulai + state.produk.steril*60;
+  const dtM = new Date(base); dtM.setHours(0,totalMenitMix,0,0);
+  const dtS = new Date(base); dtS.setHours(0,totalMenitSteril,0,0);
+
+  const HARI=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+  const fJam = dt=>`${String(dt.getHours()).padStart(2,'0')}:${String(dt.getMinutes()).padStart(2,'0')}`;
+  const fTgl = dt=>dt.toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'});
+  const fHari = dt=>HARI[dt.getDay()];
+
+  document.getElementById('hasilMixing').textContent = fJam(dtM);
+  document.getElementById('hasilSteril').textContent = fJam(dtS);
+  document.getElementById('hasilMixingHari').textContent = fHari(dtM);
+  document.getElementById('hasilSterilHari').textContent = fHari(dtS);
+  document.getElementById('hasilMixingTgl').textContent = fTgl(dtM);
+  document.getElementById('hasilSterilTgl').textContent = fTgl(dtS);
+
+  document.getElementById('hasilCard').scrollIntoView({behavior:'smooth',block:'center'});
+  showToast('✓ Hasil berhasil dihitung');
+}
+
+// ============ HISTORY ============
+let histori=JSON.parse(localStorage.getItem('dtHistory')||'[]');
+function renderHistory(){
+  const el=document.getElementById('historyList');
+  if(!histori.length){el.innerHTML='<div class="history-empty">📋 Belum ada data tersimpan</div>';return;}
+  el.innerHTML=histori.map((h,i)=>`
+    <div class="history-item">
+      <div>
+        <div class="history-name">${h.nama}</div>
+        <div class="history-batch">${h.batch?h.batch+' · ':''}${h.tgl} ${h.waktuMulai}</div>
+      </div>
+      <div>
+        <div class="history-time">MX ${h.mixing}</div>
+        <div class="history-time steril">ST ${h.steril}</div>
+      </div>
+      <button class="history-del" onclick="hapusItem(${i})">✕</button>
+    </div>`).join('');
+}
+function simpan(){
+  const mx=document.getElementById('hasilMixing').textContent;
+  if(mx==='--:--'){showToast('⚠ Hitung dulu sebelum simpan',true);return;}
+  const batch=document.getElementById('nomorBatch').value.trim();
+  if(!batch){
+    bukaDialogBatch();
+    return;
+  }
+  doSimpan();
+}
+
+function bukaDialogBatch(){
+  document.getElementById('overlayBatchDialog').classList.add('open');
+}
+
+function dialogBatchOk(){
+  tutupOverlay('overlayBatchDialog');
+  setTimeout(()=>{
+    document.getElementById('nomorBatch').focus();
+    document.getElementById('nomorBatch').scrollIntoView({behavior:'smooth',block:'center'});
+  },200);
+}
+
+function dialogBatchLewati(){
+  tutupOverlay('overlayBatchDialog');
+  doSimpan();
+}
+
+function doSimpan(){
+  histori.unshift({
+    nama:document.getElementById('namaProduk').value||'-',
+    batch:document.getElementById('nomorBatch').value.trim()||'',
+    tgl:state.tanggal?state.tanggal.toLocaleDateString('id-ID'):'-',
+    waktuMulai:state.jamMulai!==null?`${String(state.jamMulai).padStart(2,'0')}:${String(state.menitMulai||0).padStart(2,'0')}`:'-',
+    mixing:document.getElementById('hasilMixing').textContent,
+    steril:document.getElementById('hasilSteril').textContent,
+    mixingHari:document.getElementById('hasilMixingHari').textContent,
+    sterilHari:document.getElementById('hasilSterilHari').textContent,
+  });
+  localStorage.setItem('dtHistory',JSON.stringify(histori));
+  renderHistory();
+  showToast('✓ Data tersimpan');
+}
+function hapusItem(i){histori.splice(i,1);localStorage.setItem('dtHistory',JSON.stringify(histori));renderHistory();}
+function hapusSemua(){histori=[];localStorage.setItem('dtHistory',JSON.stringify(histori));renderHistory();showToast('🗑 Riwayat dihapus');}
+
+function shareWA(){
+  const mx=document.getElementById('hasilMixing').textContent;
+  if(mx==='--:--'){showToast('⚠ Hitung dulu sebelum share',true);return;}
+  const batch=document.getElementById('nomorBatch').value.trim();
+  if(!batch){
+    bukaDialogBatchWA();
+    return;
+  }
+  doShareWA();
+}
+
+function bukaDialogBatchWA(){
+  document.getElementById('overlayBatchDialogWA').classList.add('open');
+}
+function dialogBatchWAOk(){
+  tutupOverlay('overlayBatchDialogWA');
+  setTimeout(()=>{
+    document.getElementById('nomorBatch').focus();
+    document.getElementById('nomorBatch').scrollIntoView({behavior:'smooth',block:'center'});
+  },200);
+}
+function dialogBatchWALewati(){
+  tutupOverlay('overlayBatchDialogWA');
+  doShareWA();
+}
+
+function doShareWA(){
+  // Ambil nama produk (kode saja, tanpa prefix LINE)
+  const namaRaw = state.produk ? state.produk.kode : (document.getElementById('namaProduk').value||'-');
+  const batch   = document.getElementById('nomorBatch').value.trim() || '-';
+
+  // Tanggal & jam mulai produksi
+  const tgl   = state.tanggal
+    ? state.tanggal.toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'})
+    : '-';
+  const waktu = state.jamMulai !== null
+    ? `${String(state.jamMulai).padStart(2,'0')}:${String(state.menitMulai||0).padStart(2,'0')}`
+    : '-';
+
+  // Batas mix-fill
+  const mxJam  = document.getElementById('hasilMixing').textContent;
+  const mxHari = document.getElementById('hasilMixingHari').textContent;
+  const mxTgl  = document.getElementById('hasilMixingTgl').textContent;
+
+  // Batas steril
+  const stJam  = document.getElementById('hasilSteril').textContent;
+  const stHari = document.getElementById('hasilSterilHari').textContent;
+  const stTgl  = document.getElementById('hasilSterilTgl').textContent;
+
+  const teks =
+`*Nama produk* : ${namaRaw}
+*Batch Number* : ${batch}
+*FV mulai* : ${tgl}, ${waktu}
+
+*Batas delay time Mix-Fill* : ${mxHari}, ${mxTgl} jam ${mxJam}
+*Batas delay time Steril* : ${stHari}, ${stTgl} jam ${stJam}`;
+
+  window.open(`https://wa.me/?text=${encodeURIComponent(teks)}`, '_blank');
+}
+
+function resetAll(){
+  state={produk:null,tanggal:null,jamMulai:null,menitMulai:null,clockStep:'hour',clockJam:0,clockMenit:0};
+  document.getElementById('namaProduk').value='';
+  document.getElementById('nomorBatch').value='';
+  const lbl=document.getElementById('produkLabel');
+  lbl.textContent='— Ketuk untuk memilih produk —'; lbl.classList.add('placeholder');
+  document.getElementById('tanggalDisplay').textContent='Pilih tanggal';
+  document.getElementById('tanggalDisplay').style.color='var(--text-muted)';
+  document.getElementById('jamMulaiDisplay').textContent='--:--';
+  document.getElementById('jamMulaiDisplay').style.color='var(--text-muted)';
+  document.getElementById('mixingDisplay').textContent='--';
+  document.getElementById('sterilDisplay').textContent='--';
+  document.getElementById('hasilMixing').textContent='--:--';
+  document.getElementById('hasilSteril').textContent='--:--';
+  document.getElementById('hasilMixingHari').textContent='—';
+  document.getElementById('hasilSterilHari').textContent='—';
+  document.getElementById('hasilMixingTgl').textContent='—';
+  document.getElementById('hasilSterilTgl').textContent='—';
+  // Scroll & tampilkan kembali tanda penunjuk
+  const btn = document.getElementById('btnPilihProduk');
+  const ptr = document.getElementById('pilihPointer');
+  if(ptr) ptr.classList.remove('hidden');
+  btn.classList.remove('selected');
+  setTimeout(()=>{ btn.scrollIntoView({behavior:'smooth',block:'center'}); }, 300);
+}
+
+let toastT;
+function showToast(msg,warn=false){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.style.borderColor=warn?'#ff9900':'var(--success)';
+  t.style.color=warn?'#ff9900':'var(--success)';
+  t.classList.add('show');
+  clearTimeout(toastT);
+  toastT=setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+['overlayProduk','overlayDate','overlayClock','overlayDataProduk','overlayFormProduk'].forEach(id=>{
+  document.getElementById(id).addEventListener('click',function(e){if(e.target===this)tutupOverlay(id);});
+});
+
+// Batch input: Enter → fokus tombol Simpan
+document.getElementById('nomorBatch').addEventListener('keydown', function(e){
+  if(e.key==='Enter'){
+    e.preventDefault();
+    document.querySelector('.btn-save').focus();
+    document.querySelector('.btn-save').scrollIntoView({behavior:'smooth',block:'center'});
+  }
+});
+
+// ===== TEMA SYSTEM =====
+const TEMAS = ['dark','apple','purple'];
+let currentTema = localStorage.getItem('tema') || 'dark';
+// migrate old tema names
+if(currentTema==='light'||currentTema==='samsung') currentTema='dark';
+
+function setTema(tema){
+  TEMAS.forEach(t => document.body.classList.remove(t));
+  if(tema !== 'dark') document.body.classList.add(tema);
+  currentTema = tema;
+  localStorage.setItem('tema', tema);
+  document.querySelectorAll('.tema-card').forEach(c => c.classList.remove('active'));
+  const el = document.getElementById('tema-'+tema);
+  if(el) el.classList.add('active');
+  tutupOverlay('overlayTema');
+  showToast('✓ Tema diubah');
+}
+
+function bukaTemaPicker(){
+  document.querySelectorAll('.tema-card').forEach(c => c.classList.remove('active'));
+  const el = document.getElementById('tema-'+currentTema);
+  if(el) el.classList.add('active');
+  bukaOverlay('overlayTema');
+}
+
+// Apply saved tema on load
+TEMAS.forEach(t => document.body.classList.remove(t));
+if(currentTema !== 'dark') document.body.classList.add(currentTema);
+
+document.getElementById('overlayBatchDialog').addEventListener('click',function(e){if(e.target===this)tutupOverlay('overlayBatchDialog');});
+document.getElementById('overlayBatchDialogWA').addEventListener('click',function(e){if(e.target===this)tutupOverlay('overlayBatchDialogWA');});
+document.getElementById('overlayTema').addEventListener('click',function(e){if(e.target===this)tutupOverlay('overlayTema');});
+
+renderHistory();
+
+// Hint pulse on first load if no product selected
+setTimeout(()=>{
+  // pointer already visible on load if no product selected
+}, 1200);
+</script>
 </body>
-
 </html>
