@@ -604,23 +604,25 @@ textarea{resize:vertical;min-height:80px;}
 <div class="overlay" id="overlayTema">
   <div class="tema-panel">
     <div class="modal-title">🎨 Pilih Tema</div>
+    <div id="temaAutoBadge" style="font-size:11px;color:var(--text-muted);text-align:center;margin-bottom:14px;font-family:'Space Mono',monospace;"></div>
     <div class="tema-grid">
       <div class="tema-card" onclick="setTema('dark')" id="tema-dark">
         <div class="tema-preview dark-prev"></div>
         <div class="tema-name">Dark Glass</div>
-        <div class="tema-desc">Default · Kaca gelap</div>
+        <div class="tema-desc">16:01 – 00:00</div>
       </div>
       <div class="tema-card" onclick="setTema('apple')" id="tema-apple">
         <div class="tema-preview apple-prev"></div>
         <div class="tema-name">Apple Style</div>
-        <div class="tema-desc">Minimal · Elegan</div>
+        <div class="tema-desc">08:01 – 16:00</div>
       </div>
       <div class="tema-card" onclick="setTema('purple')" id="tema-purple">
         <div class="tema-preview purple-prev"></div>
         <div class="tema-name">Purple Night</div>
-        <div class="tema-desc">Vivid · Galaxy vibe</div>
+        <div class="tema-desc">00:01 – 08:00</div>
       </div>
     </div>
+    <button onclick="setTemaAuto()" style="width:100%;margin-bottom:8px;padding:12px;border-radius:12px;border:1px solid rgba(0,212,255,0.3);background:rgba(0,212,255,0.08);color:var(--accent);font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;cursor:pointer;transition:all 0.2s;">🕐 Ikuti Jam Otomatis</button>
     <button class="modal-close" onclick="tutupOverlay('overlayTema')">✕ Tutup</button>
   </div>
 </div>
@@ -1396,32 +1398,79 @@ document.getElementById('nomorBatch').addEventListener('keydown', function(e){
 
 // ===== TEMA SYSTEM =====
 const TEMAS = ['dark','apple','purple'];
-let currentTema = localStorage.getItem('tema') || 'dark';
-// migrate old tema names
-if(currentTema==='light'||currentTema==='samsung') currentTema='dark';
+let currentTema = 'dark';
+let temaManualOverride = false; // true jika user pilih manual
 
-function setTema(tema){
+function getTemaByTime(){
+  const h = new Date().getHours();
+  // 00:01–08:00 → purple
+  // 08:01–16:00 → apple
+  // 16:01–00:00 → dark
+  if(h >= 0 && h < 8)  return 'purple';  // 00:00–07:59
+  if(h >= 8 && h < 16) return 'apple';   // 08:00–15:59
+  return 'dark';                          // 16:00–23:59
+}
+
+function applyTema(tema, silent=false){
   TEMAS.forEach(t => document.body.classList.remove(t));
   if(tema !== 'dark') document.body.classList.add(tema);
   currentTema = tema;
-  localStorage.setItem('tema', tema);
   document.querySelectorAll('.tema-card').forEach(c => c.classList.remove('active'));
   const el = document.getElementById('tema-'+tema);
   if(el) el.classList.add('active');
+  if(!silent) showToast('✓ Tema diubah');
+}
+
+function setTema(tema){
+  temaManualOverride = true;
+  localStorage.setItem('tema', tema);
+  localStorage.setItem('temaOverride', '1');
+  applyTema(tema);
   tutupOverlay('overlayTema');
-  showToast('✓ Tema diubah');
+}
+
+function setTemaAuto(){
+  temaManualOverride = false;
+  localStorage.removeItem('tema');
+  localStorage.removeItem('temaOverride');
+  const tema = getTemaByTime();
+  applyTema(tema);
+  tutupOverlay('overlayTema');
+  showToast('✓ Tema otomatis aktif');
 }
 
 function bukaTemaPicker(){
   document.querySelectorAll('.tema-card').forEach(c => c.classList.remove('active'));
   const el = document.getElementById('tema-'+currentTema);
   if(el) el.classList.add('active');
+  // update status auto badge
+  const autoBadge = document.getElementById('temaAutoBadge');
+  if(autoBadge) autoBadge.textContent = temaManualOverride ? '⚙ Manual' : '🕐 Otomatis (jam lokal)';
   bukaOverlay('overlayTema');
 }
 
-// Apply saved tema on load
-TEMAS.forEach(t => document.body.classList.remove(t));
-if(currentTema !== 'dark') document.body.classList.add(currentTema);
+// Apply tema on load: cek override, jika tidak ada → otomatis by time
+const savedOverride = localStorage.getItem('temaOverride');
+const savedTema = localStorage.getItem('tema');
+if(savedOverride && savedTema && TEMAS.includes(savedTema)){
+  temaManualOverride = true;
+  currentTema = savedTema;
+} else {
+  temaManualOverride = false;
+  currentTema = getTemaByTime();
+}
+applyTema(currentTema, true);
+
+// Auto-update tema setiap menit jika tidak manual
+setInterval(()=>{
+  if(!temaManualOverride){
+    const newTema = getTemaByTime();
+    if(newTema !== currentTema){
+      applyTema(newTema, true);
+      showToast(`🕐 Tema otomatis: ${newTema==='dark'?'Dark Glass':newTema==='apple'?'Apple Style':'Purple Night'}`);
+    }
+  }
+}, 60000);
 
 document.getElementById('overlayBatchDialog').addEventListener('click',function(e){if(e.target===this)tutupOverlay('overlayBatchDialog');});
 document.getElementById('overlayBatchDialogWA').addEventListener('click',function(e){if(e.target===this)tutupOverlay('overlayBatchDialogWA');});
