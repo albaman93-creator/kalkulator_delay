@@ -285,34 +285,52 @@ textarea{resize:vertical;min-height:80px;}
 .dp-day.selected{background:var(--accent);color:#000;font-weight:700;}
 
 /* Clock */
-.clock-panel{background:rgba(10,18,40,0.65);border:1px solid rgba(0,200,255,0.2);border-radius:24px;padding:20px 20px 24px;width:96%;max-width:360px;text-align:center;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 16px 48px rgba(0,0,0,0.4);}
+.clock-panel{background:rgba(10,18,40,0.65);border:1px solid rgba(0,200,255,0.2);border-radius:28px;padding:20px 16px 24px;width:97%;max-width:400px;text-align:center;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 16px 48px rgba(0,0,0,0.4);}
 .clock-step-indicator{display:flex;gap:8px;justify-content:center;margin-bottom:10px;}
 .step-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.15);transition:all 0.2s;}
 .step-dot.active{background:var(--accent);box-shadow:0 0 8px var(--accent);}
 .clock-subtitle{font-size:11px;color:var(--text-muted);font-family:'Space Mono',monospace;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;}
-.clock-display{font-family:'Space Mono',monospace;font-size:48px;font-weight:700;color:var(--accent);margin-bottom:12px;text-shadow:0 0 30px rgba(0,212,255,0.4);cursor:default;line-height:1;}
+.clock-display{font-family:'Space Mono',monospace;font-size:52px;font-weight:700;color:var(--accent);margin-bottom:14px;text-shadow:0 0 30px rgba(0,212,255,0.4);cursor:default;line-height:1;}
 .clock-display .selected-part{color:var(--accent);text-decoration:underline;text-underline-offset:6px;}
 .clock-display .dim-part{color:var(--text-muted);}
 .clock-face{
-  width:260px;height:260px;
+  width:300px;height:300px;
   border-radius:50%;
-  border:2px solid rgba(0,200,255,0.2);
-  margin:0 auto 12px;
+  border:2px solid rgba(0,200,255,0.22);
+  margin:0 auto 14px;
   position:relative;
   cursor:pointer;
   background:radial-gradient(circle at center,rgba(10,30,60,0.92) 0%,rgba(6,11,24,0.97) 100%);
-  box-shadow:0 0 40px rgba(0,212,255,0.1),inset 0 0 30px rgba(0,0,0,0.5);
+  box-shadow:0 0 50px rgba(0,212,255,0.12),inset 0 0 40px rgba(0,0,0,0.5);
   user-select:none;
   touch-action:none;
 }
-.clock-center{width:10px;height:10px;background:var(--accent);border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 12px var(--accent);z-index:3;}
-.clock-hand{position:absolute;bottom:50%;left:50%;width:2px;transform-origin:bottom center;border-radius:2px 2px 0 0;margin-left:-1px;z-index:2;transition:transform 0.12s ease,height 0.12s ease;}
-.clock-num{position:absolute;width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:50%;font-family:'Space Mono',monospace;font-size:10px;cursor:pointer;transition:all 0.15s;transform:translate(-50%,-50%);color:var(--text-muted);}
-.clock-num:hover,.clock-num.active{background:var(--accent);color:#000;font-weight:700;box-shadow:0 0 12px rgba(0,212,255,0.6);}
-.clock-num.inner{font-size:9px;color:rgba(107,140,173,0.65);}
-.clock-num.inner.active{background:var(--accent2);color:#000;box-shadow:0 0 12px rgba(255,107,53,0.6);}
-.clock-num.min-num{font-size:11px;}
-.clock-num.min-num.active{background:var(--success);color:#000;box-shadow:0 0 12px rgba(0,229,160,0.6);}
+.clock-center{width:12px;height:12px;background:var(--accent);border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 14px var(--accent);z-index:3;}
+.clock-hand{position:absolute;bottom:50%;left:50%;width:3px;transform-origin:bottom center;border-radius:2px 2px 0 0;margin-left:-1.5px;z-index:2;transition:transform 0.12s ease,height 0.12s ease;}
+.clock-num{
+  position:absolute;
+  width:38px;height:38px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:50%;
+  font-family:'Space Mono',monospace;font-size:13px;font-weight:700;
+  cursor:pointer;transition:all 0.15s;
+  transform:translate(-50%,-50%);
+  color:var(--text);
+}
+.clock-num:hover{background:rgba(0,212,255,0.15);color:var(--accent);}
+.clock-num.active{background:var(--accent);color:#000;font-weight:700;box-shadow:0 0 14px rgba(0,212,255,0.7);}
+.clock-num.inner{font-size:11px;color:rgba(180,200,220,0.6);}
+.clock-num.inner:hover{background:rgba(255,107,53,0.15);color:var(--accent2);}
+.clock-num.inner.active{background:var(--accent2);color:#000;box-shadow:0 0 14px rgba(255,107,53,0.7);}
+.clock-num.min-num{font-size:13px;font-weight:700;color:var(--text);}
+.clock-num.min-num:hover{background:rgba(0,229,160,0.15);color:var(--success);}
+.clock-num.min-num.active{background:var(--success);color:#000;box-shadow:0 0 14px rgba(0,229,160,0.7);}
+.clock-legend{display:flex;gap:14px;justify-content:center;margin-bottom:12px;font-size:10px;font-family:'Space Mono',monospace;color:var(--text-muted);}
+.clock-legend span{display:flex;align-items:center;gap:4px;}
+.dot{width:7px;height:7px;border-radius:50%;}
+.clock-btn-row{display:flex;gap:10px;}
+.clock-ok{flex:1;background:linear-gradient(135deg,var(--accent),#0077ff);color:#000;padding:15px;border-radius:14px;border:none;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:800;font-size:15px;box-shadow:var(--glow);}
+.clock-cancel{background:rgba(255,255,255,0.06);border:1px solid var(--glass-border);color:var(--text-muted);padding:15px 20px;border-radius:14px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:13px;}
 .clock-legend{display:flex;gap:14px;justify-content:center;margin-bottom:12px;font-size:10px;font-family:'Space Mono',monospace;color:var(--text-muted);}
 .clock-legend span{display:flex;align-items:center;gap:4px;}
 .dot{width:7px;height:7px;border-radius:50%;}
@@ -330,12 +348,16 @@ textarea{resize:vertical;min-height:80px;}
 @media(max-width:480px){
   .result-grid,.delay-display-grid{grid-template-columns:1fr}
   .form-grid{grid-template-columns:1fr}
-  .clock-face{width:240px;height:240px;}
+  .clock-face{width:280px;height:280px;}
   .clock-panel{padding:16px 12px 20px;}
+  .clock-display{font-size:46px;}
+}
+@media(max-width:380px){
+  .clock-face{width:250px;height:250px;}
   .clock-display{font-size:40px;}
 }
-@media(max-width:360px){
-  .clock-face{width:210px;height:210px;}
+@media(max-width:340px){
+  .clock-face{width:220px;height:220px;}
 }
 </style>
 </head>
@@ -1037,11 +1059,11 @@ function updateDisplayClock(){
 function renderHourNums(){
   const face = document.getElementById('clockFace');
   face.querySelectorAll('.clock-num').forEach(n=>n.remove());
-  const size = face.offsetWidth || 260;
+  const size = face.offsetWidth || 300;
   const CX = size/2, CY = size/2;
   for(let h=0;h<24;h++){
     const isInner = h>=12;
-    const R = isInner ? size*0.24 : size*0.36;
+    const R = isInner ? size*0.26 : size*0.38;
     const angle = ((h%12)*30-90)*Math.PI/180;
     const x = CX + R*Math.cos(angle);
     const y = CY + R*Math.sin(angle);
@@ -1059,11 +1081,11 @@ function renderHourNums(){
 function renderMinuteNums(){
   const face = document.getElementById('clockFace');
   face.querySelectorAll('.clock-num').forEach(n=>n.remove());
-  const size = face.offsetWidth || 260;
+  const size = face.offsetWidth || 300;
   const CX = size/2, CY = size/2;
   const minutes = [0,5,10,15,20,25,30,35,40,45,50,55];
   minutes.forEach(m => {
-    const R = size*0.36;
+    const R = size*0.38;
     const angle = (m*6-90)*Math.PI/180;
     const x = CX + R*Math.cos(angle);
     const y = CY + R*Math.sin(angle);
@@ -1105,9 +1127,9 @@ function selectMinute(m, fromDrag=false){
 function updateHandHour(h){
   const hand = document.getElementById('clockHand');
   const face = document.getElementById('clockFace');
-  const size = face.offsetWidth || 260;
+  const size = face.offsetWidth || 300;
   const isInner = h>=12;
-  hand.style.height = (isInner ? size*0.19 : size*0.27)+'px';
+  hand.style.height = (isInner ? size*0.20 : size*0.30)+'px';
   hand.style.background = isInner
     ? 'linear-gradient(to top,var(--accent2),rgba(255,107,53,0.1))'
     : 'linear-gradient(to top,var(--accent),rgba(0,212,255,0.1))';
@@ -1117,8 +1139,8 @@ function updateHandHour(h){
 function updateHandMinute(m){
   const hand = document.getElementById('clockHand');
   const face = document.getElementById('clockFace');
-  const size = face.offsetWidth || 260;
-  hand.style.height = (size*0.28)+'px';
+  const size = face.offsetWidth || 300;
+  hand.style.height = (size*0.30)+'px';
   hand.style.background = 'linear-gradient(to top,var(--success),rgba(0,229,160,0.1))';
   hand.style.transform = `rotate(${m*6}deg)`;
 }
