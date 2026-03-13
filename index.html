@@ -257,6 +257,11 @@ textarea{resize:vertical;min-height:80px;}
 .prod-del-btn{color:#ff5050;}
 .prod-del-btn:hover{background:rgba(255,80,80,0.1);}
 .modal-close{width:100%;margin-top:16px;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:12px;border-radius:12px;cursor:pointer;font-family:'Space Mono',monospace;font-size:12px;}
+.line-filter-btn{padding:5px 12px;border-radius:20px;border:1px solid var(--glass-border);background:rgba(255,255,255,0.05);color:var(--text-muted);font-size:11px;font-family:'Space Mono',monospace;cursor:pointer;transition:all 0.15s;white-space:nowrap;}
+.line-filter-btn:hover{border-color:var(--accent);color:var(--accent);}
+.line-filter-btn.active{background:var(--accent);border-color:var(--accent);color:#000;font-weight:700;}
+#searchProduk:focus{border-color:var(--accent)!important;box-shadow:0 0 0 3px rgba(0,212,255,0.1);}
+.no-result{text-align:center;padding:24px;color:var(--text-muted);font-family:'Space Mono',monospace;font-size:12px;}
 
 /* Product Form Modal */
 .form-panel{background:rgba(10,18,40,0.65);border:1px solid rgba(0,200,255,0.2);border-radius:24px;padding:28px;width:92%;max-width:420px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 16px 48px rgba(0,0,0,0.4);}
@@ -280,29 +285,40 @@ textarea{resize:vertical;min-height:80px;}
 .dp-day.selected{background:var(--accent);color:#000;font-weight:700;}
 
 /* Clock */
-.clock-panel{background:rgba(10,18,40,0.65);border:1px solid rgba(0,200,255,0.2);border-radius:24px;padding:24px 28px;width:92%;max-width:340px;text-align:center;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 16px 48px rgba(0,0,0,0.4);}
-.clock-step-indicator{display:flex;gap:8px;justify-content:center;margin-bottom:14px;}
+.clock-panel{background:rgba(10,18,40,0.65);border:1px solid rgba(0,200,255,0.2);border-radius:24px;padding:20px 20px 24px;width:96%;max-width:360px;text-align:center;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 16px 48px rgba(0,0,0,0.4);}
+.clock-step-indicator{display:flex;gap:8px;justify-content:center;margin-bottom:10px;}
 .step-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.15);transition:all 0.2s;}
 .step-dot.active{background:var(--accent);box-shadow:0 0 8px var(--accent);}
-.clock-subtitle{font-size:11px;color:var(--text-muted);font-family:'Space Mono',monospace;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
-.clock-display{font-family:'Space Mono',monospace;font-size:52px;font-weight:700;color:var(--accent);margin-bottom:16px;text-shadow:0 0 30px rgba(0,212,255,0.4);cursor:default;}
+.clock-subtitle{font-size:11px;color:var(--text-muted);font-family:'Space Mono',monospace;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;}
+.clock-display{font-family:'Space Mono',monospace;font-size:48px;font-weight:700;color:var(--accent);margin-bottom:12px;text-shadow:0 0 30px rgba(0,212,255,0.4);cursor:default;line-height:1;}
 .clock-display .selected-part{color:var(--accent);text-decoration:underline;text-underline-offset:6px;}
 .clock-display .dim-part{color:var(--text-muted);}
-.clock-face{width:220px;height:220px;border-radius:50%;border:2px solid rgba(0,200,255,0.2);margin:0 auto 16px;position:relative;cursor:pointer;background:radial-gradient(circle at center,rgba(10,30,60,0.9) 0%,rgba(6,11,24,0.95) 100%);box-shadow:0 0 40px rgba(0,212,255,0.1),inset 0 0 30px rgba(0,0,0,0.5);user-select:none;}
+.clock-face{
+  width:260px;height:260px;
+  border-radius:50%;
+  border:2px solid rgba(0,200,255,0.2);
+  margin:0 auto 12px;
+  position:relative;
+  cursor:pointer;
+  background:radial-gradient(circle at center,rgba(10,30,60,0.92) 0%,rgba(6,11,24,0.97) 100%);
+  box-shadow:0 0 40px rgba(0,212,255,0.1),inset 0 0 30px rgba(0,0,0,0.5);
+  user-select:none;
+  touch-action:none;
+}
 .clock-center{width:10px;height:10px;background:var(--accent);border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 12px var(--accent);z-index:3;}
 .clock-hand{position:absolute;bottom:50%;left:50%;width:2px;transform-origin:bottom center;border-radius:2px 2px 0 0;margin-left:-1px;z-index:2;transition:transform 0.12s ease,height 0.12s ease;}
-.clock-num{position:absolute;width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:50%;font-family:'Space Mono',monospace;font-size:10px;cursor:pointer;transition:all 0.15s;transform:translate(-50%,-50%);color:var(--text-muted);}
+.clock-num{position:absolute;width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:50%;font-family:'Space Mono',monospace;font-size:10px;cursor:pointer;transition:all 0.15s;transform:translate(-50%,-50%);color:var(--text-muted);}
 .clock-num:hover,.clock-num.active{background:var(--accent);color:#000;font-weight:700;box-shadow:0 0 12px rgba(0,212,255,0.6);}
 .clock-num.inner{font-size:9px;color:rgba(107,140,173,0.65);}
 .clock-num.inner.active{background:var(--accent2);color:#000;box-shadow:0 0 12px rgba(255,107,53,0.6);}
 .clock-num.min-num{font-size:11px;}
 .clock-num.min-num.active{background:var(--success);color:#000;box-shadow:0 0 12px rgba(0,229,160,0.6);}
-.clock-legend{display:flex;gap:14px;justify-content:center;margin-bottom:14px;font-size:10px;font-family:'Space Mono',monospace;color:var(--text-muted);}
+.clock-legend{display:flex;gap:14px;justify-content:center;margin-bottom:12px;font-size:10px;font-family:'Space Mono',monospace;color:var(--text-muted);}
 .clock-legend span{display:flex;align-items:center;gap:4px;}
 .dot{width:7px;height:7px;border-radius:50%;}
 .clock-btn-row{display:flex;gap:10px;}
-.clock-ok{flex:1;background:linear-gradient(135deg,var(--accent),#0077ff);color:#000;padding:13px;border-radius:12px;border:none;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;box-shadow:var(--glow);}
-.clock-cancel{background:rgba(255,255,255,0.06);border:1px solid var(--glass-border);color:var(--text-muted);padding:13px 18px;border-radius:12px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:12px;}
+.clock-ok{flex:1;background:linear-gradient(135deg,var(--accent),#0077ff);color:#000;padding:14px;border-radius:12px;border:none;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:800;font-size:14px;box-shadow:var(--glow);}
+.clock-cancel{background:rgba(255,255,255,0.06);border:1px solid var(--glass-border);color:var(--text-muted);padding:14px 18px;border-radius:12px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:12px;}
 
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(10,18,40,0.8);border:1px solid var(--success);color:var(--success);padding:12px 24px;border-radius:40px;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;transition:transform 0.3s ease;z-index:200;white-space:nowrap;backdrop-filter:blur(16px);}
 .toast.show{transform:translateX(-50%) translateY(0);}
@@ -311,7 +327,16 @@ textarea{resize:vertical;min-height:80px;}
 @keyframes fadeDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
-@media(max-width:480px){.result-grid,.delay-display-grid{grid-template-columns:1fr}.clock-face{width:190px;height:190px}.form-grid{grid-template-columns:1fr}}
+@media(max-width:480px){
+  .result-grid,.delay-display-grid{grid-template-columns:1fr}
+  .form-grid{grid-template-columns:1fr}
+  .clock-face{width:240px;height:240px;}
+  .clock-panel{padding:16px 12px 20px;}
+  .clock-display{font-size:40px;}
+}
+@media(max-width:360px){
+  .clock-face{width:210px;height:210px;}
+}
 </style>
 </head>
 <body>
@@ -436,8 +461,14 @@ textarea{resize:vertical;min-height:80px;}
 <div class="overlay" id="overlayProduk">
   <div class="modal-panel">
     <div class="modal-title">📦 Pilih Produk</div>
+    <div style="margin-bottom:14px;position:relative;">
+      <input type="text" id="searchProduk" placeholder="🔍 Cari kode produk atau line..." oninput="filterProduk(this.value)"
+        style="width:100%;padding:11px 14px 11px 38px;background:rgba(255,255,255,0.07);border:1px solid var(--glass-border);border-radius:10px;color:var(--text);font-family:'Nunito',sans-serif;font-size:13px;outline:none;transition:all 0.2s;">
+      <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;opacity:0.5;">🔍</span>
+    </div>
+    <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;" id="lineFilterBtns"></div>
     <div id="produkList"></div>
-    <button class="modal-close" onclick="tutupOverlay('overlayProduk')">✕ Tutup</button>
+    <button class="modal-close" onclick="tutupOverlay('overlayProduk');resetProdukFilter()">✕ Tutup</button>
   </div>
 </div>
 
@@ -769,9 +800,72 @@ function bukaOverlay(id){ document.getElementById(id).classList.add('open'); }
 function tutupOverlay(id){ document.getElementById(id).classList.remove('open'); }
 
 // ============ PRODUCT PICKER ============
+let activeLineFilter = '';
+
 function bukaModalProduk(){
+  activeLineFilter = '';
+  document.getElementById('searchProduk').value = '';
+  renderLineFilterBtns();
   renderProdukList('produkList', true);
   bukaOverlay('overlayProduk');
+  setTimeout(()=>document.getElementById('searchProduk').focus(), 300);
+}
+
+function renderLineFilterBtns(){
+  const lines = [...new Set(dbProduk.map(p=>p.line))];
+  const container = document.getElementById('lineFilterBtns');
+  let html = `<button class="line-filter-btn ${activeLineFilter===''?'active':''}" onclick="setLineFilter('')">Semua</button>`;
+  lines.forEach(l => {
+    html += `<button class="line-filter-btn ${activeLineFilter===l?'active':''}" onclick="setLineFilter('${l}')">${l}</button>`;
+  });
+  container.innerHTML = html;
+}
+
+function setLineFilter(line){
+  activeLineFilter = line;
+  renderLineFilterBtns();
+  filterProduk(document.getElementById('searchProduk').value);
+}
+
+function resetProdukFilter(){
+  activeLineFilter = '';
+  const inp = document.getElementById('searchProduk');
+  if(inp) inp.value = '';
+}
+
+function filterProduk(query){
+  const q = query.toLowerCase().trim();
+  const filtered = dbProduk.filter((p, i) => {
+    const matchLine = !activeLineFilter || p.line === activeLineFilter;
+    const matchQ = !q || p.kode.toLowerCase().includes(q) || p.line.toLowerCase().includes(q);
+    return matchLine && matchQ;
+  });
+  renderFilteredProduk(filtered);
+}
+
+function renderFilteredProduk(list){
+  if(!list.length){
+    document.getElementById('produkList').innerHTML = '<div class="no-result">😕 Produk tidak ditemukan</div>';
+    return;
+  }
+  const lines = [...new Set(list.map(p=>p.line))];
+  let html = '';
+  lines.forEach(line => {
+    html += `<div class="line-group-title">📍 ${line}</div>`;
+    list.forEach((p) => {
+      if(p.line !== line) return;
+      const realIdx = dbProduk.indexOf(p);
+      const name = `${p.line} – ${p.kode}`;
+      html += `<div class="prod-item" onclick="pilihProduk(${realIdx})">
+        <div>
+          <div class="prod-item-name">${name}</div>
+          <div class="prod-item-detail">Mix-Fill: ${p.mixing}j &nbsp;|&nbsp; Steril: ${p.steril}j</div>
+        </div>
+        <span style="color:var(--accent);opacity:0.6;font-size:16px;">›</span>
+      </div>`;
+    });
+  });
+  document.getElementById('produkList').innerHTML = html;
 }
 
 function renderProdukList(containerId, selectable){
@@ -943,17 +1037,20 @@ function updateDisplayClock(){
 function renderHourNums(){
   const face = document.getElementById('clockFace');
   face.querySelectorAll('.clock-num').forEach(n=>n.remove());
-  const CX=110, CY=110;
+  const size = face.offsetWidth || 260;
+  const CX = size/2, CY = size/2;
   for(let h=0;h<24;h++){
     const isInner = h>=12;
-    const R = isInner ? 55 : 82;
+    const R = isInner ? size*0.24 : size*0.36;
     const angle = ((h%12)*30-90)*Math.PI/180;
-    const x = CX+R*Math.cos(angle), y = CY+R*Math.sin(angle);
+    const x = CX + R*Math.cos(angle);
+    const y = CY + R*Math.sin(angle);
     const el = document.createElement('div');
     el.className='clock-num'+(isInner?' inner':'')+(h===state.clockJam?' active':'');
-    el.style.left=x+'px'; el.style.top=y+'px';
-    el.textContent=String(h).padStart(2,'0');
-    el.onclick=()=>selectHour(h);
+    el.style.left = x+'px';
+    el.style.top = y+'px';
+    el.textContent = String(h).padStart(2,'0');
+    el.onclick = ()=>selectHour(h);
     face.appendChild(el);
   }
   updateHandHour(state.clockJam);
@@ -962,23 +1059,26 @@ function renderHourNums(){
 function renderMinuteNums(){
   const face = document.getElementById('clockFace');
   face.querySelectorAll('.clock-num').forEach(n=>n.remove());
-  const CX=110, CY=110;
+  const size = face.offsetWidth || 260;
+  const CX = size/2, CY = size/2;
   const minutes = [0,5,10,15,20,25,30,35,40,45,50,55];
   minutes.forEach(m => {
-    const R = 82;
+    const R = size*0.36;
     const angle = (m*6-90)*Math.PI/180;
-    const x = CX+R*Math.cos(angle), y = CY+R*Math.sin(angle);
+    const x = CX + R*Math.cos(angle);
+    const y = CY + R*Math.sin(angle);
     const el = document.createElement('div');
     el.className='clock-num min-num'+(m===state.clockMenit?' active':'');
-    el.style.left=x+'px'; el.style.top=y+'px';
-    el.textContent=String(m).padStart(2,'0');
-    el.onclick=()=>selectMinute(m);
+    el.style.left = x+'px';
+    el.style.top = y+'px';
+    el.textContent = String(m).padStart(2,'0');
+    el.onclick = ()=>selectMinute(m);
     face.appendChild(el);
   });
   updateHandMinute(state.clockMenit);
 }
 
-function selectHour(h){
+function selectHour(h, fromDrag=false){
   state.clockJam=h;
   document.querySelectorAll('.clock-num').forEach(n=>{
     n.classList.remove('active');
@@ -986,9 +1086,13 @@ function selectHour(h){
   });
   updateHandHour(h);
   updateDisplayClock();
+  // Auto pindah ke menit hanya jika tap (klik angka), bukan drag
+  if(!fromDrag){
+    setTimeout(()=>{ if(state.clockStep==='hour') showClockStep('minute'); }, 280);
+  }
 }
 
-function selectMinute(m){
+function selectMinute(m, fromDrag=false){
   state.clockMenit=m;
   document.querySelectorAll('.clock-num.min-num').forEach(n=>{
     n.classList.remove('active');
@@ -1000,8 +1104,10 @@ function selectMinute(m){
 
 function updateHandHour(h){
   const hand = document.getElementById('clockHand');
+  const face = document.getElementById('clockFace');
+  const size = face.offsetWidth || 260;
   const isInner = h>=12;
-  hand.style.height = (isInner?50:70)+'px';
+  hand.style.height = (isInner ? size*0.19 : size*0.27)+'px';
   hand.style.background = isInner
     ? 'linear-gradient(to top,var(--accent2),rgba(255,107,53,0.1))'
     : 'linear-gradient(to top,var(--accent),rgba(0,212,255,0.1))';
@@ -1010,7 +1116,9 @@ function updateHandHour(h){
 
 function updateHandMinute(m){
   const hand = document.getElementById('clockHand');
-  hand.style.height = '72px';
+  const face = document.getElementById('clockFace');
+  const size = face.offsetWidth || 260;
+  hand.style.height = (size*0.28)+'px';
   hand.style.background = 'linear-gradient(to top,var(--success),rgba(0,229,160,0.1))';
   hand.style.transform = `rotate(${m*6}deg)`;
 }
@@ -1054,12 +1162,12 @@ function handleDrag(e){
   if(state.clockStep==='hour'){
     let h=Math.round(ang/30)%12;
     if(dist<rect.width*0.28)h+=12;
-    if(h!==state.clockJam)selectHour(h);
+    if(h!==state.clockJam)selectHour(h, true); // fromDrag=true → tidak auto-advance
   } else {
     const mins=[0,5,10,15,20,25,30,35,40,45,50,55];
     let m=Math.round(ang/6)%60;
     const nearest=mins.reduce((a,b)=>Math.abs(b-m)<Math.abs(a-m)?b:a);
-    if(nearest!==state.clockMenit)selectMinute(nearest);
+    if(nearest!==state.clockMenit)selectMinute(nearest, true);
   }
 }
 
