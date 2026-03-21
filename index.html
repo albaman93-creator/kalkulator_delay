@@ -7,25 +7,21 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Nunito:wght@300;400;600;700;800&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:#060b18; --surface:rgba(16,26,52,0.42); --surface2:rgba(22,36,68,0.38); --border:rgba(0,200,255,0.16);
+  --bg:#060b18; --surface:rgba(16,26,52,0.72); --surface2:rgba(22,36,68,0.75); --border:rgba(0,200,255,0.16);
   --accent:#00d4ff; --accent2:#ff6b35; --success:#00e5a0;
   --text:#eef6ff; --text-muted:#7ba8cc; --glow:0 0 20px rgba(0,212,255,0.3);
-  --glass-blur:18px; --glass-border:rgba(0,200,255,0.13);
+  --glass-blur:0px; --glass-border:rgba(0,200,255,0.13);
 }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{
   background:var(--bg);color:var(--text);
   font-family:'Nunito',sans-serif;font-weight:400;
   min-height:100vh;overflow-x:hidden;
-  background-image:
-    radial-gradient(ellipse at 15% 15%,rgba(0,180,255,0.18) 0%,transparent 55%),
-    radial-gradient(ellipse at 85% 80%,rgba(255,80,53,0.12) 0%,transparent 50%),
-    radial-gradient(ellipse at 50% 50%,rgba(0,50,100,0.4) 0%,transparent 70%);
-  background-attachment:fixed;
+  /* 1 gradient saja, tidak fixed — jauh lebih ringan */
+  background-image:radial-gradient(ellipse at 20% 10%,rgba(0,150,220,0.15) 0%,transparent 60%);
 }
-body::before{content:'';position:fixed;inset:0;
-  background-image:linear-gradient(rgba(0,212,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.04) 1px,transparent 1px);
-  background-size:40px 40px;pointer-events:none;z-index:0;}
+/* hapus grid overlay — penyebab repaint setiap scroll */
+body::before{display:none;}
 .container{max-width:680px;margin:0 auto;padding:32px 20px 60px;position:relative;z-index:1;}
 
 header{display:flex;align-items:center;justify-content:space-between;margin-bottom:40px;animation:fadeDown 0.6s ease;}
@@ -34,18 +30,17 @@ header{display:flex;align-items:center;justify-content:space-between;margin-bott
 .logo-text{font-family:'Nunito',sans-serif;font-size:20px;font-weight:800;letter-spacing:-0.5px;}
 .logo-text span{color:var(--accent);}
 .header-btns{display:flex;gap:8px;}
-.hbtn{background:rgba(255,255,255,0.06);border:1px solid var(--glass-border);color:var(--text-muted);padding:8px 14px;border-radius:20px;cursor:pointer;font-size:12px;font-family:'Nunito',sans-serif;font-weight:700;transition:all 0.2s;white-space:nowrap;backdrop-filter:blur(8px);}
+.hbtn{background:rgba(255,255,255,0.08);border:1px solid var(--glass-border);color:var(--text-muted);padding:8px 14px;border-radius:20px;cursor:pointer;font-size:12px;font-family:'Nunito',sans-serif;font-weight:700;transition:border-color 0.15s,color 0.15s;white-space:nowrap;}
 .hbtn:hover{border-color:var(--accent);color:var(--accent);}
 
 .card{
   background:var(--surface);
   border:1px solid var(--glass-border);
   border-radius:20px;padding:28px;margin-bottom:16px;
-  animation:fadeUp 0.5s ease both;
+  animation:fadeUp 0.2s ease both;
   position:relative;overflow:hidden;
-  backdrop-filter:blur(var(--glass-blur));
-  -webkit-backdrop-filter:blur(var(--glass-blur));
-  box-shadow:0 8px 32px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.06);
+  box-shadow:0 4px 16px rgba(0,0,0,0.3);
+  transform:translateZ(0);
 }
 .card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:0.4;}
 .card:nth-child(2){animation-delay:0.1s}.card:nth-child(3){animation-delay:0.2s}.card:nth-child(4){animation-delay:0.3s}
@@ -55,29 +50,36 @@ header{display:flex;align-items:center;justify-content:space-between;margin-bott
 .field{margin-bottom:18px;}
 label{display:block;font-size:12px;color:var(--text-muted);margin-bottom:8px;font-family:'Space Mono',monospace;letter-spacing:0.5px;}
 input[type=text],input[type=number],textarea{
-  width:100%;background:rgba(255,255,255,0.05);
+  width:100%;background:rgba(255,255,255,0.07);
   border:1px solid var(--glass-border);border-radius:12px;
   padding:13px 16px;color:var(--text);
   font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;
-  outline:none;transition:all 0.2s;
-  backdrop-filter:blur(8px);
+  outline:none;transition:border-color 0.15s,box-shadow 0.15s;
 }
 input:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,212,255,0.12);}
 input::placeholder,textarea::placeholder{color:var(--text-muted);opacity:0.5;}
 textarea{resize:vertical;min-height:80px;}
 
 .btn-pilih-produk{
-  width:100%;background:rgba(255,255,255,0.05);
+  width:100%;background:rgba(255,255,255,0.07);
   border:1px solid var(--glass-border);border-radius:12px;
   padding:13px 16px;color:var(--text);
   font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;
   cursor:pointer;display:flex;align-items:center;justify-content:space-between;
-  transition:all 0.2s;backdrop-filter:blur(8px);
+  transition:border-color 0.15s;
 }
 .btn-pilih-produk:hover{border-color:var(--accent);}
 .btn-pilih-produk .placeholder{color:var(--text-muted);opacity:0.6;}
 
-/* ── Tanda penunjuk pilih produk ── */
+/* ── Performa: GPU acceleration & smooth scroll ── */
+html{scroll-behavior:smooth;-webkit-overflow-scrolling:touch;}
+.card{will-change:auto;contain:layout style;}
+.overlay{will-change:opacity;}
+.overlay.open{will-change:auto;}
+.clock-panel,.modal-panel,.form-panel,.datepicker-panel,.dialog-panel{will-change:auto;}
+.btn,.btn-save,.btn-wa,.btn-ghost{-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+.prod-item,.dp-day,.clock-num,.tema-card{-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
+input,button,select{-webkit-tap-highlight-color:transparent;}
 .pilih-pointer{
   display:flex;
   align-items:center;
@@ -117,7 +119,7 @@ textarea{resize:vertical;min-height:80px;}
 .waktu-display{
   background:rgba(255,255,255,0.05);border:1px solid var(--glass-border);
   border-radius:12px;padding:13px 16px;display:flex;align-items:center;gap:12px;
-  cursor:pointer;transition:all 0.2s;backdrop-filter:blur(8px);
+  cursor:pointer;transition:opacity 0.15s,background 0.15s;
 }
 .waktu-display:hover{border-color:var(--accent);}
 .wval{font-family:'Space Mono',monospace;font-size:22px;font-weight:700;color:var(--accent);}
@@ -132,14 +134,12 @@ textarea{resize:vertical;min-height:80px;}
 .delay-box-unit{font-size:10px;color:var(--text-muted);margin-top:4px;font-family:'Space Mono',monospace;}
 
 .btn-row{display:grid;grid-template-columns:1fr auto;gap:12px;margin-top:20px;}
-.btn{padding:14px 24px;border-radius:12px;border:none;cursor:pointer;font-family:'Space Mono',monospace;font-size:13px;font-weight:700;letter-spacing:0.5px;transition:all 0.2s;position:relative;overflow:hidden;}
-.btn::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.22),transparent);transform:skewX(-20deg);animation:shimmer 2.8s infinite;}
-.btn-primary{background:linear-gradient(135deg,var(--accent),#0077ff);color:#000;box-shadow:0 4px 16px rgba(0,212,255,0.4),0 2px 0 rgba(0,0,0,0.2);transform:translateY(0);}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,212,255,0.55),0 2px 0 rgba(0,0,0,0.2);}
-.btn-primary:active{transform:translateY(1px);box-shadow:0 2px 8px rgba(0,212,255,0.3);}
-.btn-ghost{background:rgba(220,50,50,0.12);border:1px solid rgba(220,50,50,0.35);color:rgba(255,100,100,0.85);box-shadow:0 3px 8px rgba(0,0,0,0.15),0 1px 0 rgba(0,0,0,0.1);transform:translateY(0);}
-.btn-ghost:hover{background:rgba(220,50,50,0.22);border-color:rgba(255,80,80,0.6);color:#ff6464;transform:translateY(-1px);box-shadow:0 5px 14px rgba(200,40,40,0.25);}
-.btn-ghost:active{transform:translateY(1px);}
+.btn{padding:14px 24px;border-radius:12px;border:none;cursor:pointer;font-family:'Space Mono',monospace;font-size:13px;font-weight:700;letter-spacing:0.5px;transition:opacity 0.15s,background 0.15s;position:relative;overflow:hidden;}
+.btn::after{display:none;}
+.btn-primary{background:linear-gradient(135deg,var(--accent),#0077ff);color:#000;box-shadow:0 4px 16px rgba(0,212,255,0.35);transform:translateZ(0);}
+.btn-primary:active{opacity:0.85;}
+.btn-ghost{background:rgba(220,50,50,0.12);border:1px solid rgba(220,50,50,0.35);color:rgba(255,100,100,0.85);transform:translateZ(0);}
+.btn-ghost:active{opacity:0.75;}
 
 .result-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
 .result-item{background:var(--surface2);border-radius:14px;padding:20px;border:1px solid var(--border);}
@@ -161,15 +161,10 @@ textarea{resize:vertical;min-height:80px;}
 /* Action buttons — solid, readable */
 .action-row{display:flex;gap:10px;}
 
-/* Shimmer mixin via pseudo */
+/* Shimmer diganti — terlalu berat di mobile */
 .shimmer-btn{position:relative;overflow:hidden;}
-.shimmer-btn::after{
-  content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent);
-  transform:skewX(-20deg);
-  animation:shimmer 2.8s infinite;
-}
-@keyframes shimmer{0%{left:-100%}60%,100%{left:160%}}
+.shimmer-btn::after{display:none;}
+
 
 .btn-save{
   flex:1;
@@ -179,7 +174,7 @@ textarea{resize:vertical;min-height:80px;}
   padding:14px;border-radius:12px;cursor:pointer;
   font-family:'Space Mono',monospace;font-size:12px;font-weight:700;
   box-shadow:0 4px 14px rgba(0,229,160,0.35),0 2px 0 rgba(0,0,0,0.15);
-  transition:all 0.2s;transform:translateY(0);
+  transition:opacity 0.15s,background 0.15s;transform:translateY(0);
 }
 .btn-save:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,229,160,0.5),0 2px 0 rgba(0,0,0,0.15);}
 .btn-save:active{transform:translateY(1px);box-shadow:0 2px 8px rgba(0,229,160,0.3);}
@@ -192,7 +187,7 @@ textarea{resize:vertical;min-height:80px;}
   padding:14px;border-radius:12px;cursor:pointer;
   font-family:'Space Mono',monospace;font-size:12px;font-weight:700;
   box-shadow:0 4px 14px rgba(37,211,102,0.35),0 2px 0 rgba(0,0,0,0.15);
-  transition:all 0.2s;transform:translateY(0);
+  transition:opacity 0.15s,background 0.15s;transform:translateY(0);
 }
 .btn-save:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,229,160,0.5),0 2px 0 rgba(0,0,0,0.15);}
 .btn-save:active{transform:translateY(1px);box-shadow:0 2px 8px rgba(0,229,160,0.3);}
@@ -205,159 +200,274 @@ textarea{resize:vertical;min-height:80px;}
   padding:14px;border-radius:12px;cursor:pointer;
   font-family:'Space Mono',monospace;font-size:12px;font-weight:700;
   box-shadow:0 4px 14px rgba(37,211,102,0.35),0 2px 0 rgba(0,0,0,0.15);
-  transition:all 0.2s;transform:translateY(0);
+  transition:opacity 0.15s,background 0.15s;transform:translateY(0);
 }
 .btn-wa:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(37,211,102,0.5),0 2px 0 rgba(0,0,0,0.15);}
 .btn-wa:active{transform:translateY(1px);box-shadow:0 2px 8px rgba(37,211,102,0.3);}
 
 /* Shimmer for action btns */
 .btn-save,.btn-wa{position:relative;overflow:hidden;}
-.btn-save::after,.btn-wa::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.28),transparent);transform:skewX(-20deg);animation:shimmer 2.8s infinite;}
+.btn-save::after,.btn-wa::after{display:none}
 .btn-wa::after{animation-delay:0.9s;}
 
 /* Header buttons shimmer */
 .hbtn{position:relative;overflow:hidden;}
-.hbtn::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.12),transparent);transform:skewX(-20deg);animation:shimmer 3.5s infinite;}
+.hbtn::after{display:none}
 
-@keyframes shimmer{0%{left:-100%}60%,100%{left:160%}}
+60%,100%{left:160%}}
 
 .history-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
-.btn-clear{background:none;border:1px solid rgba(255,80,80,0.3);color:rgba(255,80,80,0.7);padding:6px 12px;border-radius:8px;cursor:pointer;font-size:11px;font-family:'Space Mono',monospace;transition:all 0.2s;}
+.btn-clear{background:none;border:1px solid rgba(255,80,80,0.3);color:rgba(255,80,80,0.7);padding:6px 12px;border-radius:8px;cursor:pointer;font-size:11px;font-family:'Space Mono',monospace;transition:opacity 0.15s,background 0.15s;}
 .btn-clear:hover{background:rgba(255,80,80,0.1);color:#ff5050;}
 .history-empty{text-align:center;padding:32px;color:var(--text-muted);font-size:13px;}
-.history-item{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:10px;display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;}
+.history-item{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:10px;display:grid;grid-template-columns:1fr;gap:4px;}
 .history-name{font-weight:600;font-size:14px;margin-bottom:2px;}
 .history-batch{font-size:11px;color:var(--text-muted);font-family:'Space Mono',monospace;}
-.history-time{font-family:'Space Mono',monospace;font-size:12px;color:var(--accent);}
+.history-time{font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--accent);line-height:1.5;}
 .history-time.steril{color:var(--accent2);}
 .history-del{background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:16px;padding:4px;opacity:0.5;}
 .history-del:hover{opacity:1;color:#ff5050;}
 
 /* OVERLAYS */
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(10px);z-index:100;align-items:center;justify-content:center;}
-.overlay.open{display:flex;animation:fadeIn 0.2s ease;}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.82);z-index:100;align-items:center;justify-content:center;}
+.overlay.open{display:flex;animation:fadeIn 0.15s ease;}
 
-/* Product Modal - glass */
+/* Product Modal */
 .modal-panel{
-  background:rgba(10,18,40,0.65);border:1px solid rgba(0,200,255,0.2);
+  background:rgba(10,20,45,0.98);border:1px solid rgba(0,200,255,0.2);
   border-radius:24px;padding:28px;width:92%;max-width:460px;max-height:82vh;overflow-y:auto;
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-  box-shadow:0 16px 48px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.07);
+  box-shadow:0 16px 48px rgba(0,0,0,0.5);
 }
 .modal-title{font-family:'Space Mono',monospace;font-size:13px;color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;}
 .line-group-title{font-size:10px;font-family:'Space Mono',monospace;color:var(--accent2);letter-spacing:2px;text-transform:uppercase;padding:10px 0 6px;border-bottom:1px solid var(--border);margin-bottom:6px;}
-.prod-item{padding:12px 14px;border-radius:10px;cursor:pointer;border:1px solid transparent;transition:all 0.15s;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between;}
+.prod-item{padding:12px 14px;border-radius:10px;cursor:pointer;border:1px solid transparent;transition:background 0.1s;margin-bottom:4px;display:flex;align-items:center;justify-content:space-between;}
 .prod-item:hover{background:var(--surface2);border-color:var(--border);}
 .prod-item-name{font-weight:600;font-size:14px;}
 .prod-item-detail{font-size:11px;color:var(--text-muted);font-family:'Space Mono',monospace;margin-top:2px;}
 .prod-item-actions{display:flex;gap:6px;flex-shrink:0;}
-.prod-edit-btn,.prod-del-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:4px 8px;cursor:pointer;font-size:11px;font-family:'Space Mono',monospace;transition:all 0.15s;}
+.prod-edit-btn,.prod-del-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:4px 8px;cursor:pointer;font-size:11px;font-family:'Space Mono',monospace;transition:background 0.1s;}
 .prod-edit-btn{color:var(--accent);}
 .prod-edit-btn:hover{background:rgba(0,212,255,0.1);}
 .prod-del-btn{color:#ff5050;}
 .prod-del-btn:hover{background:rgba(255,80,80,0.1);}
 .modal-close{width:100%;margin-top:16px;background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:12px;border-radius:12px;cursor:pointer;font-family:'Space Mono',monospace;font-size:12px;}
-.line-filter-btn{padding:5px 12px;border-radius:20px;border:1px solid var(--glass-border);background:rgba(255,255,255,0.05);color:var(--text-muted);font-size:11px;font-family:'Space Mono',monospace;cursor:pointer;transition:all 0.15s;white-space:nowrap;}
+.line-filter-btn{padding:5px 12px;border-radius:20px;border:1px solid var(--glass-border);background:rgba(255,255,255,0.05);color:var(--text-muted);font-size:11px;font-family:'Space Mono',monospace;cursor:pointer;transition:background 0.1s;white-space:nowrap;}
 .line-filter-btn:hover{border-color:var(--accent);color:var(--accent);}
 .line-filter-btn.active{background:var(--accent);border-color:var(--accent);color:#000;font-weight:700;}
 #searchProduk:focus{border-color:var(--accent)!important;box-shadow:0 0 0 3px rgba(0,212,255,0.1);}
 .no-result{text-align:center;padding:24px;color:var(--text-muted);font-family:'Space Mono',monospace;font-size:12px;}
 
 /* Product Form Modal */
-.form-panel{background:rgba(10,18,40,0.65);border:1px solid rgba(0,200,255,0.2);border-radius:24px;padding:28px;width:92%;max-width:420px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 16px 48px rgba(0,0,0,0.4);}
+.form-panel{background:rgba(10,20,45,0.98);border:1px solid rgba(0,200,255,0.2);border-radius:24px;padding:28px;width:92%;max-width:420px;box-shadow:0 16px 48px rgba(0,0,0,0.5);}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .form-btns{display:flex;gap:10px;margin-top:20px;}
 .form-save{flex:1;background:linear-gradient(135deg,var(--accent),#0077ff);color:#000;padding:13px;border-radius:12px;border:none;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;}
 .form-cancel{background:rgba(255,255,255,0.06);border:1px solid var(--glass-border);color:var(--text-muted);padding:13px 20px;border-radius:12px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:12px;}
 
 /* Datepicker */
-.datepicker-panel{background:rgba(10,18,40,0.65);border:1px solid rgba(0,200,255,0.2);border-radius:24px;padding:28px;width:92%;max-width:360px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 16px 48px rgba(0,0,0,0.4);}
+.datepicker-panel{background:rgba(10,20,45,0.98);border:1px solid rgba(0,200,255,0.2);border-radius:24px;padding:28px;width:92%;max-width:360px;box-shadow:0 16px 48px rgba(0,0,0,0.5);}
 .dp-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
 .dp-title{font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;}
-.dp-nav{background:rgba(255,255,255,0.06);border:1px solid var(--glass-border);color:var(--text);width:34px;height:34px;border-radius:8px;cursor:pointer;font-size:16px;transition:all 0.2s;}
+.dp-nav{background:rgba(255,255,255,0.06);border:1px solid var(--glass-border);color:var(--text);width:34px;height:34px;border-radius:8px;cursor:pointer;font-size:16px;transition:opacity 0.15s,background 0.15s;}
 .dp-nav:hover{border-color:var(--accent);color:var(--accent);}
 .dp-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
 .dp-day-label{text-align:center;font-size:10px;font-family:'Space Mono',monospace;color:var(--text-muted);padding:4px 0 10px;}
-.dp-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:50%;cursor:pointer;font-size:12px;font-family:'Space Mono',monospace;transition:all 0.15s;border:1px solid transparent;}
+.dp-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:50%;cursor:pointer;font-size:12px;font-family:'Space Mono',monospace;transition:background 0.1s;border:1px solid transparent;}
 .dp-day:hover:not(.empty):not(.selected){background:rgba(255,255,255,0.08);border-color:var(--glass-border);}
 .dp-day.empty{cursor:default;}
 .dp-day.today{border-color:rgba(0,212,255,0.5);color:var(--accent);}
 .dp-day.selected{background:var(--accent);color:#000;font-weight:700;}
 
 /* Clock */
-.clock-panel{background:rgba(10,18,40,0.65);border:1px solid rgba(0,200,255,0.2);border-radius:28px;padding:20px 16px 24px;width:97%;max-width:400px;text-align:center;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 16px 48px rgba(0,0,0,0.4);}
-.clock-step-indicator{display:flex;gap:8px;justify-content:center;margin-bottom:10px;}
-.step-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.15);transition:all 0.2s;}
-.step-dot.active{background:var(--accent);box-shadow:0 0 8px var(--accent);}
-.clock-subtitle{font-size:11px;color:var(--text-muted);font-family:'Space Mono',monospace;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;}
-.clock-display{font-family:'Space Mono',monospace;font-size:52px;font-weight:700;color:var(--accent);margin-bottom:14px;text-shadow:0 0 30px rgba(0,212,255,0.4);cursor:default;line-height:1;}
-.clock-display .selected-part{color:var(--accent);text-decoration:underline;text-underline-offset:6px;}
-.clock-display .dim-part{color:var(--text-muted);}
+/* ── Hasil Perhitungan box ── */
+.hasil-box{
+  background:linear-gradient(135deg,rgba(0,212,255,0.12),rgba(0,100,200,0.08));
+  border:2px solid rgba(0,212,255,0.35);
+  border-radius:18px;padding:22px 20px;margin-bottom:20px;
+  position:relative;overflow:hidden;
+}
+.hasil-box::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(0,212,255,0.06) 0%,transparent 60%);
+  pointer-events:none;
+}
+.hasil-row{margin-bottom:16px;}
+.hasil-row:last-child{margin-bottom:0;}
+.hasil-label{
+  font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;
+  color:var(--accent);margin-bottom:4px;
+  text-transform:uppercase;letter-spacing:0.5px;
+}
+.hasil-row.steril .hasil-label{color:var(--accent2);}
+.hasil-value{
+  font-family:'Nunito',sans-serif;font-size:18px;font-weight:800;
+  color:#fff;letter-spacing:0;line-height:1.4;
+}
+.hasil-row.steril .hasil-value{color:#fff;}
+.hasil-total{
+  margin-top:16px;padding-top:14px;
+  border-top:1px solid rgba(0,212,255,0.2);
+  font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;
+  color:var(--accent);
+}
+
+/* ── Clock picker Material style ── */
+.clock-panel{
+  background:#fff;
+  border-radius:20px;
+  padding:0;
+  width:92%;max-width:340px;
+  text-align:center;
+  box-shadow:0 16px 48px rgba(0,0,0,0.5);
+  overflow:hidden;
+}
+.clock-header{
+  background:#e91e8c;
+  padding:20px 20px 16px;
+  text-align:center;
+}
+.clock-header-label{
+  font-size:11px;font-family:'Nunito',sans-serif;font-weight:700;
+  color:rgba(255,255,255,0.8);letter-spacing:1.5px;text-transform:uppercase;
+  margin-bottom:4px;
+}
+.clock-display{
+  font-family:'Nunito',sans-serif;font-size:58px;font-weight:800;
+  color:#fff;line-height:1;cursor:default;
+  text-shadow:none;margin-bottom:0;
+}
+.clock-display .selected-part{color:#fff;text-decoration:none;opacity:1;}
+.clock-display .dim-part{color:rgba(255,255,255,0.4);}
+.clock-body{padding:16px 16px 12px;background:#fff;}
+.clock-step-indicator{display:none;}
+.clock-subtitle{display:none;}
+.clock-legend{display:none;}
 .clock-face{
-  width:300px;height:300px;
+  /* ukuran = lebar panel minus padding kiri-kanan */
+  width:min(260px, calc(92vw - 64px));
+  height:min(260px, calc(92vw - 64px));
   border-radius:50%;
-  border:2px solid rgba(0,200,255,0.22);
-  margin:0 auto 14px;
+  border:none;
+  margin:0 auto 12px;
   position:relative;
   cursor:pointer;
-  background:radial-gradient(circle at center,rgba(10,30,60,0.92) 0%,rgba(6,11,24,0.97) 100%);
-  box-shadow:0 0 50px rgba(0,212,255,0.12),inset 0 0 40px rgba(0,0,0,0.5);
-  user-select:none;
-  touch-action:none;
+  background:#ede8e3;
+  box-shadow:inset 0 2px 8px rgba(0,0,0,0.08);
+  user-select:none;touch-action:none;
 }
-.clock-center{width:12px;height:12px;background:var(--accent);border-radius:50%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 14px var(--accent);z-index:3;}
-.clock-hand{position:absolute;bottom:50%;left:50%;width:3px;transform-origin:bottom center;border-radius:2px 2px 0 0;margin-left:-1.5px;z-index:2;transition:transform 0.12s ease,height 0.12s ease;}
+.clock-center{
+  width:10px;height:10px;
+  background:#e91e8c;
+  border-radius:50%;
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  z-index:3;
+}
+.clock-hand{
+  position:absolute;bottom:50%;left:50%;width:2px;
+  transform-origin:bottom center;
+  border-radius:2px 2px 0 0;
+  margin-left:-1px;z-index:2;
+  background:#e91e8c !important;
+  transition:transform 0.12s ease,height 0.12s ease;
+}
 .clock-num{
   position:absolute;
-  width:38px;height:38px;
+  width:32px;height:32px;
   display:flex;align-items:center;justify-content:center;
   border-radius:50%;
-  font-family:'Space Mono',monospace;font-size:13px;font-weight:700;
-  cursor:pointer;transition:all 0.15s;
+  font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;
+  cursor:pointer;transition:background 0.1s;
   transform:translate(-50%,-50%);
-  color:var(--text);
+  color:#333;
 }
-.clock-num:hover{background:rgba(0,212,255,0.15);color:var(--accent);}
-.clock-num.active{background:var(--accent);color:#000;font-weight:700;box-shadow:0 0 14px rgba(0,212,255,0.7);}
-.clock-num.inner{font-size:11px;color:rgba(180,200,220,0.6);}
-.clock-num.inner:hover{background:rgba(255,107,53,0.15);color:var(--accent2);}
-.clock-num.inner.active{background:var(--accent2);color:#000;box-shadow:0 0 14px rgba(255,107,53,0.7);}
-.clock-num.min-num{font-size:13px;font-weight:700;color:var(--text);}
-.clock-num.min-num:hover{background:rgba(0,229,160,0.15);color:var(--success);}
-.clock-num.min-num.active{background:var(--success);color:#000;box-shadow:0 0 14px rgba(0,229,160,0.7);}
-.clock-legend{display:flex;gap:14px;justify-content:center;margin-bottom:12px;font-size:10px;font-family:'Space Mono',monospace;color:var(--text-muted);}
-.clock-legend span{display:flex;align-items:center;gap:4px;}
-.dot{width:7px;height:7px;border-radius:50%;}
-.clock-btn-row{display:flex;gap:10px;}
-.clock-ok{flex:1;background:linear-gradient(135deg,var(--accent),#0077ff);color:#000;padding:15px;border-radius:14px;border:none;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:800;font-size:15px;box-shadow:var(--glow);}
-.clock-cancel{background:rgba(255,255,255,0.06);border:1px solid var(--glass-border);color:var(--text-muted);padding:15px 20px;border-radius:14px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:13px;}
-.clock-legend{display:flex;gap:14px;justify-content:center;margin-bottom:12px;font-size:10px;font-family:'Space Mono',monospace;color:var(--text-muted);}
-.clock-legend span{display:flex;align-items:center;gap:4px;}
-.dot{width:7px;height:7px;border-radius:50%;}
-.clock-btn-row{display:flex;gap:10px;}
-.clock-ok{flex:1;background:linear-gradient(135deg,var(--accent),#0077ff);color:#000;padding:14px;border-radius:12px;border:none;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:800;font-size:14px;box-shadow:var(--glow);}
-.clock-cancel{background:rgba(255,255,255,0.06);border:1px solid var(--glass-border);color:var(--text-muted);padding:14px 18px;border-radius:12px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:12px;}
+.clock-num:hover{background:rgba(233,30,140,0.12);}
+.clock-num.active{background:#e91e8c;color:#fff;}
+.clock-num.inner{font-size:11px;color:#999;}
+.clock-num.inner:hover{background:rgba(233,30,140,0.1);}
+.clock-num.inner.active{background:#e91e8c;color:#fff;}
+.clock-num.min-num{font-size:13px;font-weight:700;color:#333;}
+.clock-num.min-num:hover{background:rgba(233,30,140,0.12);}
+.clock-num.min-num.active{background:#e91e8c;color:#fff;}
+.clock-btn-row{
+  display:flex;justify-content:flex-end;align-items:center;
+  gap:4px;padding:8px 12px 14px;
+  background:#fff;
+}
+.clock-keyboard-btn{
+  margin-right:auto;
+  background:none;border:none;
+  font-size:20px;padding:8px;
+  cursor:pointer;color:#888;
+  border-radius:8px;
+  line-height:1;
+}
+.clock-keyboard-btn:hover{background:rgba(0,0,0,0.05);}
 
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(10,18,40,0.8);border:1px solid var(--success);color:var(--success);padding:12px 24px;border-radius:40px;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;transition:transform 0.3s ease;z-index:200;white-space:nowrap;backdrop-filter:blur(16px);}
+/* ── Mode input manual ── */
+.clock-type-body{
+  background:#fff;
+  padding:24px 24px 8px;
+}
+.clock-type-title{
+  font-family:'Nunito',sans-serif;font-size:15px;font-weight:600;
+  color:#555;margin-bottom:20px;
+}
+.clock-type-inputs{
+  display:flex;align-items:flex-end;gap:8px;
+}
+.clock-type-field{display:flex;flex-direction:column;align-items:center;}
+.clock-type-field input{
+  width:80px;
+  font-family:'Nunito',sans-serif;font-size:42px;font-weight:300;
+  color:#333;text-align:center;
+  border:none;border-bottom:2px solid #ccc;
+  outline:none;background:transparent;
+  padding:0 0 4px;
+  -moz-appearance:textfield;
+}
+.clock-type-field input:focus{border-bottom-color:#e91e8c;}
+.clock-type-field input::-webkit-inner-spin-button,
+.clock-type-field input::-webkit-outer-spin-button{-webkit-appearance:none;}
+.clock-type-label{
+  font-size:11px;color:#999;font-family:'Nunito',sans-serif;
+  margin-top:4px;letter-spacing:0.5px;
+}
+.clock-type-sep{
+  font-size:42px;font-weight:300;color:#333;
+  line-height:1;padding-bottom:20px;
+}
+.clock-ok{
+  background:none;color:#e91e8c;
+  padding:10px 16px;border-radius:8px;border:none;
+  cursor:pointer;font-family:'Nunito',sans-serif;font-weight:800;font-size:14px;
+  letter-spacing:1px;text-transform:uppercase;
+}
+.clock-cancel{
+  background:none;border:none;
+  color:rgba(0,0,0,0.45);
+  padding:10px 16px;border-radius:8px;
+  cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;font-size:14px;
+  letter-spacing:1px;text-transform:uppercase;
+}
+
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:rgba(10,20,45,0.95);border:1px solid var(--success);color:var(--success);padding:12px 24px;border-radius:40px;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;transition:transform 0.2s ease;z-index:200;white-space:nowrap;}
 .toast.show{transform:translateX(-50%) translateY(0);}
 
-@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fadeDown{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
 @media(max-width:480px){
   .result-grid,.delay-display-grid{grid-template-columns:1fr}
   .form-grid{grid-template-columns:1fr}
-  .clock-face{width:280px;height:280px;}
-  .clock-panel{padding:16px 12px 20px;}
-  .clock-display{font-size:46px;}
+  .clock-display{font-size:50px;}
 }
 @media(max-width:380px){
-  .clock-face{width:250px;height:250px;}
-  .clock-display{font-size:40px;}
+  .clock-display{font-size:44px;}
 }
 @media(max-width:340px){
-  .clock-face{width:220px;height:220px;}
+  .clock-display{font-size:38px;}
 }
 </style>
 </head>
@@ -449,19 +559,24 @@ textarea{resize:vertical;min-height:80px;}
   <!-- 04 -->
   <div class="card" id="hasilCard">
     <div class="card-title">04 — Hasil Perhitungan</div>
-    <div class="result-grid">
-      <div class="result-item mixing">
-        <div class="result-item-label">Batas Mix-Fill</div>
-        <div class="result-day" id="hasilMixingHari">—</div>
-        <div class="result-date" id="hasilMixingTgl">—</div>
-        <div class="result-value" id="hasilMixing">--:--</div>
+    <div class="hasil-box" id="hasilCard">
+      <div class="hasil-row">
+        <div class="hasil-label">🔵 Batas Delay Time Mixing :</div>
+        <div class="hasil-value">
+          <span id="hasilMixingHari">—</span>,
+          <span id="hasilMixingTgl">—</span>
+          Jam <span id="hasilMixing">--:--</span>
+        </div>
       </div>
-      <div class="result-item steril">
-        <div class="result-item-label">Batas Steril</div>
-        <div class="result-day" id="hasilSterilHari">—</div>
-        <div class="result-date" id="hasilSterilTgl">—</div>
-        <div class="result-value" id="hasilSteril">--:--</div>
+      <div class="hasil-row steril">
+        <div class="hasil-label">🟠 Batas Delay Time Steril :</div>
+        <div class="hasil-value">
+          <span id="hasilSterilHari">—</span>,
+          <span id="hasilSterilTgl">—</span>
+          Jam <span id="hasilSteril">--:--</span>
+        </div>
       </div>
+      <div class="hasil-total">⏱ Total Waktu : <span id="hasilTotalJam">--</span> Jam</div>
     </div>
     <div class="action-row">
       <button class="btn-save shimmer-btn" onclick="simpan()">💾 SIMPAN</button>
@@ -485,7 +600,7 @@ textarea{resize:vertical;min-height:80px;}
     <div class="modal-title">📦 Pilih Produk</div>
     <div style="margin-bottom:14px;position:relative;">
       <input type="text" id="searchProduk" placeholder="🔍 Cari kode produk atau line..." oninput="filterProduk(this.value)"
-        style="width:100%;padding:11px 14px 11px 38px;background:rgba(255,255,255,0.07);border:1px solid var(--glass-border);border-radius:10px;color:var(--text);font-family:'Nunito',sans-serif;font-size:13px;outline:none;transition:all 0.2s;">
+        style="width:100%;padding:11px 14px 11px 38px;background:rgba(255,255,255,0.07);border:1px solid var(--glass-border);border-radius:10px;color:var(--text);font-family:'Nunito',sans-serif;font-size:13px;outline:none;transition:opacity 0.15s,background 0.15s;">
       <span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;opacity:0.5;">🔍</span>
     </div>
     <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;" id="lineFilterBtns"></div>
@@ -551,25 +666,37 @@ textarea{resize:vertical;min-height:80px;}
 <!-- CLOCK OVERLAY -->
 <div class="overlay" id="overlayClock">
   <div class="clock-panel">
-    <div class="clock-step-indicator">
-      <div class="step-dot active" id="stepDot1"></div>
-      <div class="step-dot" id="stepDot2"></div>
+    <div class="clock-header">
+      <div class="clock-header-label" id="clockSubtitle">PILIH JAM</div>
+      <div class="clock-display" id="clockDisplay">
+        <span id="displayJam">00</span><span class="dim-part">:</span><span id="displayMenit" class="dim-part">00</span>
+      </div>
     </div>
-    <div class="clock-subtitle" id="clockSubtitle">Pilih Jam</div>
-    <div class="clock-display" id="clockDisplay">
-      <span id="displayJam">00</span><span style="color:var(--text-muted)">:</span><span id="displayMenit" style="color:var(--text-muted)">00</span>
+    <div class="clock-body" id="clockBodyFace">
+      <div class="clock-face" id="clockFace">
+        <div class="clock-hand" id="clockHand"></div>
+        <div class="clock-center"></div>
+      </div>
     </div>
-    <div class="clock-face" id="clockFace">
-      <div class="clock-hand" id="clockHand"></div>
-      <div class="clock-center"></div>
-    </div>
-    <div class="clock-legend" id="clockLegend">
-      <span><span class="dot" style="background:var(--accent)"></span> 0–11 luar</span>
-      <span><span class="dot" style="background:var(--accent2)"></span> 12–23 dalam</span>
+    <!-- Mode input manual (keyboard) -->
+    <div class="clock-body clock-type-body" id="clockBodyType" style="display:none;">
+      <div class="clock-type-title">Type in time</div>
+      <div class="clock-type-inputs">
+        <div class="clock-type-field">
+          <input type="number" id="typeJam" min="0" max="23" placeholder="00" inputmode="numeric" oninput="onTypeJam(this)">
+          <div class="clock-type-label">hour</div>
+        </div>
+        <div class="clock-type-sep">:</div>
+        <div class="clock-type-field">
+          <input type="number" id="typeMenit" min="0" max="59" placeholder="00" inputmode="numeric" oninput="onTypeMenit(this)">
+          <div class="clock-type-label">minute</div>
+        </div>
+      </div>
     </div>
     <div class="clock-btn-row">
-      <button class="clock-cancel" onclick="tutupOverlay('overlayClock')">Batal</button>
-      <button class="clock-ok" id="clockOkBtn" onclick="clockNextStep()">Pilih Jam →</button>
+      <button class="clock-keyboard-btn" id="clockKbdBtn" onclick="toggleClockMode()" title="Keyboard / Clock">⌨</button>
+      <button class="clock-cancel" onclick="tutupOverlay('overlayClock')">BATAL</button>
+      <button class="clock-ok" id="clockOkBtn" onclick="clockNextStep()">OKE</button>
     </div>
   </div>
 </div>
@@ -621,8 +748,13 @@ textarea{resize:vertical;min-height:80px;}
         <div class="tema-name">Purple Night</div>
         <div class="tema-desc">00:01 – 08:00</div>
       </div>
+      <div class="tema-card" onclick="setTema('concord')" id="tema-concord">
+        <div class="tema-preview concord-prev"></div>
+        <div class="tema-name">Concord Paper</div>
+        <div class="tema-desc">Klasik hangat</div>
+      </div>
     </div>
-    <button onclick="setTemaAuto()" style="width:100%;margin-bottom:8px;padding:12px;border-radius:12px;border:1px solid rgba(0,212,255,0.3);background:rgba(0,212,255,0.08);color:var(--accent);font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;cursor:pointer;transition:all 0.2s;">🕐 Ikuti Jam Otomatis</button>
+    <button onclick="setTemaAuto()" style="width:100%;margin-bottom:8px;padding:12px;border-radius:12px;border:1px solid rgba(0,212,255,0.3);background:rgba(0,212,255,0.08);color:var(--accent);font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;cursor:pointer;transition:opacity 0.15s,background 0.15s;">🕐 Ikuti Jam Otomatis</button>
     <button class="modal-close" onclick="tutupOverlay('overlayTema')">✕ Tutup</button>
   </div>
 </div>
@@ -636,40 +768,40 @@ textarea{resize:vertical;min-height:80px;}
 .dialog-title{font-family:'Space Mono',monospace;font-size:15px;font-weight:700;margin-bottom:10px;color:var(--text);}
 .dialog-msg{font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:24px;}
 .dialog-btns{display:flex;flex-direction:column;gap:10px;}
-.dialog-btn-ok{background:linear-gradient(135deg,var(--accent),#0077ff);color:#000;padding:14px;border-radius:12px;border:none;cursor:pointer;font-family:'Space Mono',monospace;font-weight:700;font-size:13px;box-shadow:0 4px 14px rgba(0,212,255,0.35),0 2px 0 rgba(0,0,0,0.1);transition:all 0.2s;position:relative;overflow:hidden;}
-.dialog-btn-ok::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent);transform:skewX(-20deg);animation:shimmer 2.5s infinite;}
+.dialog-btn-ok{background:linear-gradient(135deg,var(--accent),#0077ff);color:#000;padding:14px;border-radius:12px;border:none;cursor:pointer;font-family:'Space Mono',monospace;font-weight:700;font-size:13px;box-shadow:0 4px 14px rgba(0,212,255,0.35),0 2px 0 rgba(0,0,0,0.1);transition:opacity 0.15s,background 0.15s;position:relative;overflow:hidden;}
+.dialog-btn-ok::after{display:none}
 .dialog-btn-ok:hover{transform:translateY(-1px);}
-.dialog-btn-skip{background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:12px;border-radius:12px;cursor:pointer;font-family:'Space Mono',monospace;font-size:12px;transition:all 0.2s;}
+.dialog-btn-skip{background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:12px;border-radius:12px;cursor:pointer;font-family:'Space Mono',monospace;font-size:12px;transition:opacity 0.15s,background 0.15s;}
 .dialog-btn-skip:hover{border-color:var(--accent2);color:var(--accent2);}
 
 /* ===== TEMA PICKER ===== */
-.tema-panel{background:rgba(8,15,35,0.75);border:1px solid rgba(0,200,255,0.2);border-radius:24px;padding:28px;width:92%;max-width:380px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);}
-.tema-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
-.tema-card{border:2px solid rgba(0,200,255,0.15);border-radius:16px;padding:10px 8px;cursor:pointer;transition:all 0.2s;text-align:center;}
+.tema-panel{background:rgba(10,20,45,0.98);border:1px solid rgba(0,200,255,0.2);border-radius:24px;padding:28px;width:92%;max-width:380px;box-shadow:0 16px 48px rgba(0,0,0,0.5);}
+.tema-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px;}
+.tema-card{border:2px solid rgba(0,200,255,0.15);border-radius:16px;padding:10px 8px;cursor:pointer;transition:opacity 0.15s,background 0.15s;text-align:center;}
 .tema-card:hover{border-color:var(--accent);transform:translateY(-2px);}
 .tema-card.active{border-color:var(--accent);box-shadow:0 0 16px rgba(0,212,255,0.25);}
 .tema-preview{height:52px;border-radius:10px;margin-bottom:8px;}
 .dark-prev{background:linear-gradient(135deg,#060b18 0%,rgba(16,26,52,0.9) 50%,rgba(0,212,255,0.15) 100%);border:1px solid rgba(0,200,255,0.2);}
 .apple-prev{background:linear-gradient(135deg,#f5f5f7 0%,#ffffff 60%,#e8e8ed 100%);border:1px solid #d1d1d6;}
 .purple-prev{background:linear-gradient(135deg,#0d0d1a 0%,#16213e 50%,rgba(108,99,255,0.3) 100%);border:1px solid #3a3a6e;}
+.concord-prev{background:linear-gradient(135deg,#c8b89a 0%,#e8dcc8 50%,#d4c4a0 100%);border:1px solid #b8a080;}
 .tema-name{font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;margin-bottom:2px;}
 .tema-desc{font-size:9px;color:var(--text-muted);}
 
 /* ===== DIALOG & MODAL GLASS ===== */
 .dialog-panel{
-  background:rgba(8,15,35,0.75);border:1px solid rgba(0,200,255,0.2);
+  background:rgba(10,20,45,0.98);border:1px solid rgba(0,200,255,0.2);
   border-radius:24px;padding:32px 28px;width:90%;max-width:360px;text-align:center;
-  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
   box-shadow:0 16px 48px rgba(0,0,0,0.5);
 }
 .dialog-icon{font-size:36px;margin-bottom:12px;}
 .dialog-title{font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;margin-bottom:10px;color:var(--text);}
 .dialog-msg{font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:24px;font-family:'Nunito',sans-serif;}
 .dialog-btns{display:flex;flex-direction:column;gap:10px;}
-.dialog-btn-ok{background:linear-gradient(135deg,var(--accent),#0077ff);color:#000;padding:14px;border-radius:12px;border:none;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;box-shadow:0 4px 14px rgba(0,212,255,0.35);transition:all 0.2s;position:relative;overflow:hidden;}
-.dialog-btn-ok::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent);transform:skewX(-20deg);animation:shimmer 2.5s infinite;}
+.dialog-btn-ok{background:linear-gradient(135deg,var(--accent),#0077ff);color:#000;padding:14px;border-radius:12px;border:none;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;box-shadow:0 4px 14px rgba(0,212,255,0.35);transition:opacity 0.15s,background 0.15s;position:relative;overflow:hidden;}
+.dialog-btn-ok::after{display:none}
 .dialog-btn-ok:hover{transform:translateY(-1px);}
-.dialog-btn-skip{background:rgba(255,255,255,0.06);border:1px solid rgba(0,200,255,0.15);color:var(--text-muted);padding:12px;border-radius:12px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:12px;transition:all 0.2s;}
+.dialog-btn-skip{background:rgba(255,255,255,0.06);border:1px solid rgba(0,200,255,0.15);color:var(--text-muted);padding:12px;border-radius:12px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:12px;transition:opacity 0.15s,background 0.15s;}
 .dialog-btn-skip:hover{border-color:var(--accent2);color:var(--accent2);}
 
 /* ===== APPLE THEME ===== */
@@ -714,7 +846,17 @@ body.apple .history-batch{color:#3c3c43;}
 body.apple .hbtn{color:#3c3c43;font-weight:700;}
 body.apple .btn-save{background:linear-gradient(180deg,#4cd964,#34c759);box-shadow:0 4px 14px rgba(52,199,89,0.35);color:#003d1a;font-weight:800;}
 body.apple .btn-wa{color:#fff;font-weight:800;}
-body.apple .btn-ghost{color:#3c3c43;}
+body.apple .btn-ghost{color:#ff3b30;border-color:rgba(255,59,48,0.35);background:rgba(255,59,48,0.08);}
+/* Apple tema — hasil box warna gold */
+body.apple .hasil-box{
+  background:linear-gradient(135deg,rgba(255,200,50,0.18),rgba(200,140,0,0.1));
+  border-color:rgba(200,160,0,0.45);
+}
+body.apple .hasil-box::before{background:linear-gradient(135deg,rgba(255,215,0,0.1) 0%,transparent 60%);}
+body.apple .hasil-label{color:#996600;}
+body.apple .hasil-row.steril .hasil-label{color:#c87000;}
+body.apple .hasil-value{color:#7a5200 !important;font-weight:900;}
+body.apple .hasil-total{color:#996600;border-top-color:rgba(200,160,0,0.3);}
 body.apple .card-title::after{background:#d1d1d6;}
 body.apple .modal-panel,body.apple .form-panel,body.apple .datepicker-panel,body.apple .clock-panel,body.apple .dialog-panel,body.apple .tema-panel{
   background:rgba(255,255,255,0.85);border-color:#d8d8dd;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
@@ -769,7 +911,145 @@ body.purple .dp-day.today{border-color:rgba(108,99,255,0.5);color:#6c63ff;}
 body.purple .btn-wa{background:linear-gradient(135deg,#1a9e4a,#25d366);}
 body.purple .tema-card.active{border-color:#6c63ff;box-shadow:0 0 16px rgba(108,99,255,0.3);}
 body.purple .modal-panel,body.purple .form-panel,body.purple .datepicker-panel,body.purple .clock-panel,body.purple .dialog-panel,body.purple .tema-panel{border-color:rgba(108,99,255,0.25);background:rgba(16,14,40,0.7);}
+
+/* ── Purple clock glass ── */
+body.purple .clock-panel{
+  background:rgba(20,16,50,0.45);
+  border:1px solid rgba(108,99,255,0.3);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+}
+body.purple .clock-body,body.purple .clock-type-body{background:transparent;}
+body.purple .clock-btn-row{background:transparent;}
+body.purple .clock-face{background:rgba(40,30,80,0.4);box-shadow:none;}
+body.purple .clock-num{color:rgba(220,210,255,0.9);}
+body.purple .clock-num.inner{color:rgba(180,170,220,0.5);}
+body.purple .clock-cancel{color:rgba(220,210,255,0.45);}
+body.purple .clock-type-title{color:rgba(200,190,255,0.8);}
+body.purple .clock-type-sep{color:rgba(220,210,255,0.9);}
+body.purple .clock-type-field input{color:rgba(220,210,255,0.9);border-bottom-color:rgba(108,99,255,0.4);}
+body.purple .clock-type-label{color:rgba(180,170,220,0.6);}
+
+/* ── Dark clock glass ── */
+body:not(.apple):not(.purple):not(.concord) .clock-panel{
+  background:rgba(18,30,65,0.75);
+  border:1px solid rgba(0,200,255,0.35);
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+  box-shadow:0 8px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,200,255,0.1);
+}
+body:not(.apple):not(.purple):not(.concord) .clock-body,
+body:not(.apple):not(.purple):not(.concord) .clock-type-body{background:transparent;}
+body:not(.apple):not(.purple):not(.concord) .clock-btn-row{background:transparent;}
+body:not(.apple):not(.purple):not(.concord) .clock-face{background:rgba(30,55,110,0.55);box-shadow:inset 0 2px 12px rgba(0,180,255,0.08);}
+body:not(.apple):not(.purple):not(.concord) .clock-num{color:rgba(220,245,255,1);text-shadow:0 0 8px rgba(0,200,255,0.25);}
+body:not(.apple):not(.purple):not(.concord) .clock-num.inner{color:rgba(160,210,240,0.75);}
+body:not(.apple):not(.purple):not(.concord) .clock-cancel{color:rgba(180,220,255,0.65);}
+body:not(.apple):not(.purple):not(.concord) .clock-type-title{color:rgba(200,235,255,0.9);}
+body:not(.apple):not(.purple):not(.concord) .clock-type-sep{color:rgba(220,245,255,1);}
+body:not(.apple):not(.purple):not(.concord) .clock-type-field input{color:rgba(220,245,255,1);border-bottom-color:rgba(0,200,255,0.5);}
+body:not(.apple):not(.purple):not(.concord) .clock-type-label{color:rgba(160,210,240,0.75);}
 body.purple input:focus,body.purple textarea:focus{border-color:#6c63ff;box-shadow:0 0 0 3px rgba(108,99,255,0.15);}
+
+/* ═══════════════════════════════════
+   TEMA: CONCORD PAPER — cokelat krem
+   ═══════════════════════════════════ */
+body.concord{
+  background:#c4aa84;
+  color:#2c1f0e;
+  background-image:
+    radial-gradient(ellipse at 20% 10%,rgba(180,140,80,0.3) 0%,transparent 60%);
+}
+body.concord .container{position:relative;}
+/* Tekstur kertas */
+body.concord::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+  opacity:0.5;
+}
+body.concord .card{
+  background:rgba(235,218,190,0.92);
+  border-color:rgba(160,120,70,0.35);
+  border-radius:12px;
+  box-shadow:0 2px 12px rgba(100,70,30,0.15),inset 0 1px 0 rgba(255,255,255,0.5);
+}
+body.concord .card::before{background:linear-gradient(90deg,transparent,#b8925a,transparent);opacity:0.4;}
+body.concord .card-title{color:#7a4f1e;font-weight:800;letter-spacing:0.5px;}
+body.concord .card-title::after{background:rgba(120,80,30,0.2);}
+body.concord label{color:#5a3a12;font-weight:700;}
+body.concord .text-muted{color:#8a6a3a;}
+/* Logo */
+body.concord .logo-icon{background:linear-gradient(135deg,#c8850a,#8b5e1a);}
+body.concord .logo-text{color:#2c1f0e;font-weight:900;}
+body.concord .logo-text span{color:#a0621a;}
+body.concord .hbtn{background:rgba(160,120,70,0.15);border-color:rgba(140,100,50,0.3);color:#5a3a12;}
+/* Input */
+body.concord input,body.concord .btn-pilih-produk,body.concord .waktu-display{
+  background:rgba(255,248,235,0.85);
+  border-color:rgba(160,120,60,0.4);
+  border-radius:10px;color:#2c1f0e;
+}
+body.concord input::placeholder{color:#a08050;}
+body.concord .btn-pilih-produk .placeholder{color:#a08050;}
+body.concord input:focus,body.concord textarea:focus{border-color:#a0621a;box-shadow:0 0 0 3px rgba(160,98,26,0.15);}
+/* Delay box */
+body.concord .delay-box{background:rgba(255,248,230,0.8);border-color:rgba(160,120,60,0.3);}
+body.concord .delay-box-val{color:#a0621a;font-weight:800;}
+body.concord .delay-box.steril .delay-box-val{color:#7a3a0a;}
+body.concord .delay-box-label{color:#5a3a12;font-weight:700;}
+body.concord .delay-box-unit{color:#8a6040;}
+/* Waktu display */
+body.concord .wval{color:#a0621a;font-weight:800;}
+body.concord .wlabel{color:#5a3a12;}
+/* Buttons */
+body.concord .btn-primary{background:linear-gradient(135deg,#c8850a,#8b5e1a);color:#fff;box-shadow:0 4px 14px rgba(140,80,10,0.35);}
+body.concord .btn-ghost{background:rgba(180,60,40,0.1);border-color:rgba(180,60,40,0.3);color:#b03010;}
+body.concord .btn-save{background:linear-gradient(135deg,#5a8a3a,#3a6a1a);color:#fff;box-shadow:0 4px 14px rgba(60,100,20,0.35);}
+body.concord .btn-wa{background:linear-gradient(135deg,#1a9e4a,#25d366);color:#fff;}
+/* Hasil box */
+body.concord .hasil-box{
+  background:linear-gradient(135deg,rgba(200,160,80,0.2),rgba(160,110,40,0.1));
+  border-color:rgba(160,110,40,0.4);
+}
+body.concord .hasil-label{color:#8b5e1a;}
+body.concord .hasil-row.steril .hasil-label{color:#7a3a0a;}
+body.concord .hasil-value{color:#4a2e08 !important;font-weight:900;}
+body.concord .hasil-total{color:#8b5e1a;border-top-color:rgba(160,110,40,0.25);}
+/* History */
+body.concord .history-item{background:rgba(255,248,230,0.75);border-color:rgba(160,120,60,0.25);}
+body.concord .history-name{color:#2c1f0e;font-weight:800;}
+body.concord .history-batch{color:#7a5a2a;}
+body.concord .history-time{color:#8b5e1a;}
+body.concord .history-time.steril{color:#7a3a0a;}
+/* Pointer */
+body.concord .pilih-pointer .ptr-arrow{color:#a0621a;}
+body.concord .pilih-pointer .ptr-text{color:#a0621a;}
+/* Modal & panel */
+body.concord .modal-panel,body.concord .form-panel,body.concord .datepicker-panel,
+body.concord .dialog-panel,body.concord .tema-panel,body.concord .clock-panel{
+  background:rgba(240,225,200,0.97);
+  border-color:rgba(160,120,60,0.3);
+}
+body.concord .modal-title{color:#8b5e1a;}
+body.concord .line-group-title{color:#c8850a;}
+body.concord .prod-item:hover{background:rgba(200,160,80,0.15);}
+body.concord .modal-close{background:rgba(160,120,60,0.1);border-color:rgba(140,100,50,0.25);color:#5a3a12;}
+/* Datepicker */
+body.concord .dp-title{color:#2c1f0e;}
+body.concord .dp-day-label{color:#8a6040;}
+body.concord .dp-day{color:#2c1f0e;}
+body.concord .dp-day.today{border-color:rgba(160,98,26,0.5);color:#a0621a;}
+body.concord .dp-day.selected{background:#a0621a;color:#fff;}
+body.concord .dp-nav{background:rgba(200,160,80,0.15);border-color:rgba(140,100,50,0.3);color:#5a3a12;}
+/* Clock pink tetap */
+body.concord .clock-header{background:#c8850a;}
+body.concord .clock-face{background:#f0e8d8;}
+body.concord .clock-num{color:#3a2510;}
+body.concord .clock-num.inner{color:#8a6a3a;}
+/* Card-title border */
+body.concord .btn-clear{border-color:rgba(180,60,40,0.3);color:rgba(180,60,40,0.8);}
+/* Tema active */
+body.concord .tema-card.active{border-color:#a0621a;box-shadow:0 0 16px rgba(160,98,26,0.25);}
 </style>
 
 <script>
@@ -832,7 +1112,6 @@ function bukaModalProduk(){
   renderLineFilterBtns();
   renderProdukList('produkList', true);
   bukaOverlay('overlayProduk');
-  setTimeout(()=>document.getElementById('searchProduk').focus(), 300);
 }
 
 function renderLineFilterBtns(){
@@ -1028,26 +1307,33 @@ function bukaClock(){
   state.clockStep = 'hour';
   state.clockJam = state.jamMulai||0;
   state.clockMenit = state.menitMulai||0;
-  showClockStep('hour');
+  clockModeType = false;
+  // Reset ke mode clock
+  const facEl = document.getElementById('clockBodyFace');
+  const typEl = document.getElementById('clockBodyType');
+  if(facEl) facEl.style.display='block';
+  if(typEl) typEl.style.display='none';
+  const kbdBtn = document.getElementById('clockKbdBtn');
+  if(kbdBtn){ kbdBtn.textContent='⌨'; }
+  const sub = document.getElementById('clockSubtitle');
+  if(sub){ sub.style.display='block'; }
   bukaOverlay('overlayClock');
+  requestAnimationFrame(()=>requestAnimationFrame(()=>showClockStep('hour')));
 }
 
 function showClockStep(step){
   state.clockStep = step;
   const isHour = step==='hour';
-  document.getElementById('stepDot1').classList.toggle('active', isHour);
-  document.getElementById('stepDot2').classList.toggle('active', !isHour);
   document.getElementById('clockSubtitle').textContent = isHour ? 'PILIH JAM' : 'PILIH MENIT';
-  document.getElementById('clockOkBtn').textContent = isHour ? 'Pilih Jam →' : '✓ Selesai';
-  document.getElementById('clockLegend').style.display = isHour ? 'flex' : 'none';
+  document.getElementById('clockOkBtn').textContent = isHour ? 'LANJUT' : 'OKE';
 
   if(isHour){
-    document.getElementById('displayJam').style.color='var(--accent)';
-    document.getElementById('displayMenit').style.color='var(--text-muted)';
+    document.getElementById('displayJam').classList.remove('dim-part');
+    document.getElementById('displayMenit').classList.add('dim-part');
     renderHourNums();
   } else {
-    document.getElementById('displayJam').style.color='var(--text-muted)';
-    document.getElementById('displayMenit').style.color='var(--success)';
+    document.getElementById('displayJam').classList.add('dim-part');
+    document.getElementById('displayMenit').classList.remove('dim-part');
     renderMinuteNums();
   }
   updateDisplayClock();
@@ -1066,7 +1352,9 @@ function renderHourNums(){
   for(let h=0;h<24;h++){
     const isInner = h>=12;
     const R = isInner ? size*0.26 : size*0.38;
-    const angle = ((h%12)*30-90)*Math.PI/180;
+    // Tukar posisi: 12 di atas (sudut -90°), 00 di posisi 12 (sudut 270°)
+    const posH = h===0 ? 12 : h===12 ? 0 : h;
+    const angle = ((posH%12)*30-90)*Math.PI/180;
     const x = CX + R*Math.cos(angle);
     const y = CY + R*Math.sin(angle);
     const el = document.createElement('div');
@@ -1082,23 +1370,43 @@ function renderHourNums(){
 
 function renderMinuteNums(){
   const face = document.getElementById('clockFace');
-  face.querySelectorAll('.clock-num').forEach(n=>n.remove());
+  face.querySelectorAll('.clock-num,.min-dot').forEach(n=>n.remove());
   const size = face.offsetWidth || 300;
   const CX = size/2, CY = size/2;
-  const minutes = [0,5,10,15,20,25,30,35,40,45,50,55];
-  minutes.forEach(m => {
-    const R = size*0.38;
-    const angle = (m*6-90)*Math.PI/180;
+
+  // Render semua 60 menit
+  for(let m=0; m<60; m++){
+    const angle = (m*6 - 90)*Math.PI/180;
+    const isLabel = m%5 === 0;  // kelipatan 5 = angka besar
+    const R = isLabel ? size*0.38 : size*0.38;
     const x = CX + R*Math.cos(angle);
     const y = CY + R*Math.sin(angle);
     const el = document.createElement('div');
-    el.className='clock-num min-num'+(m===state.clockMenit?' active':'');
-    el.style.left = x+'px';
-    el.style.top = y+'px';
-    el.textContent = String(m).padStart(2,'0');
+
+    if(isLabel){
+      // Angka kelipatan 5 — tampil sebagai label
+      el.className = 'clock-num min-num' + (m===state.clockMenit?' active':'');
+      el.style.cssText = `left:${x}px;top:${y}px;`;
+      el.textContent = String(m).padStart(2,'0');
+    } else {
+      // Menit lain — tampil sebagai titik kecil
+      el.className = 'min-dot' + (m===state.clockMenit?' active':'');
+      el.style.cssText = `
+        position:absolute;
+        left:${x}px;top:${y}px;
+        width:${m===state.clockMenit?12:5}px;
+        height:${m===state.clockMenit?12:5}px;
+        border-radius:50%;
+        background:${m===state.clockMenit?'#e91e8c':'rgba(100,100,120,0.4)'};
+        transform:translate(-50%,-50%);
+        cursor:pointer;
+        z-index:2;
+        transition:background 0.1s;
+      `;
+    }
     el.onclick = ()=>selectMinute(m);
     face.appendChild(el);
-  });
+  }
   updateHandMinute(state.clockMenit);
 }
 
@@ -1118,10 +1426,29 @@ function selectHour(h, fromDrag=false){
 
 function selectMinute(m, fromDrag=false){
   state.clockMenit=m;
+  // Update label kelipatan 5
   document.querySelectorAll('.clock-num.min-num').forEach(n=>{
     n.classList.remove('active');
     if(parseInt(n.textContent)===m) n.classList.add('active');
   });
+  // Update titik menit non-kelipatan 5
+  document.querySelectorAll('.min-dot').forEach((n,i)=>{
+    const dotM = parseInt(n.dataset.m||0);
+    n.classList.remove('active');
+    n.style.background = 'rgba(100,100,120,0.4)';
+    n.style.width = '5px'; n.style.height = '5px';
+  });
+  // Tandai titik aktif jika bukan kelipatan 5
+  if(m%5 !== 0){
+    const allDots = document.querySelectorAll('.min-dot');
+    // hitung index dot: menit non-kelipatan 5, urutannya 1,2,3,4,6,7,...
+    let dotIdx = 0;
+    for(let i=1;i<60;i++){
+      if(i%5===0) continue;
+      if(i===m){ allDots[dotIdx].style.background='#e91e8c'; allDots[dotIdx].style.width='12px'; allDots[dotIdx].style.height='12px'; break; }
+      dotIdx++;
+    }
+  }
   updateHandMinute(m);
   updateDisplayClock();
 }
@@ -1132,10 +1459,10 @@ function updateHandHour(h){
   const size = face.offsetWidth || 300;
   const isInner = h>=12;
   hand.style.height = (isInner ? size*0.20 : size*0.30)+'px';
-  hand.style.background = isInner
-    ? 'linear-gradient(to top,var(--accent2),rgba(255,107,53,0.1))'
-    : 'linear-gradient(to top,var(--accent),rgba(0,212,255,0.1))';
-  hand.style.transform = `rotate(${(h%12)*30}deg)`;
+  hand.style.background = '#e91e8c';
+  // Tukar posisi: 0→posisi12, 12→posisi0
+  const posH = h===0 ? 12 : h===12 ? 0 : h;
+  hand.style.transform = `rotate(${(posH%12)*30}deg)`;
 }
 
 function updateHandMinute(m){
@@ -1143,7 +1470,7 @@ function updateHandMinute(m){
   const face = document.getElementById('clockFace');
   const size = face.offsetWidth || 300;
   hand.style.height = (size*0.30)+'px';
-  hand.style.background = 'linear-gradient(to top,var(--success),rgba(0,229,160,0.1))';
+  hand.style.background = '#e91e8c';
   hand.style.transform = `rotate(${m*6}deg)`;
 }
 
@@ -1159,11 +1486,56 @@ function clockNextStep(){
     el.style.color='var(--accent)';
     tutupOverlay('overlayClock');
     showToast(`✓ Waktu dipilih: ${String(state.clockJam).padStart(2,'0')}:${String(state.clockMenit).padStart(2,'0')}`);
-    // Auto-scroll to card 3 (delay time)
     setTimeout(()=>{
       document.getElementById('card-delay').scrollIntoView({behavior:'smooth',block:'center'});
     }, 400);
   }
+}
+
+let clockModeType = false; // false=clock, true=keyboard
+
+function toggleClockMode(){
+  clockModeType = !clockModeType;
+  const facEl = document.getElementById('clockBodyFace');
+  const typEl = document.getElementById('clockBodyType');
+  const subtitle = document.getElementById('clockSubtitle');
+  const kbdBtn = document.getElementById('clockKbdBtn');
+  if(clockModeType){
+    // Mode keyboard
+    facEl.style.display = 'none';
+    typEl.style.display = 'block';
+    subtitle.textContent = 'Set time';
+    kbdBtn.textContent = '🕐';
+    kbdBtn.title = 'Kembali ke jam';
+    // Isi nilai saat ini
+    document.getElementById('typeJam').value = String(state.clockJam).padStart(2,'0');
+    document.getElementById('typeMenit').value = String(state.clockMenit).padStart(2,'0');
+    // Sembunyikan subtitle label, hanya tampilkan header besar
+    document.getElementById('clockSubtitle').style.display='none';
+  } else {
+    // Mode clock
+    facEl.style.display = 'block';
+    typEl.style.display = 'none';
+    subtitle.textContent = state.clockStep==='hour' ? 'PILIH JAM' : 'PILIH MENIT';
+    kbdBtn.textContent = '⌨';
+    kbdBtn.title = 'Input manual';
+    document.getElementById('clockSubtitle').style.display='block';
+    requestAnimationFrame(()=>requestAnimationFrame(()=>showClockStep(state.clockStep)));
+  }
+}
+
+function onTypeJam(el){
+  let v = parseInt(el.value)||0;
+  if(v>23) v=23;
+  state.clockJam = v;
+  updateDisplayClock();
+}
+
+function onTypeMenit(el){
+  let v = parseInt(el.value)||0;
+  if(v>59) v=59;
+  state.clockMenit = v;
+  updateDisplayClock();
 }
 
 // Clock drag
@@ -1188,10 +1560,9 @@ function handleDrag(e){
     if(dist<rect.width*0.28)h+=12;
     if(h!==state.clockJam)selectHour(h, true); // fromDrag=true → tidak auto-advance
   } else {
-    const mins=[0,5,10,15,20,25,30,35,40,45,50,55];
     let m=Math.round(ang/6)%60;
-    const nearest=mins.reduce((a,b)=>Math.abs(b-m)<Math.abs(a-m)?b:a);
-    if(nearest!==state.clockMenit)selectMinute(nearest, true);
+    if(m<0)m+=60;
+    if(m!==state.clockMenit)selectMinute(m, true);
   }
 }
 
@@ -1227,18 +1598,28 @@ let histori=JSON.parse(localStorage.getItem('dtHistory')||'[]');
 function renderHistory(){
   const el=document.getElementById('historyList');
   if(!histori.length){el.innerHTML='<div class="history-empty">📋 Belum ada data tersimpan</div>';return;}
-  el.innerHTML=histori.map((h,i)=>`
+  el.innerHTML=histori.map((h,i)=>{
+    const namaLine = h.namaLine || h.nama;
+    const mxJam_h  = h.mxJam_h  !== undefined ? h.mxJam_h  : '--';
+    const stJam_h  = h.stJam_h  !== undefined ? h.stJam_h  : '--';
+    return `
     <div class="history-item">
-      <div>
-        <div class="history-name">${h.nama}</div>
-        <div class="history-batch">${h.batch?h.batch+' · ':''}${h.tgl} ${h.waktuMulai}</div>
+      <div style="grid-column:1/-1;display:flex;justify-content:space-between;align-items:flex-start;">
+        <div style="flex:1;font-size:13px;line-height:1.8;">
+          <div>📦 <b>Nama produk</b> : ${h.nama}</div>
+          <div>🏷 <b>Batch Number</b> : ${h.batch||'-'}</div>
+          <div>📅 <b>FV mulai</b> : ${h.tgl}, ${h.waktuMulai}</div>
+          <div class="history-time" style="margin-top:6px;">🔵 <b>Batas delay time Mix-Fill</b> : ${h.mixingHari||''}, ${h.mixingTgl||''} Jam ${h.mixing}</div>
+          <div class="history-time steril">🟠 <b>Batas delay time Steril</b> : ${h.sterilHari||''}, ${h.sterilTgl||''} Jam ${h.steril}</div>
+          <div style="margin-top:8px;opacity:0.75;font-size:12px;"><i>ket :</i></div>
+          <div style="opacity:0.75;font-size:12px;">🔖 ${namaLine}</div>
+          <div style="opacity:0.75;font-size:12px;">⏳ Batas delay time mix-fill : ${mxJam_h} jam</div>
+          <div style="opacity:0.75;font-size:12px;">⌛️ Batas delay time steril : ${stJam_h} jam</div>
+        </div>
+        <button class="history-del" onclick="hapusItem(${i})">✕</button>
       </div>
-      <div>
-        <div class="history-time">MX ${h.mixing}</div>
-        <div class="history-time steril">ST ${h.steril}</div>
-      </div>
-      <button class="history-del" onclick="hapusItem(${i})">✕</button>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 function simpan(){
   const mx=document.getElementById('hasilMixing').textContent;
@@ -1269,15 +1650,22 @@ function dialogBatchLewati(){
 }
 
 function doSimpan(){
+  const waktuMulai = state.jamMulai!==null?`${String(state.jamMulai).padStart(2,'0')}:${String(state.menitMulai||0).padStart(2,'0')}`:'-';
+  const tglMulai = state.tanggal?state.tanggal.toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'}):'-';
   histori.unshift({
-    nama:document.getElementById('namaProduk').value||'-',
-    batch:document.getElementById('nomorBatch').value.trim()||'',
-    tgl:state.tanggal?state.tanggal.toLocaleDateString('id-ID'):'-',
-    waktuMulai:state.jamMulai!==null?`${String(state.jamMulai).padStart(2,'0')}:${String(state.menitMulai||0).padStart(2,'0')}`:'-',
-    mixing:document.getElementById('hasilMixing').textContent,
-    steril:document.getElementById('hasilSteril').textContent,
-    mixingHari:document.getElementById('hasilMixingHari').textContent,
-    sterilHari:document.getElementById('hasilSterilHari').textContent,
+    nama: state.produk ? state.produk.kode : (document.getElementById('namaProduk').value||'-'),
+    namaLine: state.produk ? `${state.produk.kode}_${state.produk.line}` : (document.getElementById('namaProduk').value||'-'),
+    batch: document.getElementById('nomorBatch').value.trim()||'',
+    tgl: tglMulai,
+    waktuMulai: waktuMulai,
+    mxJam_h: state.produk ? state.produk.mixing : '--',
+    stJam_h: state.produk ? state.produk.steril : '--',
+    mixing: document.getElementById('hasilMixing').textContent,
+    steril: document.getElementById('hasilSteril').textContent,
+    mixingHari: document.getElementById('hasilMixingHari').textContent,
+    sterilHari: document.getElementById('hasilSterilHari').textContent,
+    mixingTgl: document.getElementById('hasilMixingTgl').textContent,
+    sterilTgl: document.getElementById('hasilSterilTgl').textContent,
   });
   localStorage.setItem('dtHistory',JSON.stringify(histori));
   renderHistory();
@@ -1315,15 +1703,21 @@ function dialogBatchWALewati(){
 function doShareWA(){
   // Ambil nama produk (kode saja, tanpa prefix LINE)
   const namaRaw = state.produk ? state.produk.kode : (document.getElementById('namaProduk').value||'-');
+  const namaLine = state.produk ? `${state.produk.kode}_${state.produk.line}` : namaRaw;
   const batch   = document.getElementById('nomorBatch').value.trim() || '-';
+  const mxJam_h = state.produk ? state.produk.mixing : '--';
+  const stJam_h = state.produk ? state.produk.steril : '--';
 
-  // Tanggal & jam mulai produksi
-  const tgl   = state.tanggal
-    ? state.tanggal.toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'})
-    : '-';
+  // Format jam mulai: "04:21"
   const waktu = state.jamMulai !== null
     ? `${String(state.jamMulai).padStart(2,'0')}:${String(state.menitMulai||0).padStart(2,'0')}`
     : '-';
+
+  // Format FV mulai: "17 Mar 2026, 04:21"
+  const tglMulai = state.tanggal
+    ? state.tanggal.toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})
+    : '-';
+  const fvMulai = `${tglMulai}, ${waktu}`;
 
   // Batas mix-fill
   const mxJam  = document.getElementById('hasilMixing').textContent;
@@ -1335,13 +1729,20 @@ function doShareWA(){
   const stHari = document.getElementById('hasilSterilHari').textContent;
   const stTgl  = document.getElementById('hasilSterilTgl').textContent;
 
-  const teks =
-`*Nama produk* : ${namaRaw}
-*Batch Number* : ${batch}
-*FV mulai* : ${tgl}, ${waktu}
+  // Format batas delay: "Rabu, 18 Mar 2026 Jam 02:21"
+  const fmtBatas = (hari, tglStr, jam) => `${hari}, ${tglStr} Jam ${jam}`;
 
-*Batas delay time Mix-Fill* : ${mxHari}, ${mxTgl} jam ${mxJam}
-*Batas delay time Steril* : ${stHari}, ${stTgl} jam ${stJam}`;
+  const teks =
+`📦 *Nama produk* : ${namaRaw}
+🏷 *Batch Number* : ${batch}
+📅 *FV mulai* : ${fvMulai}
+
+🔖 ${namaLine}
+⏳ Batas delay time mix-fill : ${mxJam_h} jam
+⌛️ Batas delay time steril : ${stJam_h} jam
+
+🔵 *Batas delay time Mix-Fill* : ${fmtBatas(mxHari, mxTgl, mxJam)}
+🟠 *Batas delay time Steril* : ${fmtBatas(stHari, stTgl, stJam)}`;
 
   window.open(`https://wa.me/?text=${encodeURIComponent(teks)}`, '_blank');
 }
@@ -1369,7 +1770,10 @@ function resetAll(){
   const ptr = document.getElementById('pilihPointer');
   if(ptr) ptr.classList.remove('hidden');
   btn.classList.remove('selected');
-  setTimeout(()=>{ btn.scrollIntoView({behavior:'smooth',block:'center'}); }, 300);
+  setTimeout(()=>{
+    const nb = document.getElementById('nomorBatch');
+    if(nb){ nb.focus(); nb.scrollIntoView({behavior:'smooth',block:'center'}); }
+  }, 300);
 }
 
 let toastT;
@@ -1397,7 +1801,7 @@ document.getElementById('nomorBatch').addEventListener('keydown', function(e){
 });
 
 // ===== TEMA SYSTEM =====
-const TEMAS = ['dark','apple','purple'];
+const TEMAS = ['dark','apple','purple','concord'];
 let currentTema = 'dark';
 let temaManualOverride = false; // true jika user pilih manual
 
@@ -1478,10 +1882,11 @@ document.getElementById('overlayTema').addEventListener('click',function(e){if(e
 
 renderHistory();
 
-// Hint pulse on first load if no product selected
+// Auto fokus ke kolom No Batch saat pertama buka
 setTimeout(()=>{
-  // pointer already visible on load if no product selected
-}, 1200);
+  const nb = document.getElementById('nomorBatch');
+  if(nb){ nb.focus(); nb.scrollIntoView({behavior:'smooth',block:'center'}); }
+}, 400);
 </script>
 </body>
 </html>
