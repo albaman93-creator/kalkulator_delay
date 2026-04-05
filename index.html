@@ -1854,13 +1854,13 @@ function doShareWA(){
 `📦 *Nama produk* : ${namaRaw}
 🏷 *Batch Number* : ${batch}
 📅 *FV mulai* : ${fvMulai}
+🧪 *Batas delay time Mix-Fill* : ${fmtBatas(mxHari, mxTgl, mxJam)}
+🌡️ *Batas delay time Steril* : ${fmtBatas(stHari, stTgl, stJam)}
 
+ket :
 🔖 ${namaLine}
 ⏳ Batas delay time mix-fill : ${mxJam_h} jam
-⌛️ Batas delay time steril : ${stJam_h} jam
-
-🔵 *Batas delay time Mix-Fill* : ${fmtBatas(mxHari, mxTgl, mxJam)}
-🟠 *Batas delay time Steril* : ${fmtBatas(stHari, stTgl, stJam)}`;
+⌛️ Batas delay time steril : ${stJam_h} jam`;
   window.open(`https://wa.me/?text=${encodeURIComponent(teks)}`, '_blank');
 }
 
