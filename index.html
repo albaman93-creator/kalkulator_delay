@@ -122,12 +122,12 @@ input,button,select{-webkit-tap-highlight-color:transparent;}
 .wlabel{font-size:12px;color:var(--text-muted);font-family:'Nunito',sans-serif;}
 .edit-hint{margin-left:auto;font-size:11px;color:var(--text-muted);opacity:0.6;}
 
-.delay-display-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-.delay-box{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:center;}
-.delay-box-label{font-size:10px;font-family:'Space Mono',monospace;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
-.delay-box-val{font-family:'Space Mono',monospace;font-size:28px;font-weight:700;color:var(--accent);}
+.delay-display-grid{display:flex;gap:10px;align-items:center;}
+.delay-box{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:8px 14px;display:flex;align-items:center;gap:8px;flex:1;}
+.delay-box-label{font-size:10px;font-family:'Space Mono',monospace;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap;}
+.delay-box-val{font-family:'Space Mono',monospace;font-size:20px;font-weight:700;color:var(--accent);}
 .delay-box.steril .delay-box-val{color:var(--accent2);}
-.delay-box-unit{font-size:10px;color:var(--text-muted);margin-top:4px;font-family:'Space Mono',monospace;}
+.delay-box-unit{font-size:9px;color:var(--text-muted);font-family:'Space Mono',monospace;margin-left:2px;align-self:flex-end;margin-bottom:2px;}
 
 .btn-row{display:grid;grid-template-columns:1fr auto;gap:12px;margin-top:20px;}
 .btn{padding:14px 24px;border-radius:12px;border:none;cursor:pointer;font-family:'Space Mono',monospace;font-size:13px;font-weight:700;letter-spacing:0.5px;transition:opacity 0.15s,background 0.15s;position:relative;overflow:hidden;}
@@ -186,12 +186,52 @@ input,button,select{-webkit-tap-highlight-color:transparent;}
 .btn-clear{background:none;border:1px solid rgba(255,80,80,0.3);color:rgba(255,80,80,0.7);padding:6px 12px;border-radius:8px;cursor:pointer;font-size:11px;font-family:'Space Mono',monospace;transition:opacity 0.15s,background 0.15s;}
 .btn-clear:hover{background:rgba(255,80,80,0.1);color:#ff5050;}
 .history-empty{text-align:center;padding:32px;color:var(--text-muted);font-size:13px;}
-.history-item{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:10px;display:grid;grid-template-columns:1fr;gap:4px;}
-.history-name{font-weight:600;font-size:14px;margin-bottom:2px;}
-.history-batch{font-size:11px;color:var(--text-muted);font-family:'Space Mono',monospace;}
-.history-time{font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--accent);line-height:1.5;}
+
+/* ── Accordion riwayat ── */
+.history-item{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:12px;margin-bottom:8px;overflow:hidden;
+}
+.history-head{
+  display:flex;align-items:center;gap:10px;
+  padding:11px 14px;cursor:pointer;
+  user-select:none;-webkit-tap-highlight-color:transparent;
+}
+.history-head:active{opacity:0.8;}
+.history-chevron{
+  font-size:11px;color:var(--text-muted);margin-left:auto;
+  transition:transform 0.25s ease;flex-shrink:0;
+  display:inline-block;
+}
+.history-item.open .history-chevron{transform:rotate(180deg);}
+.history-head-info{flex:1;min-width:0;}
+.history-head-nama{
+  font-family:'Space Mono',monospace;font-size:12px;font-weight:700;
+  color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.history-head-sub{
+  font-size:11px;color:var(--text-muted);margin-top:1px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.history-body{
+  max-height:0;overflow:hidden;
+  transition:max-height 0.3s ease, padding 0.25s ease;
+  padding:0 14px;
+  font-size:13px;line-height:1.85;
+  border-top:0px solid var(--border);
+}
+.history-item.open .history-body{
+  max-height:320px;
+  padding:10px 14px 14px;
+  border-top:1px solid var(--border);
+}
+.history-time{font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--accent);}
 .history-time.steril{color:var(--accent2);}
-.history-del{background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:16px;padding:4px;opacity:0.5;}
+.history-del{
+  background:none;border:none;color:var(--text-muted);
+  cursor:pointer;font-size:15px;padding:4px 2px;
+  opacity:0.45;flex-shrink:0;
+}
 .history-del:hover{opacity:1;color:#ff5050;}
 
 /* OVERLAYS */
@@ -493,12 +533,12 @@ input,button,select{-webkit-tap-highlight-color:transparent;}
       <div class="delay-box">
         <div class="delay-box-label">🔵 Mix-Fill</div>
         <div class="delay-box-val" id="mixingDisplay">--</div>
-        <div class="delay-box-unit">JAM</div>
+        <div class="delay-box-unit">jam</div>
       </div>
       <div class="delay-box steril">
         <div class="delay-box-label">🟠 Steril</div>
         <div class="delay-box-val" id="sterilDisplay">--</div>
-        <div class="delay-box-unit">JAM</div>
+        <div class="delay-box-unit">jam</div>
       </div>
     </div>
     <div class="btn-row">
@@ -1702,6 +1742,12 @@ function hitung(){
 
 // ============ HISTORY ============
 let histori=JSON.parse(localStorage.getItem('dtHistory')||'[]');
+function toggleHistoryItem(i){
+  const item = document.querySelector(`.history-item[data-idx="${i}"]`);
+  if(!item) return;
+  item.classList.toggle('open');
+}
+
 function renderHistory(){
   const el=document.getElementById('historyList');
   if(!histori.length){el.innerHTML='<div class="history-empty">📋 Belum ada data tersimpan</div>';return;}
@@ -1710,20 +1756,23 @@ function renderHistory(){
     const mxJam_h  = h.mxJam_h  !== undefined ? h.mxJam_h  : '--';
     const stJam_h  = h.stJam_h  !== undefined ? h.stJam_h  : '--';
     return `
-    <div class="history-item">
-      <div style="grid-column:1/-1;display:flex;justify-content:space-between;align-items:flex-start;">
-        <div style="flex:1;font-size:13px;line-height:1.8;">
-          <div>📦 <b>Nama produk</b> : ${h.nama}</div>
-          <div>🏷 <b>Batch Number</b> : ${h.batch||'-'}</div>
-          <div>📅 <b>FV mulai</b> : ${h.tgl}, ${h.waktuMulai}</div>
-          <div class="history-time" style="margin-top:6px;">🔵 <b>Batas delay time Mix-Fill</b> : ${h.mixingHari||''}, ${h.mixingTgl||''} Jam ${h.mixing}</div>
-          <div class="history-time steril">🟠 <b>Batas delay time Steril</b> : ${h.sterilHari||''}, ${h.sterilTgl||''} Jam ${h.steril}</div>
-          <div style="margin-top:8px;opacity:0.75;font-size:12px;"><i>ket :</i></div>
-          <div style="opacity:0.75;font-size:12px;">🔖 ${namaLine}</div>
-          <div style="opacity:0.75;font-size:12px;">⏳ Batas delay time mix-fill : ${mxJam_h} jam</div>
-          <div style="opacity:0.75;font-size:12px;">⌛️ Batas delay time steril : ${stJam_h} jam</div>
+    <div class="history-item" data-idx="${i}">
+      <div class="history-head" onclick="toggleHistoryItem(${i})">
+        <div style="font-size:20px;flex-shrink:0;">📋</div>
+        <div class="history-head-info">
+          <div class="history-head-nama">📦 ${h.nama} &nbsp;·&nbsp; 🏷 ${h.batch||'-'}</div>
+          <div class="history-head-sub">📅 ${h.tgl}, ${h.waktuMulai}</div>
         </div>
-        <button class="history-del" onclick="hapusItem(${i})">✕</button>
+        <span class="history-chevron">▼</span>
+        <button class="history-del" onclick="event.stopPropagation();hapusItem(${i})">✕</button>
+      </div>
+      <div class="history-body">
+        <div class="history-time">🔵 <b>Mix-Fill</b> : ${h.mixingHari||''}, ${h.mixingTgl||''} Jam ${h.mixing}</div>
+        <div class="history-time steril">🟠 <b>Steril</b> : ${h.sterilHari||''}, ${h.sterilTgl||''} Jam ${h.steril}</div>
+        <div style="margin-top:8px;border-top:1px solid var(--border);padding-top:8px;opacity:0.7;font-size:12px;line-height:1.75;">
+          🔖 ${namaLine}<br>
+          ⏳ Mix-fill : ${mxJam_h} jam &nbsp;|&nbsp; ⌛ Steril : ${stJam_h} jam
+        </div>
       </div>
     </div>`;
   }).join('');
