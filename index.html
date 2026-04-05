@@ -17,10 +17,8 @@ body{
   background:var(--bg);color:var(--text);
   font-family:'Nunito',sans-serif;font-weight:400;
   min-height:100vh;overflow-x:hidden;
-  /* 1 gradient saja, tidak fixed — jauh lebih ringan */
   background-image:radial-gradient(ellipse at 20% 10%,rgba(0,150,220,0.15) 0%,transparent 60%);
 }
-/* hapus grid overlay — penyebab repaint setiap scroll */
 body::before{display:none;}
 .container{max-width:680px;margin:0 auto;padding:32px 20px 60px;position:relative;z-index:1;}
 
@@ -71,7 +69,6 @@ textarea{resize:vertical;min-height:80px;}
 .btn-pilih-produk:hover{border-color:var(--accent);}
 .btn-pilih-produk .placeholder{color:var(--text-muted);opacity:0.6;}
 
-/* ── Performa: GPU acceleration & smooth scroll ── */
 html{scroll-behavior:smooth;-webkit-overflow-scrolling:touch;}
 .card{will-change:auto;contain:layout style;}
 .overlay{will-change:opacity;}
@@ -112,7 +109,6 @@ input,button,select{-webkit-tap-highlight-color:transparent;}
 }
 .pilih-pointer.hidden{ display:none; }
 
-/* arrow inside button — static once selected */
 .arrow-hint{ color:var(--accent); font-size:18px; transition:color 0.2s; }
 .btn-pilih-produk.selected .arrow-hint{ color:var(--success); }
 
@@ -148,23 +144,17 @@ input,button,select{-webkit-tap-highlight-color:transparent;}
 .result-item-label{font-size:10px;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;}
 .result-item.mixing .result-item-label{color:var(--accent);}
 .result-item.steril .result-item-label{color:var(--accent2);}
-/* Date/day line */
 .result-day{font-size:15px;font-weight:800;margin-bottom:2px;letter-spacing:0.3px;}
 .result-item.mixing .result-day{color:var(--text);}
 .result-item.steril .result-day{color:var(--text);}
 .result-date{font-size:13px;font-weight:700;color:var(--text-muted);margin-bottom:8px;font-family:'Space Mono',monospace;}
-/* Big time */
 .result-value{font-family:'Space Mono',monospace;font-size:30px;font-weight:700;letter-spacing:-1px;}
 .result-item.mixing .result-value{color:var(--accent);}
 .result-item.steril .result-value{color:var(--accent2);}
 
-/* Action buttons — solid, readable */
 .action-row{display:flex;gap:10px;}
-
-/* Shimmer diganti — terlalu berat di mobile */
 .shimmer-btn{position:relative;overflow:hidden;}
 .shimmer-btn::after{display:none;}
-
 
 .btn-save{
   flex:1;
@@ -189,32 +179,8 @@ input,button,select{-webkit-tap-highlight-color:transparent;}
   box-shadow:0 4px 14px rgba(37,211,102,0.35),0 2px 0 rgba(0,0,0,0.15);
   transition:opacity 0.15s,background 0.15s;transform:translateY(0);
 }
-.btn-save:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,229,160,0.5),0 2px 0 rgba(0,0,0,0.15);}
-.btn-save:active{transform:translateY(1px);box-shadow:0 2px 8px rgba(0,229,160,0.3);}
-
-.btn-wa{
-  flex:1;
-  background:linear-gradient(135deg,#1a9e4a,#25d366);
-  border:none;
-  color:#fff;
-  padding:14px;border-radius:12px;cursor:pointer;
-  font-family:'Space Mono',monospace;font-size:12px;font-weight:700;
-  box-shadow:0 4px 14px rgba(37,211,102,0.35),0 2px 0 rgba(0,0,0,0.15);
-  transition:opacity 0.15s,background 0.15s;transform:translateY(0);
-}
 .btn-wa:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(37,211,102,0.5),0 2px 0 rgba(0,0,0,0.15);}
 .btn-wa:active{transform:translateY(1px);box-shadow:0 2px 8px rgba(37,211,102,0.3);}
-
-/* Shimmer for action btns */
-.btn-save,.btn-wa{position:relative;overflow:hidden;}
-.btn-save::after,.btn-wa::after{display:none}
-.btn-wa::after{animation-delay:0.9s;}
-
-/* Header buttons shimmer */
-.hbtn{position:relative;overflow:hidden;}
-.hbtn::after{display:none}
-
-60%,100%{left:160%}}
 
 .history-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
 .btn-clear{background:none;border:1px solid rgba(255,80,80,0.3);color:rgba(255,80,80,0.7);padding:6px 12px;border-radius:8px;cursor:pointer;font-size:11px;font-family:'Space Mono',monospace;transition:opacity 0.15s,background 0.15s;}
@@ -232,7 +198,6 @@ input,button,select{-webkit-tap-highlight-color:transparent;}
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.82);z-index:100;align-items:center;justify-content:center;}
 .overlay.open{display:flex;animation:fadeIn 0.15s ease;}
 
-/* Product Modal */
 .modal-panel{
   background:rgba(10,20,45,0.98);border:1px solid rgba(0,200,255,0.2);
   border-radius:24px;padding:28px;width:92%;max-width:460px;max-height:82vh;overflow-y:auto;
@@ -257,14 +222,12 @@ input,button,select{-webkit-tap-highlight-color:transparent;}
 #searchProduk:focus{border-color:var(--accent)!important;box-shadow:0 0 0 3px rgba(0,212,255,0.1);}
 .no-result{text-align:center;padding:24px;color:var(--text-muted);font-family:'Space Mono',monospace;font-size:12px;}
 
-/* Product Form Modal */
 .form-panel{background:rgba(10,20,45,0.98);border:1px solid rgba(0,200,255,0.2);border-radius:24px;padding:28px;width:92%;max-width:420px;box-shadow:0 16px 48px rgba(0,0,0,0.5);}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .form-btns{display:flex;gap:10px;margin-top:20px;}
 .form-save{flex:1;background:linear-gradient(135deg,var(--accent),#0077ff);color:#000;padding:13px;border-radius:12px;border:none;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;}
 .form-cancel{background:rgba(255,255,255,0.06);border:1px solid var(--glass-border);color:var(--text-muted);padding:13px 20px;border-radius:12px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:12px;}
 
-/* Datepicker */
 .datepicker-panel{background:rgba(10,20,45,0.98);border:1px solid rgba(0,200,255,0.2);border-radius:24px;padding:28px;width:92%;max-width:360px;box-shadow:0 16px 48px rgba(0,0,0,0.5);}
 .dp-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
 .dp-title{font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;}
@@ -278,8 +241,6 @@ input,button,select{-webkit-tap-highlight-color:transparent;}
 .dp-day.today{border-color:rgba(0,212,255,0.5);color:var(--accent);}
 .dp-day.selected{background:var(--accent);color:#000;font-weight:700;}
 
-/* Clock */
-/* ── Hasil Perhitungan box ── */
 .hasil-box{
   background:linear-gradient(135deg,rgba(0,212,255,0.12),rgba(0,100,200,0.08));
   border:2px solid rgba(0,212,255,0.35);
@@ -311,7 +272,7 @@ input,button,select{-webkit-tap-highlight-color:transparent;}
   color:var(--accent);
 }
 
-/* ── Clock picker Material style ── */
+/* CLOCK */
 .clock-panel{
   background:#fff;
   border-radius:20px;
@@ -343,7 +304,6 @@ input,button,select{-webkit-tap-highlight-color:transparent;}
 .clock-subtitle{display:none;}
 .clock-legend{display:none;}
 .clock-face{
-  /* ukuran = lebar panel minus padding kiri-kanan */
   width:min(260px, calc(92vw - 64px));
   height:min(260px, calc(92vw - 64px));
   border-radius:50%;
@@ -403,8 +363,6 @@ input,button,select{-webkit-tap-highlight-color:transparent;}
   line-height:1;
 }
 .clock-keyboard-btn:hover{background:rgba(0,0,0,0.05);}
-
-/* ── Mode input manual ── */
 .clock-type-body{
   background:#fff;
   padding:24px 24px 8px;
@@ -463,12 +421,8 @@ input,button,select{-webkit-tap-highlight-color:transparent;}
   .form-grid{grid-template-columns:1fr}
   .clock-display{font-size:50px;}
 }
-@media(max-width:380px){
-  .clock-display{font-size:44px;}
-}
-@media(max-width:340px){
-  .clock-display{font-size:38px;}
-}
+@media(max-width:380px){.clock-display{font-size:44px;}}
+@media(max-width:340px){.clock-display{font-size:38px;}}
 </style>
 </head>
 <body>
@@ -484,7 +438,6 @@ input,button,select{-webkit-tap-highlight-color:transparent;}
     </div>
   </header>
 
-  <!-- 01 -->
   <div class="card">
     <div class="card-title">01 — Info Produk</div>
     <div class="field">
@@ -508,7 +461,6 @@ input,button,select{-webkit-tap-highlight-color:transparent;}
     </div>
   </div>
 
-  <!-- 02 -->
   <div class="card">
     <div class="card-title">02 — Tanggal & Jam Mulai</div>
     <div class="field">
@@ -535,7 +487,6 @@ input,button,select{-webkit-tap-highlight-color:transparent;}
     </div>
   </div>
 
-  <!-- 03 -->
   <div class="card" id="card-delay">
     <div class="card-title">03 — Delay Time</div>
     <div class="delay-display-grid">
@@ -556,7 +507,6 @@ input,button,select{-webkit-tap-highlight-color:transparent;}
     </div>
   </div>
 
-  <!-- 04 -->
   <div class="card" id="hasilCard">
     <div class="card-title">04 — Hasil Perhitungan</div>
     <div class="hasil-box" id="hasilCard">
@@ -584,7 +534,6 @@ input,button,select{-webkit-tap-highlight-color:transparent;}
     </div>
   </div>
 
-  <!-- 05 -->
   <div class="card">
     <div class="history-header">
       <div class="card-title" style="margin:0;flex:1;">05 — Riwayat</div>
@@ -678,7 +627,6 @@ input,button,select{-webkit-tap-highlight-color:transparent;}
         <div class="clock-center"></div>
       </div>
     </div>
-    <!-- Mode input manual (keyboard) -->
     <div class="clock-body clock-type-body" id="clockBodyType" style="display:none;">
       <div class="clock-type-title">Type in time</div>
       <div class="clock-type-inputs">
@@ -753,42 +701,24 @@ input,button,select{-webkit-tap-highlight-color:transparent;}
         <div class="tema-name">Concord Paper</div>
         <div class="tema-desc">Klasik hangat</div>
       </div>
+      <div class="tema-card" onclick="setTema('island')" id="tema-island" style="grid-column:1/-1;">
+        <div class="tema-preview island-prev"></div>
+        <div class="tema-name">🏝 Island Dynamic</div>
+        <div class="tema-desc">Tropis · Sunset · Gelombang</div>
+      </div>
     </div>
     <button onclick="setTemaAuto()" style="width:100%;margin-bottom:8px;padding:12px;border-radius:12px;border:1px solid rgba(0,212,255,0.3);background:rgba(0,212,255,0.08);color:var(--accent);font-family:'Nunito',sans-serif;font-weight:800;font-size:13px;cursor:pointer;transition:opacity 0.15s,background 0.15s;">🕐 Ikuti Jam Otomatis</button>
     <button class="modal-close" onclick="tutupOverlay('overlayTema')">✕ Tutup</button>
   </div>
 </div>
 
+<!-- ISLAND DYNAMIC CANVAS -->
+<canvas id="islandCanvas" style="display:none;position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
+
 <div class="toast" id="toast"></div>
 
 <style>
 /* ===== BATCH DIALOG ===== */
-.dialog-panel{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:32px 28px;width:90%;max-width:360px;text-align:center;}
-.dialog-icon{font-size:36px;margin-bottom:12px;}
-.dialog-title{font-family:'Space Mono',monospace;font-size:15px;font-weight:700;margin-bottom:10px;color:var(--text);}
-.dialog-msg{font-size:13px;color:var(--text-muted);line-height:1.6;margin-bottom:24px;}
-.dialog-btns{display:flex;flex-direction:column;gap:10px;}
-.dialog-btn-ok{background:linear-gradient(135deg,var(--accent),#0077ff);color:#000;padding:14px;border-radius:12px;border:none;cursor:pointer;font-family:'Space Mono',monospace;font-weight:700;font-size:13px;box-shadow:0 4px 14px rgba(0,212,255,0.35),0 2px 0 rgba(0,0,0,0.1);transition:opacity 0.15s,background 0.15s;position:relative;overflow:hidden;}
-.dialog-btn-ok::after{display:none}
-.dialog-btn-ok:hover{transform:translateY(-1px);}
-.dialog-btn-skip{background:var(--surface2);border:1px solid var(--border);color:var(--text-muted);padding:12px;border-radius:12px;cursor:pointer;font-family:'Space Mono',monospace;font-size:12px;transition:opacity 0.15s,background 0.15s;}
-.dialog-btn-skip:hover{border-color:var(--accent2);color:var(--accent2);}
-
-/* ===== TEMA PICKER ===== */
-.tema-panel{background:rgba(10,20,45,0.98);border:1px solid rgba(0,200,255,0.2);border-radius:24px;padding:28px;width:92%;max-width:380px;box-shadow:0 16px 48px rgba(0,0,0,0.5);}
-.tema-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px;}
-.tema-card{border:2px solid rgba(0,200,255,0.15);border-radius:16px;padding:10px 8px;cursor:pointer;transition:opacity 0.15s,background 0.15s;text-align:center;}
-.tema-card:hover{border-color:var(--accent);transform:translateY(-2px);}
-.tema-card.active{border-color:var(--accent);box-shadow:0 0 16px rgba(0,212,255,0.25);}
-.tema-preview{height:52px;border-radius:10px;margin-bottom:8px;}
-.dark-prev{background:linear-gradient(135deg,#060b18 0%,rgba(16,26,52,0.9) 50%,rgba(0,212,255,0.15) 100%);border:1px solid rgba(0,200,255,0.2);}
-.apple-prev{background:linear-gradient(135deg,#f5f5f7 0%,#ffffff 60%,#e8e8ed 100%);border:1px solid #d1d1d6;}
-.purple-prev{background:linear-gradient(135deg,#0d0d1a 0%,#16213e 50%,rgba(108,99,255,0.3) 100%);border:1px solid #3a3a6e;}
-.concord-prev{background:linear-gradient(135deg,#c8b89a 0%,#e8dcc8 50%,#d4c4a0 100%);border:1px solid #b8a080;}
-.tema-name{font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;margin-bottom:2px;}
-.tema-desc{font-size:9px;color:var(--text-muted);}
-
-/* ===== DIALOG & MODAL GLASS ===== */
 .dialog-panel{
   background:rgba(10,20,45,0.98);border:1px solid rgba(0,200,255,0.2);
   border-radius:24px;padding:32px 28px;width:90%;max-width:360px;text-align:center;
@@ -803,6 +733,22 @@ input,button,select{-webkit-tap-highlight-color:transparent;}
 .dialog-btn-ok:hover{transform:translateY(-1px);}
 .dialog-btn-skip{background:rgba(255,255,255,0.06);border:1px solid rgba(0,200,255,0.15);color:var(--text-muted);padding:12px;border-radius:12px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:12px;transition:opacity 0.15s,background 0.15s;}
 .dialog-btn-skip:hover{border-color:var(--accent2);color:var(--accent2);}
+
+/* ===== TEMA PICKER ===== */
+.tema-panel{background:rgba(10,20,45,0.98);border:1px solid rgba(0,200,255,0.2);border-radius:24px;padding:28px;width:92%;max-width:380px;box-shadow:0 16px 48px rgba(0,0,0,0.5);}
+.tema-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px;}
+.tema-card{border:2px solid rgba(0,200,255,0.15);border-radius:16px;padding:10px 8px;cursor:pointer;transition:all 0.2s;text-align:center;}
+.tema-card:hover{border-color:var(--accent);transform:translateY(-2px);}
+.tema-card.active{border-color:var(--accent);box-shadow:0 0 16px rgba(0,212,255,0.25);}
+.tema-preview{height:52px;border-radius:10px;margin-bottom:8px;}
+.dark-prev{background:linear-gradient(135deg,#060b18 0%,rgba(16,26,52,0.9) 50%,rgba(0,212,255,0.15) 100%);border:1px solid rgba(0,200,255,0.2);}
+.apple-prev{background:linear-gradient(135deg,#f5f5f7 0%,#ffffff 60%,#e8e8ed 100%);border:1px solid #d1d1d6;}
+.purple-prev{background:linear-gradient(135deg,#0d0d1a 0%,#16213e 50%,rgba(108,99,255,0.3) 100%);border:1px solid #3a3a6e;}
+.concord-prev{background:linear-gradient(135deg,#c8b89a 0%,#e8dcc8 50%,#d4c4a0 100%);border:1px solid #b8a080;}
+.island-prev{background:linear-gradient(160deg,#0a4a6b 0%,#0e7ab0 25%,#1ab8a0 50%,#f4a83a 75%,#e8652a 100%);border:1px solid rgba(26,184,160,0.4);position:relative;overflow:hidden;}
+.island-prev::after{content:'🌴';position:absolute;bottom:4px;right:8px;font-size:18px;}
+.tema-name{font-family:'Nunito',sans-serif;font-size:11px;font-weight:800;margin-bottom:2px;}
+.tema-desc{font-size:9px;color:var(--text-muted);}
 
 /* ===== APPLE THEME ===== */
 body.apple{
@@ -847,20 +793,14 @@ body.apple .hbtn{color:#3c3c43;font-weight:700;}
 body.apple .btn-save{background:linear-gradient(180deg,#4cd964,#34c759);box-shadow:0 4px 14px rgba(52,199,89,0.35);color:#003d1a;font-weight:800;}
 body.apple .btn-wa{color:#fff;font-weight:800;}
 body.apple .btn-ghost{color:#ff3b30;border-color:rgba(255,59,48,0.35);background:rgba(255,59,48,0.08);}
-/* Apple tema — hasil box warna gold */
-body.apple .hasil-box{
-  background:linear-gradient(135deg,rgba(255,200,50,0.18),rgba(200,140,0,0.1));
-  border-color:rgba(200,160,0,0.45);
-}
+body.apple .hasil-box{background:linear-gradient(135deg,rgba(255,200,50,0.18),rgba(200,140,0,0.1));border-color:rgba(200,160,0,0.45);}
 body.apple .hasil-box::before{background:linear-gradient(135deg,rgba(255,215,0,0.1) 0%,transparent 60%);}
 body.apple .hasil-label{color:#996600;}
 body.apple .hasil-row.steril .hasil-label{color:#c87000;}
 body.apple .hasil-value{color:#7a5200 !important;font-weight:900;}
 body.apple .hasil-total{color:#996600;border-top-color:rgba(200,160,0,0.3);}
 body.apple .card-title::after{background:#d1d1d6;}
-body.apple .modal-panel,body.apple .form-panel,body.apple .datepicker-panel,body.apple .clock-panel,body.apple .dialog-panel,body.apple .tema-panel{
-  background:rgba(255,255,255,0.85);border-color:#d8d8dd;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
-}
+body.apple .modal-panel,body.apple .form-panel,body.apple .datepicker-panel,body.apple .clock-panel,body.apple .dialog-panel,body.apple .tema-panel{background:rgba(255,255,255,0.85);border-color:#d8d8dd;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);}
 body.apple .modal-title{color:#007aff;}
 body.apple .dp-title{color:#000;font-weight:800;}
 body.apple .dp-day{color:#000;}
@@ -869,8 +809,6 @@ body.apple .dp-day.selected{background:#007aff;color:#fff;}
 body.apple .prod-item-name{color:#000;font-weight:700;}
 body.apple .prod-item-detail{color:#3c3c43;}
 body.apple .line-group-title{color:#ff6b00;}
-body.apple .btn-pilih-produk.hint-pulse{animation:hintPulseApple 1.8s ease-in-out 3;border-color:#007aff;}
-@keyframes hintPulseApple{0%,100%{box-shadow:0 0 0 0 rgba(0,122,255,0)}40%{box-shadow:0 0 0 6px rgba(0,122,255,0.22)}60%{box-shadow:0 0 0 10px rgba(0,122,255,0.08)}}
 
 /* ===== PURPLE NIGHT THEME ===== */
 body.purple{
@@ -883,7 +821,6 @@ body.purple{
     radial-gradient(ellipse at 85% 80%,rgba(255,77,166,0.12) 0%,transparent 50%),
     radial-gradient(ellipse at 50% 50%,rgba(20,10,50,0.5) 0%,transparent 70%);
 }
-body.purple::before{background-image:linear-gradient(rgba(108,99,255,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(108,99,255,0.05) 1px,transparent 1px);}
 body.purple .card{border-radius:28px;border-color:rgba(108,99,255,0.25);background:rgba(20,18,48,0.6);}
 body.purple .card::before{background:linear-gradient(90deg,transparent,#6c63ff,transparent);}
 body.purple .logo-icon{background:linear-gradient(135deg,#6c63ff,#ff4da6);}
@@ -902,26 +839,18 @@ body.purple .btn-primary{background:linear-gradient(135deg,#6c63ff,#9d5cff);box-
 body.purple .btn-save{background:linear-gradient(135deg,#00a87f,#00d9a3);color:#003d2e;}
 body.purple .history-time{color:#6c63ff;}
 body.purple .history-time.steril{color:#ff4da6;}
-body.purple .step-dot.active{background:#6c63ff;box-shadow:0 0 8px #6c63ff;}
-body.purple .clock-num.active{background:#6c63ff;box-shadow:0 0 12px rgba(108,99,255,0.6);}
-body.purple .clock-num.inner.active{background:#ff4da6;box-shadow:0 0 12px rgba(255,77,166,0.6);}
-body.purple .clock-center{background:#6c63ff;box-shadow:0 0 12px #6c63ff;}
+body.purple .clock-num.active{background:#6c63ff;}
+body.purple .clock-num.inner.active{background:#ff4da6;}
+body.purple .clock-center{background:#6c63ff;}
 body.purple .dp-day.selected{background:#6c63ff;}
 body.purple .dp-day.today{border-color:rgba(108,99,255,0.5);color:#6c63ff;}
 body.purple .btn-wa{background:linear-gradient(135deg,#1a9e4a,#25d366);}
 body.purple .tema-card.active{border-color:#6c63ff;box-shadow:0 0 16px rgba(108,99,255,0.3);}
 body.purple .modal-panel,body.purple .form-panel,body.purple .datepicker-panel,body.purple .clock-panel,body.purple .dialog-panel,body.purple .tema-panel{border-color:rgba(108,99,255,0.25);background:rgba(16,14,40,0.7);}
-
-/* ── Purple clock glass ── */
-body.purple .clock-panel{
-  background:rgba(20,16,50,0.45);
-  border:1px solid rgba(108,99,255,0.3);
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
-}
+body.purple .clock-panel{background:rgba(20,16,50,0.45);border:1px solid rgba(108,99,255,0.3);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);}
 body.purple .clock-body,body.purple .clock-type-body{background:transparent;}
 body.purple .clock-btn-row{background:transparent;}
-body.purple .clock-face{background:rgba(40,30,80,0.4);box-shadow:none;}
+body.purple .clock-face{background:rgba(40,30,80,0.4);}
 body.purple .clock-num{color:rgba(220,210,255,0.9);}
 body.purple .clock-num.inner{color:rgba(180,170,220,0.5);}
 body.purple .clock-cancel{color:rgba(220,210,255,0.45);}
@@ -929,127 +858,357 @@ body.purple .clock-type-title{color:rgba(200,190,255,0.8);}
 body.purple .clock-type-sep{color:rgba(220,210,255,0.9);}
 body.purple .clock-type-field input{color:rgba(220,210,255,0.9);border-bottom-color:rgba(108,99,255,0.4);}
 body.purple .clock-type-label{color:rgba(180,170,220,0.6);}
-
-/* ── Dark clock glass ── */
-body:not(.apple):not(.purple):not(.concord) .clock-panel{
-  background:rgba(18,30,65,0.75);
-  border:1px solid rgba(0,200,255,0.35);
-  backdrop-filter:blur(24px);
-  -webkit-backdrop-filter:blur(24px);
-  box-shadow:0 8px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(0,200,255,0.1);
-}
-body:not(.apple):not(.purple):not(.concord) .clock-body,
-body:not(.apple):not(.purple):not(.concord) .clock-type-body{background:transparent;}
-body:not(.apple):not(.purple):not(.concord) .clock-btn-row{background:transparent;}
-body:not(.apple):not(.purple):not(.concord) .clock-face{background:rgba(30,55,110,0.55);box-shadow:inset 0 2px 12px rgba(0,180,255,0.08);}
-body:not(.apple):not(.purple):not(.concord) .clock-num{color:rgba(220,245,255,1);text-shadow:0 0 8px rgba(0,200,255,0.25);}
-body:not(.apple):not(.purple):not(.concord) .clock-num.inner{color:rgba(160,210,240,0.75);}
-body:not(.apple):not(.purple):not(.concord) .clock-cancel{color:rgba(180,220,255,0.65);}
-body:not(.apple):not(.purple):not(.concord) .clock-type-title{color:rgba(200,235,255,0.9);}
-body:not(.apple):not(.purple):not(.concord) .clock-type-sep{color:rgba(220,245,255,1);}
-body:not(.apple):not(.purple):not(.concord) .clock-type-field input{color:rgba(220,245,255,1);border-bottom-color:rgba(0,200,255,0.5);}
-body:not(.apple):not(.purple):not(.concord) .clock-type-label{color:rgba(160,210,240,0.75);}
+body:not(.apple):not(.purple):not(.concord):not(.island) .clock-panel{background:rgba(18,30,65,0.75);border:1px solid rgba(0,200,255,0.35);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);}
+body:not(.apple):not(.purple):not(.concord):not(.island) .clock-body,
+body:not(.apple):not(.purple):not(.concord):not(.island) .clock-type-body{background:transparent;}
+body:not(.apple):not(.purple):not(.concord):not(.island) .clock-btn-row{background:transparent;}
+body:not(.apple):not(.purple):not(.concord):not(.island) .clock-face{background:rgba(30,55,110,0.55);}
+body:not(.apple):not(.purple):not(.concord):not(.island) .clock-num{color:rgba(220,245,255,1);}
+body:not(.apple):not(.purple):not(.concord):not(.island) .clock-num.inner{color:rgba(160,210,240,0.75);}
+body:not(.apple):not(.purple):not(.concord):not(.island) .clock-cancel{color:rgba(180,220,255,0.65);}
+body:not(.apple):not(.purple):not(.concord):not(.island) .clock-type-title{color:rgba(200,235,255,0.9);}
+body:not(.apple):not(.purple):not(.concord):not(.island) .clock-type-sep{color:rgba(220,245,255,1);}
+body:not(.apple):not(.purple):not(.concord):not(.island) .clock-type-field input{color:rgba(220,245,255,1);border-bottom-color:rgba(0,200,255,0.5);}
+body:not(.apple):not(.purple):not(.concord):not(.island) .clock-type-label{color:rgba(160,210,240,0.75);}
 body.purple input:focus,body.purple textarea:focus{border-color:#6c63ff;box-shadow:0 0 0 3px rgba(108,99,255,0.15);}
 
-/* ═══════════════════════════════════
-   TEMA: CONCORD PAPER — cokelat krem
-   ═══════════════════════════════════ */
+/* ═══════════════════════════════
+   TEMA: CONCORD PAPER
+   ═══════════════════════════════ */
 body.concord{
-  background:#c4aa84;
-  color:#2c1f0e;
-  background-image:
-    radial-gradient(ellipse at 20% 10%,rgba(180,140,80,0.3) 0%,transparent 60%);
+  background:#c4aa84;color:#2c1f0e;
+  background-image:radial-gradient(ellipse at 20% 10%,rgba(180,140,80,0.3) 0%,transparent 60%);
 }
-body.concord .container{position:relative;}
-/* Tekstur kertas */
-body.concord::after{
-  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
-  opacity:0.5;
-}
-body.concord .card{
-  background:rgba(235,218,190,0.92);
-  border-color:rgba(160,120,70,0.35);
-  border-radius:12px;
-  box-shadow:0 2px 12px rgba(100,70,30,0.15),inset 0 1px 0 rgba(255,255,255,0.5);
-}
+body.concord::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");opacity:0.5;}
+body.concord .card{background:rgba(235,218,190,0.92);border-color:rgba(160,120,70,0.35);border-radius:12px;box-shadow:0 2px 12px rgba(100,70,30,0.15),inset 0 1px 0 rgba(255,255,255,0.5);}
 body.concord .card::before{background:linear-gradient(90deg,transparent,#b8925a,transparent);opacity:0.4;}
 body.concord .card-title{color:#7a4f1e;font-weight:800;letter-spacing:0.5px;}
 body.concord .card-title::after{background:rgba(120,80,30,0.2);}
 body.concord label{color:#5a3a12;font-weight:700;}
-body.concord .text-muted{color:#8a6a3a;}
-/* Logo */
 body.concord .logo-icon{background:linear-gradient(135deg,#c8850a,#8b5e1a);}
 body.concord .logo-text{color:#2c1f0e;font-weight:900;}
 body.concord .logo-text span{color:#a0621a;}
 body.concord .hbtn{background:rgba(160,120,70,0.15);border-color:rgba(140,100,50,0.3);color:#5a3a12;}
-/* Input */
-body.concord input,body.concord .btn-pilih-produk,body.concord .waktu-display{
-  background:rgba(255,248,235,0.85);
-  border-color:rgba(160,120,60,0.4);
-  border-radius:10px;color:#2c1f0e;
-}
+body.concord input,body.concord .btn-pilih-produk,body.concord .waktu-display{background:rgba(255,248,235,0.85);border-color:rgba(160,120,60,0.4);border-radius:10px;color:#2c1f0e;}
 body.concord input::placeholder{color:#a08050;}
 body.concord .btn-pilih-produk .placeholder{color:#a08050;}
 body.concord input:focus,body.concord textarea:focus{border-color:#a0621a;box-shadow:0 0 0 3px rgba(160,98,26,0.15);}
-/* Delay box */
 body.concord .delay-box{background:rgba(255,248,230,0.8);border-color:rgba(160,120,60,0.3);}
 body.concord .delay-box-val{color:#a0621a;font-weight:800;}
 body.concord .delay-box.steril .delay-box-val{color:#7a3a0a;}
 body.concord .delay-box-label{color:#5a3a12;font-weight:700;}
 body.concord .delay-box-unit{color:#8a6040;}
-/* Waktu display */
 body.concord .wval{color:#a0621a;font-weight:800;}
 body.concord .wlabel{color:#5a3a12;}
-/* Buttons */
 body.concord .btn-primary{background:linear-gradient(135deg,#c8850a,#8b5e1a);color:#fff;box-shadow:0 4px 14px rgba(140,80,10,0.35);}
 body.concord .btn-ghost{background:rgba(180,60,40,0.1);border-color:rgba(180,60,40,0.3);color:#b03010;}
 body.concord .btn-save{background:linear-gradient(135deg,#5a8a3a,#3a6a1a);color:#fff;box-shadow:0 4px 14px rgba(60,100,20,0.35);}
 body.concord .btn-wa{background:linear-gradient(135deg,#1a9e4a,#25d366);color:#fff;}
-/* Hasil box */
-body.concord .hasil-box{
-  background:linear-gradient(135deg,rgba(200,160,80,0.2),rgba(160,110,40,0.1));
-  border-color:rgba(160,110,40,0.4);
-}
+body.concord .hasil-box{background:linear-gradient(135deg,rgba(200,160,80,0.2),rgba(160,110,40,0.1));border-color:rgba(160,110,40,0.4);}
 body.concord .hasil-label{color:#8b5e1a;}
 body.concord .hasil-row.steril .hasil-label{color:#7a3a0a;}
 body.concord .hasil-value{color:#4a2e08 !important;font-weight:900;}
 body.concord .hasil-total{color:#8b5e1a;border-top-color:rgba(160,110,40,0.25);}
-/* History */
 body.concord .history-item{background:rgba(255,248,230,0.75);border-color:rgba(160,120,60,0.25);}
 body.concord .history-name{color:#2c1f0e;font-weight:800;}
 body.concord .history-batch{color:#7a5a2a;}
 body.concord .history-time{color:#8b5e1a;}
 body.concord .history-time.steril{color:#7a3a0a;}
-/* Pointer */
 body.concord .pilih-pointer .ptr-arrow{color:#a0621a;}
 body.concord .pilih-pointer .ptr-text{color:#a0621a;}
-/* Modal & panel */
-body.concord .modal-panel,body.concord .form-panel,body.concord .datepicker-panel,
-body.concord .dialog-panel,body.concord .tema-panel,body.concord .clock-panel{
-  background:rgba(240,225,200,0.97);
-  border-color:rgba(160,120,60,0.3);
-}
+body.concord .modal-panel,body.concord .form-panel,body.concord .datepicker-panel,body.concord .dialog-panel,body.concord .tema-panel,body.concord .clock-panel{background:rgba(240,225,200,0.97);border-color:rgba(160,120,60,0.3);}
 body.concord .modal-title{color:#8b5e1a;}
 body.concord .line-group-title{color:#c8850a;}
 body.concord .prod-item:hover{background:rgba(200,160,80,0.15);}
 body.concord .modal-close{background:rgba(160,120,60,0.1);border-color:rgba(140,100,50,0.25);color:#5a3a12;}
-/* Datepicker */
 body.concord .dp-title{color:#2c1f0e;}
 body.concord .dp-day-label{color:#8a6040;}
 body.concord .dp-day{color:#2c1f0e;}
 body.concord .dp-day.today{border-color:rgba(160,98,26,0.5);color:#a0621a;}
 body.concord .dp-day.selected{background:#a0621a;color:#fff;}
 body.concord .dp-nav{background:rgba(200,160,80,0.15);border-color:rgba(140,100,50,0.3);color:#5a3a12;}
-/* Clock pink tetap */
 body.concord .clock-header{background:#c8850a;}
 body.concord .clock-face{background:#f0e8d8;}
 body.concord .clock-num{color:#3a2510;}
 body.concord .clock-num.inner{color:#8a6a3a;}
-/* Card-title border */
 body.concord .btn-clear{border-color:rgba(180,60,40,0.3);color:rgba(180,60,40,0.8);}
-/* Tema active */
 body.concord .tema-card.active{border-color:#a0621a;box-shadow:0 0 16px rgba(160,98,26,0.25);}
+
+/* ═══════════════════════════════════════════
+   🏝 TEMA: ISLAND DYNAMIC
+   Tropis · Sunrise-Sunset · Gelombang Laut
+   ═══════════════════════════════════════════ */
+body.island {
+  --bg: #0a2a3d;
+  --surface: rgba(10, 55, 80, 0.65);
+  --surface2: rgba(8, 45, 65, 0.70);
+  --border: rgba(26, 184, 160, 0.22);
+  --accent: #1ab8a0;
+  --accent2: #f4a83a;
+  --success: #5eead4;
+  --text: #f0fdf8;
+  --text-muted: #7ecdc0;
+  --glow: 0 0 24px rgba(26, 184, 160, 0.4);
+  --glass-border: rgba(26, 184, 160, 0.18);
+
+  background: linear-gradient(
+    175deg,
+    #0a1f30 0%,
+    #0e4a6a 30%,
+    #0d6b7a 55%,
+    #1a5a4a 78%,
+    #1e3a28 100%
+  );
+  background-attachment: fixed;
+  color: var(--text);
+  font-family: 'Nunito', sans-serif;
+  position: relative;
+  transition: background 2s ease;
+}
+
+/* Animasi langit: sunrise → siang → sunset sesuai jam */
+body.island.island-dawn   { background: linear-gradient(175deg,#1a0a30 0%,#3a1060 30%,#7a3060 55%,#c87040 78%,#e8a030 100%) fixed; }
+body.island.island-morning{ background: linear-gradient(175deg,#0a2a5a 0%,#0e6090 30%,#20a0c0 55%,#30c0a0 78%,#20804a 100%) fixed; }
+body.island.island-noon   { background: linear-gradient(175deg,#052060 0%,#0850a0 30%,#10a0e0 55%,#18c8a0 78%,#106030 100%) fixed; }
+body.island.island-afternoon{background: linear-gradient(175deg,#0a1a30 0%,#0a4070 30%,#0878a8 55%,#20b090 78%,#104528 100%) fixed;}
+body.island.island-sunset { background: linear-gradient(175deg,#0a0a20 0%,#2a1850 30%,#803040 55%,#d06020 78%,#e09030 100%) fixed; }
+body.island.island-night  { background: linear-gradient(175deg,#030810 0%,#050e20 30%,#080e28 55%,#0a1e1a 78%,#050f0a 100%) fixed; }
+
+/* Gelombang bawah */
+body.island::before {
+  content: '';
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 160px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(10, 184, 160, 0.06) 40%,
+    rgba(10, 184, 160, 0.14) 100%
+  );
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,40 C150,80 350,0 600,40 C850,80 1050,0 1200,40 L1200,120 L0,120 Z' fill='%23000'/%3E%3C/svg%3E");
+  mask-size: 200% 100%;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0,40 C150,80 350,0 600,40 C850,80 1050,0 1200,40 L1200,120 L0,120 Z' fill='%23000'/%3E%3C/svg%3E");
+  -webkit-mask-size: 200% 100%;
+  animation: waveMove 8s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes waveMove {
+  0%   { mask-position: 0% 0%;   -webkit-mask-position: 0% 0%;   }
+  100% { mask-position: 200% 0%; -webkit-mask-position: 200% 0%; }
+}
+
+/* Card island */
+body.island .card {
+  background: rgba(10, 55, 80, 0.60);
+  border: 1px solid rgba(26, 184, 160, 0.25);
+  border-radius: 22px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.35), 0 0 0 1px rgba(26,184,160,0.08);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+body.island .card::before {
+  background: linear-gradient(90deg, transparent, #1ab8a0, transparent);
+  opacity: 0.5;
+}
+
+/* Logo */
+body.island .logo-icon { background: linear-gradient(135deg, #1ab8a0, #f4a83a); box-shadow: 0 0 20px rgba(26,184,160,0.5); }
+body.island .logo-text { color: var(--text); font-weight: 900; }
+body.island .logo-text span { color: #1ab8a0; }
+
+/* Header buttons */
+body.island .hbtn { background: rgba(26,184,160,0.12); border-color: rgba(26,184,160,0.25); color: #7ecdc0; }
+body.island .hbtn:hover { border-color: #1ab8a0; color: #1ab8a0; }
+
+/* Card title */
+body.island .card-title { color: #1ab8a0; font-weight: 800; }
+body.island .card-title::after { background: rgba(26,184,160,0.2); }
+
+/* Labels & inputs */
+body.island label { color: #7ecdc0; font-weight: 700; }
+body.island input, body.island .btn-pilih-produk, body.island .waktu-display {
+  background: rgba(10, 55, 80, 0.55);
+  border-color: rgba(26,184,160,0.25);
+  border-radius: 12px;
+  color: var(--text);
+}
+body.island input::placeholder { color: #5aa8a0; }
+body.island .btn-pilih-produk .placeholder { color: #5aa8a0; }
+body.island input:focus, body.island textarea:focus {
+  border-color: #1ab8a0;
+  box-shadow: 0 0 0 3px rgba(26,184,160,0.15);
+}
+
+/* Delay boxes */
+body.island .delay-box { background: rgba(8,45,65,0.7); border-color: rgba(26,184,160,0.2); }
+body.island .delay-box-val { color: #1ab8a0; font-weight: 800; }
+body.island .delay-box.steril .delay-box-val { color: #f4a83a; }
+body.island .delay-box-label { color: #7ecdc0; }
+body.island .delay-box-unit { color: #5aa8a0; }
+
+/* Waktu display */
+body.island .wval { color: #1ab8a0; font-weight: 800; }
+body.island .wlabel { color: #7ecdc0; }
+
+/* Pointer arrow */
+body.island .pilih-pointer .ptr-arrow { color: #1ab8a0; }
+body.island .pilih-pointer .ptr-text { color: #1ab8a0; }
+@keyframes islandBlink {
+  0%,100% { opacity:0.9; text-shadow:0 0 10px rgba(26,184,160,0.9); }
+  50%      { opacity:0.25; text-shadow:none; }
+}
+body.island .pilih-pointer .ptr-text { animation: islandBlink 1.1s ease-in-out infinite; }
+
+/* Buttons */
+body.island .btn-primary {
+  background: linear-gradient(135deg, #1ab8a0, #0e8a78);
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(26,184,160,0.45);
+}
+body.island .btn-ghost { background: rgba(244,168,58,0.12); border-color: rgba(244,168,58,0.35); color: #f4a83a; }
+body.island .btn-save {
+  background: linear-gradient(135deg, #0e9060, #1ab87a);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(26,184,120,0.4);
+}
+body.island .btn-wa { background: linear-gradient(135deg, #1a9e4a, #25d366); color: #fff; }
+
+/* Hasil box */
+body.island .hasil-box {
+  background: linear-gradient(135deg, rgba(26,184,160,0.15), rgba(10,100,90,0.1));
+  border-color: rgba(26,184,160,0.4);
+}
+body.island .hasil-box::before { background: linear-gradient(135deg, rgba(26,184,160,0.08) 0%, transparent 60%); }
+body.island .hasil-label { color: #1ab8a0; }
+body.island .hasil-row.steril .hasil-label { color: #f4a83a; }
+body.island .hasil-value { color: #f0fdf8 !important; font-weight: 900; }
+body.island .hasil-total { color: #1ab8a0; border-top-color: rgba(26,184,160,0.2); }
+
+/* Result items */
+body.island .result-item { background: rgba(8,45,65,0.7); }
+body.island .result-item.mixing { border-color: rgba(26,184,160,0.4); }
+body.island .result-item.steril { border-color: rgba(244,168,58,0.4); }
+body.island .result-item.mixing .result-value { color: #1ab8a0; }
+body.island .result-item.steril .result-value { color: #f4a83a; }
+body.island .result-item.mixing .result-item-label { color: #1ab8a0; }
+body.island .result-item.steril .result-item-label { color: #f4a83a; }
+body.island .result-day { color: #f0fdf8 !important; font-weight: 800; }
+body.island .result-date { color: #7ecdc0; }
+
+/* History */
+body.island .history-item { background: rgba(8,45,65,0.7); border-color: rgba(26,184,160,0.18); }
+body.island .history-name { color: #f0fdf8; font-weight: 800; }
+body.island .history-batch { color: #7ecdc0; }
+body.island .history-time { color: #1ab8a0; }
+body.island .history-time.steril { color: #f4a83a; }
+
+/* Modals & panels */
+body.island .modal-panel, body.island .form-panel, body.island .datepicker-panel,
+body.island .dialog-panel, body.island .tema-panel {
+  background: rgba(8, 40, 60, 0.95);
+  border-color: rgba(26,184,160,0.25);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+body.island .modal-title { color: #1ab8a0; }
+body.island .line-group-title { color: #f4a83a; }
+body.island .prod-item:hover { background: rgba(26,184,160,0.1); }
+body.island .modal-close { background: rgba(26,184,160,0.08); border-color: rgba(26,184,160,0.2); color: #7ecdc0; }
+body.island .dp-title { color: #f0fdf8; font-weight: 800; }
+body.island .dp-day-label { color: #7ecdc0; }
+body.island .dp-day { color: #f0fdf8; }
+body.island .dp-day.today { border-color: rgba(26,184,160,0.6); color: #1ab8a0; }
+body.island .dp-day.selected { background: #1ab8a0; color: #fff; }
+body.island .dp-nav { background: rgba(26,184,160,0.1); border-color: rgba(26,184,160,0.25); color: #7ecdc0; }
+body.island .dp-nav:hover { border-color: #1ab8a0; color: #1ab8a0; }
+body.island .btn-clear { border-color: rgba(244,168,58,0.3); color: rgba(244,168,58,0.8); }
+body.island .tema-card.active { border-color: #1ab8a0; box-shadow: 0 0 18px rgba(26,184,160,0.35); }
+
+/* Clock island */
+body.island .clock-panel {
+  background: rgba(8, 35, 55, 0.92);
+  border: 1px solid rgba(26,184,160,0.3);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+body.island .clock-header { background: linear-gradient(135deg, #0e7a68, #1ab8a0); }
+body.island .clock-body, body.island .clock-type-body { background: transparent; }
+body.island .clock-btn-row { background: transparent; }
+body.island .clock-face { background: rgba(10, 55, 80, 0.6); box-shadow: inset 0 2px 12px rgba(26,184,160,0.1); }
+body.island .clock-center { background: #1ab8a0; box-shadow: 0 0 10px rgba(26,184,160,0.7); }
+body.island .clock-hand { background: #1ab8a0 !important; }
+body.island .clock-num { color: rgba(200, 250, 240, 0.95); }
+body.island .clock-num.active { background: #1ab8a0; color: #fff; }
+body.island .clock-num.inner { color: rgba(150, 210, 200, 0.6); }
+body.island .clock-num.inner.active { background: #f4a83a; color: #fff; }
+body.island .clock-num.min-num { color: rgba(200,250,240,0.95); }
+body.island .clock-num.min-num.active { background: #1ab8a0; color: #fff; }
+body.island .clock-cancel { color: rgba(150,220,210,0.6); }
+body.island .clock-ok { color: #1ab8a0; }
+body.island .clock-type-title { color: rgba(200,250,240,0.85); }
+body.island .clock-type-sep { color: rgba(200,250,240,0.95); }
+body.island .clock-type-field input { color: rgba(200,250,240,0.95); border-bottom-color: rgba(26,184,160,0.45); }
+body.island .clock-type-label { color: rgba(150,210,200,0.7); }
+
+/* Partikel island (bintang di langit malam) */
+body.island .island-stars {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0;
+  overflow: hidden;
+}
+body.island .island-star {
+  position: absolute;
+  width: 2px; height: 2px;
+  background: rgba(255,255,255,0.8);
+  border-radius: 50%;
+  animation: starTwinkle var(--dur, 3s) ease-in-out infinite var(--delay, 0s);
+}
+@keyframes starTwinkle {
+  0%,100% { opacity: 0.1; transform: scale(0.8); }
+  50%      { opacity: 0.9; transform: scale(1.2); }
+}
+
+/* Partikel gelembung laut */
+body.island .island-bubbles {
+  position: fixed; bottom: 0; left: 0; right: 0; height: 200px;
+  pointer-events: none; z-index: 0; overflow: hidden;
+}
+body.island .island-bubble {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(26,184,160,0.15);
+  border: 1px solid rgba(26,184,160,0.3);
+  animation: bubbleRise var(--bdur, 6s) ease-in infinite var(--bdelay, 0s);
+}
+@keyframes bubbleRise {
+  0%   { transform: translateY(0) scale(1); opacity: 0.7; }
+  100% { transform: translateY(-250px) scale(1.4); opacity: 0; }
+}
+
+/* Efek masuk tema island */
+body.island .card {
+  animation: islandCardIn 0.5s ease both;
+}
+@keyframes islandCardIn {
+  from { opacity: 0; transform: translateY(16px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+body.island .card:nth-child(1) { animation-delay: 0.05s; }
+body.island .card:nth-child(2) { animation-delay: 0.15s; }
+body.island .card:nth-child(3) { animation-delay: 0.25s; }
+body.island .card:nth-child(4) { animation-delay: 0.35s; }
+body.island .card:nth-child(5) { animation-delay: 0.45s; }
+
+/* Island toast */
+body.island .toast { background: rgba(8,40,60,0.95); border-color: #1ab8a0; color: #1ab8a0; }
+
+/* Efek hover card sedikit naik di island */
+body.island .card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 0 0 1px rgba(26,184,160,0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
 </style>
 
 <script>
@@ -1088,7 +1247,6 @@ const defaultProduk = [
   {line:"Line_4",kode:"VINIB",mixing:67,steril:72},
 ];
 
-// Load from localStorage or use defaults
 function loadProduk(){
   const saved = localStorage.getItem('dbProduk');
   return saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(defaultProduk));
@@ -1099,11 +1257,9 @@ let dbProduk = loadProduk();
 let state = {produk:null, tanggal:null, jamMulai:null, menitMulai:null, clockStep:'hour', clockJam:0, clockMenit:0};
 let editingIdx = null;
 
-// ============ OVERLAY ============
 function bukaOverlay(id){ document.getElementById(id).classList.add('open'); }
 function tutupOverlay(id){ document.getElementById(id).classList.remove('open'); }
 
-// ============ PRODUCT PICKER ============
 let activeLineFilter = '';
 
 function bukaModalProduk(){
@@ -1138,7 +1294,7 @@ function resetProdukFilter(){
 
 function filterProduk(query){
   const q = query.toLowerCase().trim();
-  const filtered = dbProduk.filter((p, i) => {
+  const filtered = dbProduk.filter((p) => {
     const matchLine = !activeLineFilter || p.line === activeLineFilter;
     const matchQ = !q || p.kode.toLowerCase().includes(q) || p.line.toLowerCase().includes(q);
     return matchLine && matchQ;
@@ -1212,7 +1368,6 @@ function pilihProduk(idx){
   lbl.textContent = name; lbl.classList.remove('placeholder');
   document.getElementById('mixingDisplay').textContent = p.mixing;
   document.getElementById('sterilDisplay').textContent = p.steril;
-  // sembunyikan tanda penunjuk setelah dipilih
   const ptr = document.getElementById('pilihPointer');
   if(ptr) ptr.classList.add('hidden');
   document.getElementById('btnPilihProduk').classList.add('selected');
@@ -1221,7 +1376,6 @@ function pilihProduk(idx){
   setTimeout(()=>bukaDatepicker(), 350);
 }
 
-// ============ DATA PRODUK MANAGER ============
 function bukaDataProduk(){
   renderProdukList('dataProdukList', false);
   bukaOverlay('overlayDataProduk');
@@ -1302,13 +1456,12 @@ function pilihTanggal(d){
   setTimeout(()=>bukaClock(), 350);
 }
 
-// ============ CLOCK PICKER (2 step: JAM → MENIT) ============
+// ============ CLOCK PICKER ============
 function bukaClock(){
   state.clockStep = 'hour';
   state.clockJam = state.jamMulai||0;
   state.clockMenit = state.menitMulai||0;
   clockModeType = false;
-  // Reset ke mode clock
   const facEl = document.getElementById('clockBodyFace');
   const typEl = document.getElementById('clockBodyType');
   if(facEl) facEl.style.display='block';
@@ -1326,7 +1479,6 @@ function showClockStep(step){
   const isHour = step==='hour';
   document.getElementById('clockSubtitle').textContent = isHour ? 'PILIH JAM' : 'PILIH MENIT';
   document.getElementById('clockOkBtn').textContent = isHour ? 'LANJUT' : 'OKE';
-
   if(isHour){
     document.getElementById('displayJam').classList.remove('dim-part');
     document.getElementById('displayMenit').classList.add('dim-part');
@@ -1352,7 +1504,6 @@ function renderHourNums(){
   for(let h=0;h<24;h++){
     const isInner = h>=12;
     const R = isInner ? size*0.26 : size*0.38;
-    // Tukar posisi: 12 di atas (sudut -90°), 00 di posisi 12 (sudut 270°)
     const posH = h===0 ? 12 : h===12 ? 0 : h;
     const angle = ((posH%12)*30-90)*Math.PI/180;
     const x = CX + R*Math.cos(angle);
@@ -1373,36 +1524,20 @@ function renderMinuteNums(){
   face.querySelectorAll('.clock-num,.min-dot').forEach(n=>n.remove());
   const size = face.offsetWidth || 300;
   const CX = size/2, CY = size/2;
-
-  // Render semua 60 menit
   for(let m=0; m<60; m++){
     const angle = (m*6 - 90)*Math.PI/180;
-    const isLabel = m%5 === 0;  // kelipatan 5 = angka besar
+    const isLabel = m%5 === 0;
     const R = isLabel ? size*0.38 : size*0.38;
     const x = CX + R*Math.cos(angle);
     const y = CY + R*Math.sin(angle);
     const el = document.createElement('div');
-
     if(isLabel){
-      // Angka kelipatan 5 — tampil sebagai label
       el.className = 'clock-num min-num' + (m===state.clockMenit?' active':'');
       el.style.cssText = `left:${x}px;top:${y}px;`;
       el.textContent = String(m).padStart(2,'0');
     } else {
-      // Menit lain — tampil sebagai titik kecil
       el.className = 'min-dot' + (m===state.clockMenit?' active':'');
-      el.style.cssText = `
-        position:absolute;
-        left:${x}px;top:${y}px;
-        width:${m===state.clockMenit?12:5}px;
-        height:${m===state.clockMenit?12:5}px;
-        border-radius:50%;
-        background:${m===state.clockMenit?'#e91e8c':'rgba(100,100,120,0.4)'};
-        transform:translate(-50%,-50%);
-        cursor:pointer;
-        z-index:2;
-        transition:background 0.1s;
-      `;
+      el.style.cssText = `position:absolute;left:${x}px;top:${y}px;width:${m===state.clockMenit?12:5}px;height:${m===state.clockMenit?12:5}px;border-radius:50%;background:${m===state.clockMenit?'#e91e8c':'rgba(100,100,120,0.4)'};transform:translate(-50%,-50%);cursor:pointer;z-index:2;transition:background 0.1s;`;
     }
     el.onclick = ()=>selectMinute(m);
     face.appendChild(el);
@@ -1418,30 +1553,22 @@ function selectHour(h, fromDrag=false){
   });
   updateHandHour(h);
   updateDisplayClock();
-  // Auto pindah ke menit hanya jika tap (klik angka), bukan drag
-  if(!fromDrag){
-    setTimeout(()=>{ if(state.clockStep==='hour') showClockStep('minute'); }, 280);
-  }
+  if(!fromDrag){ setTimeout(()=>{ if(state.clockStep==='hour') showClockStep('minute'); }, 280); }
 }
 
 function selectMinute(m, fromDrag=false){
   state.clockMenit=m;
-  // Update label kelipatan 5
   document.querySelectorAll('.clock-num.min-num').forEach(n=>{
     n.classList.remove('active');
     if(parseInt(n.textContent)===m) n.classList.add('active');
   });
-  // Update titik menit non-kelipatan 5
-  document.querySelectorAll('.min-dot').forEach((n,i)=>{
-    const dotM = parseInt(n.dataset.m||0);
+  document.querySelectorAll('.min-dot').forEach((n)=>{
     n.classList.remove('active');
     n.style.background = 'rgba(100,100,120,0.4)';
     n.style.width = '5px'; n.style.height = '5px';
   });
-  // Tandai titik aktif jika bukan kelipatan 5
   if(m%5 !== 0){
     const allDots = document.querySelectorAll('.min-dot');
-    // hitung index dot: menit non-kelipatan 5, urutannya 1,2,3,4,6,7,...
     let dotIdx = 0;
     for(let i=1;i<60;i++){
       if(i%5===0) continue;
@@ -1460,7 +1587,6 @@ function updateHandHour(h){
   const isInner = h>=12;
   hand.style.height = (isInner ? size*0.20 : size*0.30)+'px';
   hand.style.background = '#e91e8c';
-  // Tukar posisi: 0→posisi12, 12→posisi0
   const posH = h===0 ? 12 : h===12 ? 0 : h;
   hand.style.transform = `rotate(${(posH%12)*30}deg)`;
 }
@@ -1478,7 +1604,6 @@ function clockNextStep(){
   if(state.clockStep==='hour'){
     showClockStep('minute');
   } else {
-    // Confirm time
     state.jamMulai = state.clockJam;
     state.menitMulai = state.clockMenit;
     const el = document.getElementById('jamMulaiDisplay');
@@ -1492,7 +1617,7 @@ function clockNextStep(){
   }
 }
 
-let clockModeType = false; // false=clock, true=keyboard
+let clockModeType = false;
 
 function toggleClockMode(){
   clockModeType = !clockModeType;
@@ -1501,19 +1626,15 @@ function toggleClockMode(){
   const subtitle = document.getElementById('clockSubtitle');
   const kbdBtn = document.getElementById('clockKbdBtn');
   if(clockModeType){
-    // Mode keyboard
     facEl.style.display = 'none';
     typEl.style.display = 'block';
     subtitle.textContent = 'Set time';
     kbdBtn.textContent = '🕐';
     kbdBtn.title = 'Kembali ke jam';
-    // Isi nilai saat ini
     document.getElementById('typeJam').value = String(state.clockJam).padStart(2,'0');
     document.getElementById('typeMenit').value = String(state.clockMenit).padStart(2,'0');
-    // Sembunyikan subtitle label, hanya tampilkan header besar
     document.getElementById('clockSubtitle').style.display='none';
   } else {
-    // Mode clock
     facEl.style.display = 'block';
     typEl.style.display = 'none';
     subtitle.textContent = state.clockStep==='hour' ? 'PILIH JAM' : 'PILIH MENIT';
@@ -1524,19 +1645,8 @@ function toggleClockMode(){
   }
 }
 
-function onTypeJam(el){
-  let v = parseInt(el.value)||0;
-  if(v>23) v=23;
-  state.clockJam = v;
-  updateDisplayClock();
-}
-
-function onTypeMenit(el){
-  let v = parseInt(el.value)||0;
-  if(v>59) v=59;
-  state.clockMenit = v;
-  updateDisplayClock();
-}
+function onTypeJam(el){ let v=parseInt(el.value)||0; if(v>23)v=23; state.clockJam=v; updateDisplayClock(); }
+function onTypeMenit(el){ let v=parseInt(el.value)||0; if(v>59)v=59; state.clockMenit=v; updateDisplayClock(); }
 
 // Clock drag
 let dragging=false;
@@ -1558,7 +1668,7 @@ function handleDrag(e){
   if(state.clockStep==='hour'){
     let h=Math.round(ang/30)%12;
     if(dist<rect.width*0.28)h+=12;
-    if(h!==state.clockJam)selectHour(h, true); // fromDrag=true → tidak auto-advance
+    if(h!==state.clockJam)selectHour(h, true);
   } else {
     let m=Math.round(ang/6)%60;
     if(m<0)m+=60;
@@ -1576,19 +1686,16 @@ function hitung(){
   const totalMenitSteril = totalMenitMulai + state.produk.steril*60;
   const dtM = new Date(base); dtM.setHours(0,totalMenitMix,0,0);
   const dtS = new Date(base); dtS.setHours(0,totalMenitSteril,0,0);
-
   const HARI=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
   const fJam = dt=>`${String(dt.getHours()).padStart(2,'0')}:${String(dt.getMinutes()).padStart(2,'0')}`;
   const fTgl = dt=>dt.toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'});
   const fHari = dt=>HARI[dt.getDay()];
-
   document.getElementById('hasilMixing').textContent = fJam(dtM);
   document.getElementById('hasilSteril').textContent = fJam(dtS);
   document.getElementById('hasilMixingHari').textContent = fHari(dtM);
   document.getElementById('hasilSterilHari').textContent = fHari(dtS);
   document.getElementById('hasilMixingTgl').textContent = fTgl(dtM);
   document.getElementById('hasilSterilTgl').textContent = fTgl(dtS);
-
   document.getElementById('hasilCard').scrollIntoView({behavior:'smooth',block:'center'});
   showToast('✓ Hasil berhasil dihitung');
 }
@@ -1621,20 +1728,16 @@ function renderHistory(){
     </div>`;
   }).join('');
 }
+
 function simpan(){
   const mx=document.getElementById('hasilMixing').textContent;
   if(mx==='--:--'){showToast('⚠ Hitung dulu sebelum simpan',true);return;}
   const batch=document.getElementById('nomorBatch').value.trim();
-  if(!batch){
-    bukaDialogBatch();
-    return;
-  }
+  if(!batch){ bukaDialogBatch(); return; }
   doSimpan();
 }
 
-function bukaDialogBatch(){
-  document.getElementById('overlayBatchDialog').classList.add('open');
-}
+function bukaDialogBatch(){ document.getElementById('overlayBatchDialog').classList.add('open'); }
 
 function dialogBatchOk(){
   tutupOverlay('overlayBatchDialog');
@@ -1644,10 +1747,7 @@ function dialogBatchOk(){
   },200);
 }
 
-function dialogBatchLewati(){
-  tutupOverlay('overlayBatchDialog');
-  doSimpan();
-}
+function dialogBatchLewati(){ tutupOverlay('overlayBatchDialog'); doSimpan(); }
 
 function doSimpan(){
   const waktuMulai = state.jamMulai!==null?`${String(state.jamMulai).padStart(2,'0')}:${String(state.menitMulai||0).padStart(2,'0')}`:'-';
@@ -1656,8 +1756,7 @@ function doSimpan(){
     nama: state.produk ? state.produk.kode : (document.getElementById('namaProduk').value||'-'),
     namaLine: state.produk ? `${state.produk.kode}_${state.produk.line}` : (document.getElementById('namaProduk').value||'-'),
     batch: document.getElementById('nomorBatch').value.trim()||'',
-    tgl: tglMulai,
-    waktuMulai: waktuMulai,
+    tgl: tglMulai, waktuMulai: waktuMulai,
     mxJam_h: state.produk ? state.produk.mixing : '--',
     stJam_h: state.produk ? state.produk.steril : '--',
     mixing: document.getElementById('hasilMixing').textContent,
@@ -1678,60 +1777,30 @@ function shareWA(){
   const mx=document.getElementById('hasilMixing').textContent;
   if(mx==='--:--'){showToast('⚠ Hitung dulu sebelum share',true);return;}
   const batch=document.getElementById('nomorBatch').value.trim();
-  if(!batch){
-    bukaDialogBatchWA();
-    return;
-  }
+  if(!batch){ bukaDialogBatchWA(); return; }
   doShareWA();
 }
 
-function bukaDialogBatchWA(){
-  document.getElementById('overlayBatchDialogWA').classList.add('open');
-}
-function dialogBatchWAOk(){
-  tutupOverlay('overlayBatchDialogWA');
-  setTimeout(()=>{
-    document.getElementById('nomorBatch').focus();
-    document.getElementById('nomorBatch').scrollIntoView({behavior:'smooth',block:'center'});
-  },200);
-}
-function dialogBatchWALewati(){
-  tutupOverlay('overlayBatchDialogWA');
-  doShareWA();
-}
+function bukaDialogBatchWA(){ document.getElementById('overlayBatchDialogWA').classList.add('open'); }
+function dialogBatchWAOk(){ tutupOverlay('overlayBatchDialogWA'); setTimeout(()=>{ document.getElementById('nomorBatch').focus(); document.getElementById('nomorBatch').scrollIntoView({behavior:'smooth',block:'center'}); },200); }
+function dialogBatchWALewati(){ tutupOverlay('overlayBatchDialogWA'); doShareWA(); }
 
 function doShareWA(){
-  // Ambil nama produk (kode saja, tanpa prefix LINE)
   const namaRaw = state.produk ? state.produk.kode : (document.getElementById('namaProduk').value||'-');
   const namaLine = state.produk ? `${state.produk.kode}_${state.produk.line}` : namaRaw;
   const batch   = document.getElementById('nomorBatch').value.trim() || '-';
   const mxJam_h = state.produk ? state.produk.mixing : '--';
   const stJam_h = state.produk ? state.produk.steril : '--';
-
-  // Format jam mulai: "04:21"
-  const waktu = state.jamMulai !== null
-    ? `${String(state.jamMulai).padStart(2,'0')}:${String(state.menitMulai||0).padStart(2,'0')}`
-    : '-';
-
-  // Format FV mulai: "17 Mar 2026, 04:21"
-  const tglMulai = state.tanggal
-    ? state.tanggal.toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'})
-    : '-';
+  const waktu = state.jamMulai !== null ? `${String(state.jamMulai).padStart(2,'0')}:${String(state.menitMulai||0).padStart(2,'0')}` : '-';
+  const tglMulai = state.tanggal ? state.tanggal.toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'}) : '-';
   const fvMulai = `${tglMulai}, ${waktu}`;
-
-  // Batas mix-fill
   const mxJam  = document.getElementById('hasilMixing').textContent;
   const mxHari = document.getElementById('hasilMixingHari').textContent;
   const mxTgl  = document.getElementById('hasilMixingTgl').textContent;
-
-  // Batas steril
   const stJam  = document.getElementById('hasilSteril').textContent;
   const stHari = document.getElementById('hasilSterilHari').textContent;
   const stTgl  = document.getElementById('hasilSterilTgl').textContent;
-
-  // Format batas delay: "Rabu, 18 Mar 2026 Jam 02:21"
   const fmtBatas = (hari, tglStr, jam) => `${hari}, ${tglStr} Jam ${jam}`;
-
   const teks =
 `📦 *Nama produk* : ${namaRaw}
 🏷 *Batch Number* : ${batch}
@@ -1743,7 +1812,6 @@ function doShareWA(){
 
 🔵 *Batas delay time Mix-Fill* : ${fmtBatas(mxHari, mxTgl, mxJam)}
 🟠 *Batas delay time Steril* : ${fmtBatas(stHari, stTgl, stJam)}`;
-
   window.open(`https://wa.me/?text=${encodeURIComponent(teks)}`, '_blank');
 }
 
@@ -1765,15 +1833,11 @@ function resetAll(){
   document.getElementById('hasilSterilHari').textContent='—';
   document.getElementById('hasilMixingTgl').textContent='—';
   document.getElementById('hasilSterilTgl').textContent='—';
-  // Scroll & tampilkan kembali tanda penunjuk
   const btn = document.getElementById('btnPilihProduk');
   const ptr = document.getElementById('pilihPointer');
   if(ptr) ptr.classList.remove('hidden');
   btn.classList.remove('selected');
-  setTimeout(()=>{
-    const nb = document.getElementById('nomorBatch');
-    if(nb){ nb.focus(); nb.scrollIntoView({behavior:'smooth',block:'center'}); }
-  }, 300);
+  setTimeout(()=>{ const nb = document.getElementById('nomorBatch'); if(nb){ nb.focus(); nb.scrollIntoView({behavior:'smooth',block:'center'}); } }, 300);
 }
 
 let toastT;
@@ -1791,7 +1855,6 @@ function showToast(msg,warn=false){
   document.getElementById(id).addEventListener('click',function(e){if(e.target===this)tutupOverlay(id);});
 });
 
-// Batch input: Enter → fokus tombol Simpan
 document.getElementById('nomorBatch').addEventListener('keydown', function(e){
   if(e.key==='Enter'){
     e.preventDefault();
@@ -1800,29 +1863,129 @@ document.getElementById('nomorBatch').addEventListener('keydown', function(e){
   }
 });
 
+// ======================================================
+// 🏝 ISLAND DYNAMIC — Efek partikel & langit dinamis
+// ======================================================
+let islandParticlesActive = false;
+let islandAnimFrame = null;
+let islandStarsEl = null;
+let islandBubblesEl = null;
+
+function getIslandTimeClass(){
+  const h = new Date().getHours();
+  if(h >= 4  && h < 6)  return 'island-dawn';
+  if(h >= 6  && h < 10) return 'island-morning';
+  if(h >= 10 && h < 14) return 'island-noon';
+  if(h >= 14 && h < 18) return 'island-afternoon';
+  if(h >= 18 && h < 21) return 'island-sunset';
+  return 'island-night';
+}
+
+function createIslandParticles(){
+  if(islandStarsEl) islandStarsEl.remove();
+  if(islandBubblesEl) islandBubblesEl.remove();
+
+  // Bintang (malam)
+  islandStarsEl = document.createElement('div');
+  islandStarsEl.className = 'island-stars';
+  for(let i=0;i<60;i++){
+    const star = document.createElement('div');
+    star.className = 'island-star';
+    star.style.cssText = `
+      left:${Math.random()*100}%;
+      top:${Math.random()*65}%;
+      --dur:${2+Math.random()*4}s;
+      --delay:-${Math.random()*4}s;
+      opacity:${Math.random()*0.6+0.1};
+    `;
+    islandStarsEl.appendChild(star);
+  }
+  document.body.appendChild(islandStarsEl);
+
+  // Gelembung laut
+  islandBubblesEl = document.createElement('div');
+  islandBubblesEl.className = 'island-bubbles';
+  for(let i=0;i<18;i++){
+    const bubble = document.createElement('div');
+    bubble.className = 'island-bubble';
+    const sz = 8 + Math.random()*28;
+    bubble.style.cssText = `
+      left:${Math.random()*100}%;
+      bottom:${Math.random()*40}px;
+      width:${sz}px; height:${sz}px;
+      --bdur:${5+Math.random()*8}s;
+      --bdelay:-${Math.random()*8}s;
+      opacity:${0.3+Math.random()*0.5};
+    `;
+    islandBubblesEl.appendChild(bubble);
+  }
+  document.body.appendChild(islandBubblesEl);
+
+  // Sesuaikan visibilitas bintang berdasarkan waktu
+  const tc = getIslandTimeClass();
+  islandStarsEl.style.opacity = (tc === 'island-night' || tc === 'island-dawn') ? '1' : '0.15';
+  islandStarsEl.style.transition = 'opacity 2s ease';
+  islandParticlesActive = true;
+}
+
+function removeIslandParticles(){
+  if(islandStarsEl){ islandStarsEl.remove(); islandStarsEl = null; }
+  if(islandBubblesEl){ islandBubblesEl.remove(); islandBubblesEl = null; }
+  islandParticlesActive = false;
+}
+
+function applyIslandTimeClass(){
+  const ISLAND_CLASSES = ['island-dawn','island-morning','island-noon','island-afternoon','island-sunset','island-night'];
+  ISLAND_CLASSES.forEach(c => document.body.classList.remove(c));
+  document.body.classList.add(getIslandTimeClass());
+  // Update bintang
+  if(islandStarsEl){
+    const tc = getIslandTimeClass();
+    islandStarsEl.style.opacity = (tc === 'island-night' || tc === 'island-dawn') ? '1' : '0.15';
+  }
+}
+
+// Interval update langit island setiap menit
+let islandClockInterval = null;
+
 // ===== TEMA SYSTEM =====
-const TEMAS = ['dark','apple','purple','concord'];
+const TEMAS = ['dark','apple','purple','concord','island'];
 let currentTema = 'dark';
-let temaManualOverride = false; // true jika user pilih manual
+let temaManualOverride = false;
 
 function getTemaByTime(){
   const h = new Date().getHours();
-  // 00:01–08:00 → purple
-  // 08:01–16:00 → apple
-  // 16:01–00:00 → dark
-  if(h >= 0 && h < 8)  return 'purple';  // 00:00–07:59
-  if(h >= 8 && h < 16) return 'apple';   // 08:00–15:59
-  return 'dark';                          // 16:00–23:59
+  if(h >= 0 && h < 8)  return 'purple';
+  if(h >= 8 && h < 16) return 'apple';
+  return 'dark';
 }
 
 function applyTema(tema, silent=false){
   TEMAS.forEach(t => document.body.classList.remove(t));
+  // Hapus island time classes
+  ['island-dawn','island-morning','island-noon','island-afternoon','island-sunset','island-night'].forEach(c=>document.body.classList.remove(c));
+
   if(tema !== 'dark') document.body.classList.add(tema);
   currentTema = tema;
+
+  // Island: aktifkan partikel & langit dinamis
+  if(tema === 'island'){
+    applyIslandTimeClass();
+    createIslandParticles();
+    if(!islandClockInterval){
+      islandClockInterval = setInterval(()=>{
+        if(currentTema === 'island'){ applyIslandTimeClass(); }
+      }, 60000);
+    }
+  } else {
+    removeIslandParticles();
+    if(islandClockInterval){ clearInterval(islandClockInterval); islandClockInterval = null; }
+  }
+
   document.querySelectorAll('.tema-card').forEach(c => c.classList.remove('active'));
   const el = document.getElementById('tema-'+tema);
   if(el) el.classList.add('active');
-  if(!silent) showToast('✓ Tema diubah');
+  if(!silent) showToast(tema==='island' ? '🏝 Tema Island Dynamic aktif!' : '✓ Tema diubah');
 }
 
 function setTema(tema){
@@ -1847,13 +2010,12 @@ function bukaTemaPicker(){
   document.querySelectorAll('.tema-card').forEach(c => c.classList.remove('active'));
   const el = document.getElementById('tema-'+currentTema);
   if(el) el.classList.add('active');
-  // update status auto badge
   const autoBadge = document.getElementById('temaAutoBadge');
   if(autoBadge) autoBadge.textContent = temaManualOverride ? '⚙ Manual' : '🕐 Otomatis (jam lokal)';
   bukaOverlay('overlayTema');
 }
 
-// Apply tema on load: cek override, jika tidak ada → otomatis by time
+// Apply tema on load
 const savedOverride = localStorage.getItem('temaOverride');
 const savedTema = localStorage.getItem('tema');
 if(savedOverride && savedTema && TEMAS.includes(savedTema)){
@@ -1865,7 +2027,7 @@ if(savedOverride && savedTema && TEMAS.includes(savedTema)){
 }
 applyTema(currentTema, true);
 
-// Auto-update tema setiap menit jika tidak manual
+// Auto-update tema setiap menit
 setInterval(()=>{
   if(!temaManualOverride){
     const newTema = getTemaByTime();
@@ -1882,11 +2044,407 @@ document.getElementById('overlayTema').addEventListener('click',function(e){if(e
 
 renderHistory();
 
-// Auto fokus ke kolom No Batch saat pertama buka
 setTimeout(()=>{
   const nb = document.getElementById('nomorBatch');
   if(nb){ nb.focus(); nb.scrollIntoView({behavior:'smooth',block:'center'}); }
 }, 400);
+
+// ═══════════════════════════════════════════════
+// SERVICE WORKER — Auto-update (Network First)
+// ═══════════════════════════════════════════════
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./service-worker.js').then(reg => {
+
+    // Cek update setiap 30 detik
+    setInterval(() => reg.update(), 30000);
+
+    // Ada versi baru yang menunggu?
+    reg.addEventListener('updatefound', () => {
+      const newWorker = reg.installing;
+      newWorker.addEventListener('statechange', () => {
+        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+          // Tampilkan banner update
+          showUpdateBanner();
+        }
+      });
+    });
+
+  }).catch(err => console.warn('[SW] Register gagal:', err));
+
+  // Saat SW baru aktif → reload otomatis halaman
+  let refreshing = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (!refreshing) {
+      refreshing = true;
+      window.location.reload();
+    }
+  });
+}
+
+function showUpdateBanner() {
+  // Hapus banner lama kalau ada
+  const old = document.getElementById('sw-update-banner');
+  if (old) old.remove();
+
+  const banner = document.createElement('div');
+  banner.id = 'sw-update-banner';
+  banner.innerHTML = `
+    <span>🔄 Ada versi baru CalcDelay!</span>
+    <button onclick="applyUpdate()" style="
+      margin-left:12px;padding:6px 14px;
+      background:#00d4ff;color:#000;border:none;
+      border-radius:20px;font-family:'Space Mono',monospace;
+      font-size:11px;font-weight:700;cursor:pointer;
+    ">UPDATE</button>
+    <button onclick="this.parentElement.remove()" style="
+      margin-left:6px;padding:6px 10px;
+      background:transparent;color:rgba(255,255,255,0.5);
+      border:1px solid rgba(255,255,255,0.2);border-radius:20px;
+      font-size:11px;cursor:pointer;
+    ">Nanti</button>
+  `;
+  banner.style.cssText = `
+    position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+    background:rgba(6,11,24,0.96);border:1px solid rgba(0,212,255,0.4);
+    color:#eef6ff;padding:12px 18px;border-radius:14px;
+    display:flex;align-items:center;flex-wrap:wrap;gap:4px;
+    font-family:'Nunito',sans-serif;font-size:13px;font-weight:600;
+    box-shadow:0 8px 32px rgba(0,0,0,0.6);z-index:10000;
+    animation:fadeUp 0.3s ease;
+  `;
+  document.body.appendChild(banner);
+}
+
+function applyUpdate() {
+  navigator.serviceWorker.ready.then(reg => {
+    if (reg.waiting) {
+      reg.waiting.postMessage('skipWaiting');
+    }
+  });
+}
 </script>
+
+<!-- ═══════════ DYNAMIC ISLAND ═══════════ -->
+<style>
+#dynamic-island {
+  position: fixed;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  /* Collapsed pill state */
+  width: 120px;
+  height: 34px;
+  background: #000;
+  border-radius: 20px;
+  box-shadow: 0 0 0 1.5px rgba(255,255,255,0.08), 0 8px 32px rgba(0,0,0,0.7);
+  transition: width 0.45s cubic-bezier(0.34,1.56,0.64,1),
+              height 0.45s cubic-bezier(0.34,1.56,0.64,1),
+              border-radius 0.45s cubic-bezier(0.34,1.56,0.64,1),
+              box-shadow 0.3s ease;
+  overflow: hidden;
+}
+#dynamic-island.expanded {
+  width: 320px;
+  height: 80px;
+  border-radius: 26px;
+  box-shadow: 0 0 0 1.5px rgba(255,255,255,0.1), 0 12px 40px rgba(0,0,0,0.8);
+}
+#dynamic-island.expanded-big {
+  width: 320px;
+  height: 140px;
+  border-radius: 26px;
+  box-shadow: 0 0 0 1.5px rgba(255,255,255,0.1), 0 16px 50px rgba(0,0,0,0.85);
+}
+
+/* Pill content (collapsed) */
+#di-pill {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  opacity: 1;
+  transition: opacity 0.15s ease;
+}
+#dynamic-island.expanded #di-pill,
+#dynamic-island.expanded-big #di-pill { opacity: 0; pointer-events: none; }
+.di-pill-dot {
+  width: 8px; height: 8px;
+  background: #00d4ff;
+  border-radius: 50%;
+  animation: diPulse 2s ease-in-out infinite;
+}
+.di-pill-text {
+  font-family: 'Space Mono', monospace;
+  font-size: 10px;
+  color: rgba(255,255,255,0.75);
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+@keyframes diPulse {
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:0.4;transform:scale(0.7)}
+}
+
+/* Expanded content */
+#di-content {
+  position: absolute;
+  inset: 0;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease 0.25s;
+}
+#dynamic-island.expanded #di-content,
+#dynamic-island.expanded-big #di-content { opacity: 1; pointer-events: auto; }
+
+.di-icon-wrap {
+  width: 48px; height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  flex-shrink: 0;
+  background: linear-gradient(135deg,#00d4ff22,#0077ff33);
+  border: 1px solid rgba(0,212,255,0.3);
+}
+.di-info { flex: 1; min-width: 0; }
+.di-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+.di-value {
+  font-family: 'Nunito', sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.di-sub {
+  font-family: 'Nunito', sans-serif;
+  font-size: 11px;
+  color: rgba(255,255,255,0.45);
+  margin-top: 1px;
+}
+.di-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.di-badge {
+  padding: 3px 8px;
+  border-radius: 20px;
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.di-badge.green { background: #00e5a022; color: #00e5a0; border: 1px solid #00e5a044; }
+.di-badge.orange { background: #ff6b3522; color: #ff6b35; border: 1px solid #ff6b3544; }
+.di-badge.blue { background: #00d4ff22; color: #00d4ff; border: 1px solid #00d4ff44; }
+.di-waveform {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 20px;
+}
+.di-bar {
+  width: 3px;
+  background: #00e5a0;
+  border-radius: 2px;
+  animation: diBar 0.8s ease-in-out infinite alternate;
+}
+.di-bar:nth-child(1){height:8px;animation-delay:0s}
+.di-bar:nth-child(2){height:14px;animation-delay:0.1s}
+.di-bar:nth-child(3){height:18px;animation-delay:0.2s}
+.di-bar:nth-child(4){height:12px;animation-delay:0.3s}
+.di-bar:nth-child(5){height:6px;animation-delay:0.4s}
+@keyframes diBar {
+  from{transform:scaleY(0.3)} to{transform:scaleY(1)}
+}
+
+/* Big expanded — timer view */
+#di-big { display: none; flex-direction: column; padding: 12px 16px; }
+#dynamic-island.expanded-big #di-content { display: none; }
+#dynamic-island.expanded-big #di-big { display: flex; opacity: 1; }
+#di-big {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease 0.25s;
+}
+#dynamic-island.expanded-big #di-big { opacity: 1; pointer-events: auto; }
+.di-big-title {
+  font-family: 'Space Mono', monospace;
+  font-size: 9px;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.di-big-time {
+  font-family: 'Space Mono', monospace;
+  font-size: 34px;
+  font-weight: 700;
+  color: #00d4ff;
+  letter-spacing: 2px;
+  line-height: 1;
+  margin-bottom: 4px;
+  text-shadow: 0 0 20px rgba(0,212,255,0.5);
+}
+.di-big-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.di-big-label {
+  font-family: 'Nunito', sans-serif;
+  font-size: 11px;
+  color: rgba(255,255,255,0.35);
+}
+.di-big-status {
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 9px;
+  font-family: 'Space Mono', monospace;
+  background: rgba(0,229,160,0.15);
+  color: #00e5a0;
+  border: 1px solid rgba(0,229,160,0.3);
+}
+</style>
+
+<div id="dynamic-island">
+  <!-- Collapsed pill -->
+  <div id="di-pill">
+    <div class="di-pill-dot"></div>
+    <span class="di-pill-text">CALC DELAY</span>
+    <div class="di-pill-dot" style="animation-delay:0.4s"></div>
+  </div>
+
+  <!-- Expanded: info card -->
+  <div id="di-content">
+    <div class="di-icon-wrap">⏱</div>
+    <div class="di-info">
+      <div class="di-title">Delay Time</div>
+      <div class="di-value" id="di-live-time">--:--:--</div>
+      <div class="di-sub" id="di-live-sub">Belum ada kalkulasi</div>
+    </div>
+    <div class="di-right">
+      <span class="di-badge blue" id="di-live-badge">READY</span>
+      <div class="di-waveform">
+        <div class="di-bar"></div>
+        <div class="di-bar"></div>
+        <div class="di-bar"></div>
+        <div class="di-bar"></div>
+        <div class="di-bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Expanded big: jam real-time -->
+  <div id="di-big">
+    <div class="di-big-title">⏰ Waktu Sekarang</div>
+    <div class="di-big-time" id="di-clock">00:00:00</div>
+    <div class="di-big-row">
+      <span class="di-big-label" id="di-date-label">—</span>
+      <span class="di-big-status">LIVE</span>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const island = document.getElementById('dynamic-island');
+  const livetime = document.getElementById('di-live-time');
+  const livesub  = document.getElementById('di-live-sub');
+  const livebadge = document.getElementById('di-live-badge');
+  const diclock  = document.getElementById('di-clock');
+  const didate   = document.getElementById('di-date-label');
+
+  let state = 'collapsed'; // collapsed | expanded | big
+  let collapseTimer = null;
+
+  function setState(s){
+    island.classList.remove('expanded','expanded-big');
+    if(s === 'expanded') island.classList.add('expanded');
+    if(s === 'big') island.classList.add('expanded-big');
+    state = s;
+  }
+
+  function autoCollapse(ms=4000){
+    clearTimeout(collapseTimer);
+    collapseTimer = setTimeout(()=>{ setState('collapsed'); }, ms);
+  }
+
+  island.addEventListener('click', ()=>{
+    clearTimeout(collapseTimer);
+    if(state === 'collapsed'){ setState('expanded'); autoCollapse(4000); }
+    else if(state === 'expanded'){ setState('big'); autoCollapse(6000); }
+    else { setState('collapsed'); }
+  });
+
+  // Tap once on load → expand briefly
+  setTimeout(()=>{ setState('expanded'); autoCollapse(3000); }, 800);
+
+  // Live clock update
+  function updateClock(){
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2,'0');
+    const mm = String(now.getMinutes()).padStart(2,'0');
+    const ss = String(now.getSeconds()).padStart(2,'0');
+    diclock.textContent = `${hh}:${mm}:${ss}`;
+    const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+    const months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+    didate.textContent = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+  }
+  setInterval(updateClock, 1000);
+  updateClock();
+
+  // Hook: update Dynamic Island saat hasil delay muncul
+  // Pantau perubahan elemen hasil kalkulasi
+  const targetResult = document.querySelector('.result-box') || document.getElementById('hasilCalc');
+  function refreshDI(){
+    const resultEl = document.querySelector('.result-value, #hasilDelay, .delay-result');
+    if(resultEl && resultEl.textContent.trim() && resultEl.textContent.trim() !== '--'){
+      livetime.textContent = resultEl.textContent.trim().substring(0,8) || '--:--:--';
+      livesub.textContent = 'Delay terhitung ✓';
+      livebadge.textContent = 'DONE';
+      livebadge.className = 'di-badge green';
+      setState('expanded');
+      autoCollapse(5000);
+    }
+  }
+
+  // Observer pada seluruh container untuk menangkap update hasil
+  const observer = new MutationObserver(refreshDI);
+  observer.observe(document.body, { childList:true, subtree:true, characterData:true });
+
+  // Juga hook manual ke tombol hitung jika ada
+  document.querySelectorAll('.btn, .btn-hitung, [id*=hitung], [id*=calc]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{ setTimeout(refreshDI, 300); });
+  });
+})();
+</script>
+<!-- ═══════════ END DYNAMIC ISLAND ═══════════ -->
+
 </body>
 </html>
